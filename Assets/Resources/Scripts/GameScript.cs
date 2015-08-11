@@ -9,7 +9,7 @@ public class GameScript : MonoBehaviour
     void Start()
     {
         FutileParams futileParams = new FutileParams(true, false, false, false);
-        futileParams.AddResolutionLevel(960.0f, 1.0f, 1.0f, "");
+        futileParams.AddResolutionLevel(160.0f, 1.0f, 1.0f, "");
 
         futileParams.origin = new Vector2(0.5f, 0.5f);
         futileParams.backgroundColor = new Color(0, 0, 0);

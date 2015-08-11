@@ -28,7 +28,7 @@ public class World : FContainer
         }
     }
 
-    public float gravity = -.5f;
+    public float gravity = 0;
 
     public World()
     {
@@ -54,7 +54,7 @@ public class World : FContainer
 
         FutilePlatformerBaseObject player = new Player(this);
         playerLayer.AddChild(player);
-        player.SetPosition(16*32,-8*32);
+        player.SetPosition(16*16,-8*16);
         C.getCameraInstance().follow(player);
         C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height, collisionTilemap.width, collisionTilemap.height));
         collisionTilemap.clipNode = C.getCameraInstance();

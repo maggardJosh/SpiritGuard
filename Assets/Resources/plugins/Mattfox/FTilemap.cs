@@ -77,7 +77,7 @@ public class FTilemap : FContainer
             float yMin = relPos.y - _clipHeight / 2 - _tileHeight;
 
             // check if the _clipNode has moved enough to check tile positions
-            if (Mathf.Round(xMin / (_tileWidth * .9f)) == _clipPos.x && Mathf.Round(yMin / (_tileHeight * .9f)) == _clipPos.y)
+            if (Mathf.Round(xMin / (_tileWidth * .8f)) == _clipPos.x && Mathf.Round(yMin / (_tileHeight * .8f)) == _clipPos.y)
             {
                 return;
             }

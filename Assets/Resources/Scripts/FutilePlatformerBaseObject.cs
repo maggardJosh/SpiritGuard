@@ -11,9 +11,9 @@ public class FutilePlatformerBaseObject : FContainer
     public float yAcc;
     public float xVel;
     public float yVel;
-    protected float maxXVel = 8;
-    protected float maxYVel = 30;
-    protected float minYVel = -15;
+    protected float maxXVel = 2.5f;
+    protected float maxYVel = 2.5f;
+    protected float minYVel = -2.5f;
     float tileSize;
     World world;
 

@@ -2,7 +2,7 @@
 
 "boundingBox":
 {
-	"frame": {"x":43,"y":3,"w":36,"h":36},
+	"frame": {"x":3,"y":43,"w":36,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
@@ -10,131 +10,51 @@
 },
 "player_01":
 {
-	"frame": {"x":75,"y":183,"w":25,"h":30},
+	"frame": {"x":3,"y":83,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":30},
-	"sourceSize": {"w":25,"h":30}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 "player_02":
 {
-	"frame": {"x":104,"y":183,"w":15,"h":30},
+	"frame": {"x":43,"y":63,"w":16,"h":16},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":10,"y":0,"w":15,"h":30},
-	"sourceSize": {"w":25,"h":30}
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+"player_03":
+{
+	"frame": {"x":43,"y":43,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 "tilemap_00":
 {
-	"frame": {"x":39,"y":151,"w":32,"h":32},
+	"frame": {"x":43,"y":23,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 "tilemap_01":
 {
-	"frame": {"x":39,"y":151,"w":32,"h":32},
+	"frame": {"x":43,"y":23,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 "tilemap_02":
 {
-	"frame": {"x":3,"y":151,"w":32,"h":32},
+	"frame": {"x":43,"y":3,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_03":
-{
-	"frame": {"x":75,"y":147,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_04":
-{
-	"frame": {"x":39,"y":115,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_05":
-{
-	"frame": {"x":3,"y":115,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_06":
-{
-	"frame": {"x":75,"y":111,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_09":
-{
-	"frame": {"x":39,"y":79,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_10":
-{
-	"frame": {"x":3,"y":79,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_11":
-{
-	"frame": {"x":75,"y":75,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_17":
-{
-	"frame": {"x":39,"y":43,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_18":
-{
-	"frame": {"x":3,"y":43,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_19":
-{
-	"frame": {"x":83,"y":39,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
-},
-"tilemap_25":
-{
-	"frame": {"x":83,"y":3,"w":32,"h":32},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 "white":
 {
@@ -149,8 +69,8 @@
 	"version": "1.0",
 	"image": "inGameAtlas.png",
 	"format": "RGBA8888",
-	"size": {"w":128,"h":256},
+	"size": {"w":64,"h":128},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:9334e2a7843fdafcd67e95c87554ae07:9617ed7b37da73c8cc54ff1e75dbcf4a:472867876a4db3e566643cd3fb500437$"
+	"smartupdate": "$TexturePacker:SmartUpdate:fe668f00cf66b18202a37eaf1ffc1d84:dbc264066a991d7a972ee3519866240a:472867876a4db3e566643cd3fb500437$"
 }
 }
