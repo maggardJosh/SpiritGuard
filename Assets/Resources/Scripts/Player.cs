@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class Player : FutilePlatformerBaseObject
+public class Player : FutileFourDirectionBaseObject
 {
     private float moveSpeed = .4f;
     private FAnimatedSprite player;
@@ -38,8 +38,14 @@ public class Player : FutilePlatformerBaseObject
         handleStateCount = true;
         bounceiness = 0f;
         player = new FAnimatedSprite("player");
-        player.addAnimation(new FAnimation(PlayerState.IDLE.ToString(), new int[] { 1 }, 100, true));
-        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString(), new int[] { 2, 1, 3 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.RIGHT.ToString(), new int[] { 1 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.RIGHT.ToString(), new int[] { 2, 1, 3 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.LEFT.ToString(), new int[] { 1 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.LEFT.ToString(), new int[] { 2, 1, 3 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.UP.ToString(), new int[] { 4 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.UP.ToString(), new int[] { 5, 4, 6 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.DOWN.ToString(), new int[] { 7 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.DOWN.ToString(), new int[] { 8, 7, 9 }, 150, true));
         player.play(State.ToString());
         this.AddChild(player);
     }
@@ -111,7 +117,7 @@ public class Player : FutilePlatformerBaseObject
         base.OnFixedUpdate();
 
 
-        player.play(State.ToString(), false);
+        player.play(State.ToString() + _direction.ToString(), false);
     }
 
 }
