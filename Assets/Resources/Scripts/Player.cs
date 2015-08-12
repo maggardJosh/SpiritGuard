@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Player : FutilePlatformerBaseObject
 {
-    private float moveSpeed = .5f;
+    private float moveSpeed = .4f;
     private FAnimatedSprite player;
 
     private enum PlayerState
@@ -33,24 +33,19 @@ public class Player : FutilePlatformerBaseObject
     }
 
     public Player(World world)
-        : base(new RXRect(0, 0, 16, 16), world)
+        : base(new RXRect(0, 0, 10,10), world)
     {
         handleStateCount = true;
         bounceiness = 0f;
         player = new FAnimatedSprite("player");
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString(), new int[] { 1 }, 100, true));
-        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString(), new int[] { 2, 1, 3 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString(), new int[] { 2, 1, 3 }, 150, true));
         player.play(State.ToString());
         this.AddChild(player);
     }
-    private bool lastJump = false;
-    private float wallSlidePressAwayTimer = 0;
-    private float PRESS_AWAY_MAX = .3f;
+
     public override void OnFixedUpdate()
     {
-        player.width = this.hitBox.width;
-        player.height = this.hitBox.height;
-
         switch (State)
         {
             case PlayerState.IDLE:
@@ -117,8 +112,6 @@ public class Player : FutilePlatformerBaseObject
 
 
         player.play(State.ToString(), false);
-
-        lastJump = C.getKey(C.JUMP_KEY);
     }
 
 }

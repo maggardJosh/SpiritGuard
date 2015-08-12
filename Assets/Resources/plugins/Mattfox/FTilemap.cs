@@ -36,7 +36,8 @@ public class FTilemap : FContainer
 
     public bool IsPassable(float xPos, float yPos)
     {
-        return !FTilemap.COLLIDE_LIST.Contains(getFrameNumAt(xPos, yPos));
+        return getFrameNumAt(xPos,yPos) == 0;
+        //return !FTilemap.COLLIDE_LIST.Contains(getFrameNumAt(xPos, yPos));
     }
 
     #endregion

@@ -50,7 +50,7 @@ public class World : FContainer
         collisionTilemap = (FTilemap)this.map.getLayerNamed("collision");
         backgroundTilemap = (FTilemap)this.map.getLayerNamed("background");
         background.AddChild(backgroundTilemap);
-        foreground.AddChild(collisionTilemap);
+        background.AddChild(collisionTilemap);
 
         FutilePlatformerBaseObject player = new Player(this);
         playerLayer.AddChild(player);
