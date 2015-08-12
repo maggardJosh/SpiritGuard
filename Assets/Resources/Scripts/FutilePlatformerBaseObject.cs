@@ -15,7 +15,7 @@ public class FutilePlatformerBaseObject : FContainer
     protected float maxYVel = 2.5f;
     protected float minYVel = -2.5f;
     float tileSize;
-    World world;
+    protected World world;
 
     protected bool handleStateCount = false;
     protected float stateCount = 0;

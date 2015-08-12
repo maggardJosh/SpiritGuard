@@ -12,7 +12,8 @@ public class Player : FutileFourDirectionBaseObject
     private enum PlayerState
     {
         IDLE,
-        MOVE
+        MOVE,
+        JUMP
     }
 
     private PlayerState _state = PlayerState.IDLE;
@@ -39,13 +40,18 @@ public class Player : FutileFourDirectionBaseObject
         bounceiness = 0f;
         player = new FAnimatedSprite("player");
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.RIGHT.ToString(), new int[] { 1 }, 100, true));
-        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.RIGHT.ToString(), new int[] { 2, 1, 3 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.LEFT.ToString(), new int[] { 1 }, 100, true));
-        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.LEFT.ToString(), new int[] { 2, 1, 3 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.UP.ToString(), new int[] { 4 }, 100, true));
-        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.UP.ToString(), new int[] { 5, 4, 6 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.DOWN.ToString(), new int[] { 7 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.RIGHT.ToString(), new int[] { 2, 1, 3 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.LEFT.ToString(), new int[] { 2, 1, 3 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.UP.ToString(), new int[] { 5, 4, 6 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.DOWN.ToString(), new int[] { 8, 7, 9 }, 150, true));
+
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.RIGHT.ToString(), new int[] { 2, 3 }, 50, true));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.LEFT.ToString(), new int[] { 2,  3 }, 50, true));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.UP.ToString(), new int[] { 5,  6 }, 50, true));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.DOWN.ToString(), new int[] { 8,  9 }, 50, true));
         player.play(State.ToString());
         this.AddChild(player);
     }
@@ -56,6 +62,24 @@ public class Player : FutileFourDirectionBaseObject
         {
             case PlayerState.IDLE:
             case PlayerState.MOVE:
+                if (C.getKey(C.JUMP_KEY))
+                {
+                    State = PlayerState.JUMP;
+                    Go.killAllTweensWithTarget(this);
+                    float newX = this.x;
+                    float newY = this.y;
+                    switch(_direction)
+                    {
+                        case Direction.UP: newY += 32; while (!world.isPassable(this.x, newY + hitBox.height / 2f) || !world.isPassable(this.x, newY - hitBox.height/2f)) { newY -= 1f; } break;
+                        case Direction.RIGHT: newX += 32; while (!world.isPassable(newX + hitBox.width / 2f, this.y) || !world.isPassable(newX - hitBox.width/2f,this.y)) { newX -= 1f; } break;
+                        case Direction.DOWN: newY -= 32; while (!world.isPassable(this.x, newY + hitBox.height / 2f) || !world.isPassable(this.x, newY - hitBox.height / 2f)) { newY += 1f; } break;
+                        case Direction.LEFT: newX -= 32; while (!world.isPassable(newX + hitBox.width / 2f, this.y) || !world.isPassable(newX - hitBox.width / 2f, this.y)) { newX += 1f; } break;
+                    }
+                    xVel = 0;
+                    yVel = 0;
+                    Go.to(this, .5f, new TweenConfig().floatProp("x", newX).floatProp("y", newY).setEaseType(EaseType.QuadOut).onComplete(() => { State = PlayerState.IDLE; }));
+                    return;
+                }
                 if (C.getKey(C.LEFT_KEY))
                 {
 
