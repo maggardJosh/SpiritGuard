@@ -18,12 +18,16 @@ public class GameScript : MonoBehaviour
         Futile.instance.Init(futileParams);
 
         Futile.atlasManager.LoadAtlas("Atlases/inGameAtlas");
+        Futile.atlasManager.LoadFont(C.smallFontName, "smallFont_0", "Atlases/smallFont", 0, 0);
+
 
         World world = new World();
         Futile.stage.AddChild(world);
         Futile.stage.AddChild(C.getCameraInstance());
         world.LoadMap("1_1");
         world.SpawnPlayer("spawnpoint");
+        FLabel test = new FLabel(C.smallFontName, "TEST");
+        C.getCameraInstance().AddChild(test);
 
     }
 
