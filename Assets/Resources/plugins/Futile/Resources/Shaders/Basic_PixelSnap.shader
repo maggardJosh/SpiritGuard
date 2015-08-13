@@ -9,7 +9,7 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 	}
 	
 	SubShader 
-	{
+	{ 
 		Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
 		ZWrite Off
 		ZTest Always
@@ -59,11 +59,11 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 			fixed4 frag(v2f IN) : COLOR
 			{
 
-				if ((IN.worldPos.x%1 > .2) && IN.worldPos.y%1 < -.2) 
+				if (((IN.worldPos.x)%1 > .2) && IN.worldPos.y%1 < -.2) 
 				{
 					return tex2D( _MainTex, IN.texcoord) * IN.color;
 				}else{
-					return fixed4(215.0/255.0,232.0/255.0,148.0/255.0,1);
+					return fixed4(235.0/255.0,242.0/255.0,158.0/255.0,1);
 				}
 			}
 			ENDCG
