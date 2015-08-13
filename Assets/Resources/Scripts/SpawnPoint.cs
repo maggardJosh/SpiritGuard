@@ -6,7 +6,7 @@ using UnityEngine;
 
 	public class SpawnPoint
 	{
-        Vector2 pos;
+        public Vector2 pos;
         FutileFourDirectionBaseObject.Direction exitDirection;
         public string name;
         public string targetMap;
@@ -34,6 +34,8 @@ using UnityEngine;
         public const float SPAWN_COLLISION_DIST = 4;
         public bool CheckCollision(Player p)
         {
+            if (p.State == Player.PlayerState.JUMP)
+                return false;
             return Mathf.Abs(p.x - pos.x) < SPAWN_COLLISION_DIST &&
                 Mathf.Abs(p.y - pos.y) < SPAWN_COLLISION_DIST;
                 

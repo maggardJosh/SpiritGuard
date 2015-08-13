@@ -9,7 +9,7 @@ public class Player : FutileFourDirectionBaseObject
     private float moveSpeed = .1f;
     private FAnimatedSprite player;
 
-    private enum PlayerState
+    public enum PlayerState
     {
         IDLE,
         MOVE,
@@ -17,7 +17,7 @@ public class Player : FutileFourDirectionBaseObject
     }
 
     private PlayerState _state = PlayerState.IDLE;
-    private PlayerState State
+    public PlayerState State
     {
         get
         {

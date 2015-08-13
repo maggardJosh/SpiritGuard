@@ -155,6 +155,9 @@ public class World : FContainer
                     break;
                 }
         if (spawnCollision != null)
+        {
+            Go.to(player, .4f, new TweenConfig().floatProp("x", spawnCollision.pos.x).floatProp("y", spawnCollision.pos.y).setEaseType(EaseType.QuadOut));
             LoadNewMap(spawnCollision.targetMap, spawnCollision.targetSpawn);
+        }
     }
 }
