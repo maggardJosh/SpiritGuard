@@ -130,9 +130,9 @@ public class FCamObject : FContainer {
 			_shakeOffset.x = Mathf.RoundToInt(Random.value * _shakeIntensity * Futile.resourceScale);
 			_shakeOffset.y = Mathf.RoundToInt(Random.value * _shakeIntensity * Futile.resourceScale);
 		}
-		
-		Futile.stage.x = -x + _shakeOffset.x;
-		Futile.stage.y = -y + _shakeOffset.y;
+
+        Futile.stage.x = -Mathf.FloorToInt(x + _shakeOffset.x);
+        Futile.stage.y = -Mathf.FloorToInt(y + _shakeOffset.y);
 		
 		if (!_shakeIncludeHUD) {
 			x -= _shakeOffset.x;

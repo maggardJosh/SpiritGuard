@@ -49,7 +49,8 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 				v2f OUT;
 				OUT.vertex = mul(UNITY_MATRIX_MVP, IN.vertex);
 				OUT.texcoord = TRANSFORM_TEX(IN.texcoord, _MainTex);
-
+				OUT.color = IN.color;
+				return OUT;
 				// Snapping params
 				float hpcX = _ScreenParams.x * 0.5;
 				float hpcY = _ScreenParams.y * 0.5;
@@ -75,6 +76,7 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 
 			fixed4 frag(v2f IN) : COLOR
 			{
+			
 				return tex2D( _MainTex, IN.texcoord) * IN.color;
 			}
 			ENDCG

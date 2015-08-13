@@ -346,7 +346,7 @@ public class FNode
 		
 		//do NOT set _isMatrixDirty to false here because it is used in the redraw loop and will be set false then
 
-		_matrix.SetScaleThenRotate(_x,_y,_scaleX*_visibleScale,_scaleY*_visibleScale,_rotation * -0.01745329f); //0.01745329 is RXMath.DTOR
+		_matrix.SetScaleThenRotate(Mathf.FloorToInt(_x),Mathf.FloorToInt(_y),_scaleX*_visibleScale,_scaleY*_visibleScale,_rotation * -0.01745329f); //0.01745329 is RXMath.DTOR
 			
 		if(_container != null)
 		{
@@ -385,7 +385,7 @@ public class FNode
 		{
 			_isMatrixDirty = false;
 			
-			_matrix.SetScaleThenRotate(_x,_y,_scaleX*_visibleScale,_scaleY*_visibleScale,_rotation * -0.01745329f); //0.01745329 is RXMath.DTOR
+			_matrix.SetScaleThenRotate(Mathf.FloorToInt(_x),Mathf.FloorToInt(_y),_scaleX*_visibleScale,_scaleY*_visibleScale,_rotation * -0.01745329f); //0.01745329 is RXMath.DTOR
 			
 			if(_container != null)
 			{

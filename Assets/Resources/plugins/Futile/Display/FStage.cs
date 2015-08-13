@@ -100,7 +100,7 @@ public class FStage : FContainer
 		bool didNeedDepthUpdate = _needsDepthUpdate || shouldUpdateDepth;
 		
 		_needsDepthUpdate = false;
-		
+        
 		if(didNeedDepthUpdate)
 		{
 			shouldForceDirty = true;
@@ -108,7 +108,6 @@ public class FStage : FContainer
 			nextNodeDepth = index*10000; //each stage will be 10000 higher in "depth" than the previous one
 			_renderer.StartRender(); 
 		}
-		
 		bool wasAlphaDirty = _isAlphaDirty;
 		
 		UpdateDepthMatrixAlpha(shouldForceDirty, shouldUpdateDepth);
@@ -121,7 +120,7 @@ public class FStage : FContainer
 			//this is especially handy for scrolling/zooming purposes
 			_childNodes[c].Redraw(shouldForceDirty || wasAlphaDirty, shouldUpdateDepth); //if the alpha is dirty or we're supposed to force it, do it!
 		}
-		
+
 		UpdateFollow();
 		
 		if(didNeedDepthUpdate)
@@ -168,7 +167,7 @@ public class FStage : FContainer
 	private void UpdateFollow()
 	{
 		if(_followTarget != null)
-		{
+        {
 			if(_followTarget.stage == null) //the target MUST be on the same stage
 			{
 				_followTarget = null;
