@@ -4,6 +4,9 @@
   <tileoffset x="0" y="2"/>
   <image source="gfx/tilemap.png" width="160" height="144"/>
  </tileset>
+ <tileset firstgid="91" name="objects" tilewidth="16" tileheight="16">
+  <image source="gfx/objects.png" width="16" height="16"/>
+ </tileset>
  <layer name="background" width="30" height="20" opacity="0.51">
   <data encoding="csv">
 82,81,81,83,82,82,83,83,83,82,82,82,83,82,81,83,81,83,82,82,83,81,83,83,82,82,82,82,82,82,
@@ -52,4 +55,7 @@
 0,0,0,0,47,48,48,48,48,49,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,47,48,48
 </data>
  </layer>
+ <objectgroup name="objects" width="30" height="20">
+  <object type="spawnPoint" gid="91" x="224" y="192"/>
+ </objectgroup>
 </map>
