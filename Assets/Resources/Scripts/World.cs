@@ -9,6 +9,7 @@ public class World : FContainer
     FTmxMap map;
     FTilemap collisionTilemap;
     FTilemap backgroundTilemap;
+    FSprite loadingBG;
 
     FContainer background = new FContainer();
     FContainer playerLayer = new FContainer();
@@ -38,6 +39,17 @@ public class World : FContainer
         this.AddChild(playerLayer);
         this.AddChild(foreground);
         Futile.instance.SignalUpdate += Update;
+        loadingBG = new FSprite("loadingBG");
+        loadingBG.isVisible = false;
+        loadingBG.x = -Futile.screen.halfWidth - loadingBG.width / 2;
+        C.getCameraInstance().AddChild(loadingBG);
+        loadingBG.isVisible = true;
+        Go.to(loadingBG, 1.0f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth + loadingBG.width / 2  ).setDelay(1.0f).setEaseType(EaseType.QuadOut).onComplete(()=> {
+            
+            loadingBG.rotation = 180.0f;
+            loadingBG.x = Futile.screen.halfWidth - loadingBG.width/2;
+            Go.to(loadingBG, 1.0f, new TweenConfig().floatProp("x", Futile.screen.halfWidth + loadingBG.width/2).setDelay(.7f).setEaseType(EaseType.QuadIn));
+        }));
     }
 
     public void LoadMap(string mapName)

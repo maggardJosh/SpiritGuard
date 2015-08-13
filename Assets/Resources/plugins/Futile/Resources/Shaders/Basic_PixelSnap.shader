@@ -63,7 +63,7 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 				{
 					return tex2D( _MainTex, IN.texcoord) * IN.color;
 				}else{
-					return fixed4(235.0/255.0,242.0/255.0,158.0/255.0,1);
+					return fixed4(245.0/255.0,252.0/255.0,178.0/255.0,1)  ;
 				}
 			}
 			ENDCG

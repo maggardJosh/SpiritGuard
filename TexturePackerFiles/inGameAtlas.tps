@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.3.3</string>
         <key>fileName</key>
-        <string>C:/Users/Jif/git/FutilePlatformerTemplate/TexturePackerFiles/inGameAtlas.tps</string>
+        <string>C:/Users/Josh/git/SpiritGuard/TexturePackerFiles/inGameAtlas.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -181,6 +181,7 @@
             <filename>Player</filename>
             <filename>white.png</filename>
             <filename>boundingBox.png</filename>
+            <filename>loadingBG.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
