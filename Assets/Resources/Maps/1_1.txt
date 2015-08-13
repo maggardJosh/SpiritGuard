@@ -8,7 +8,7 @@
   <image source="gfx/tilemap.png" width="160" height="144"/>
  </tileset>
  <tileset firstgid="91" name="objects" tilewidth="16" tileheight="16">
-  <image source="gfx/objects.png" width="16" height="16"/>
+  <image source="gfx/objects.png" width="32" height="16"/>
  </tileset>
  <layer name="background" width="30" height="20" opacity="0.51">
   <data encoding="csv">
@@ -71,6 +71,11 @@
     <property name="name" value="hole"/>
     <property name="targetMap" value="1_2"/>
     <property name="targetSpawn" value="holeEntrance"/>
+   </properties>
+  </object>
+  <object type="sign" gid="92" x="240" y="128">
+   <properties>
+    <property name="message" value="WATCH  OUT\nFOR HOLE!"/>
    </properties>
   </object>
  </objectgroup>

@@ -14,9 +14,11 @@ public class World : FContainer
 
     FContainer background = new FContainer();
     FContainer playerLayer = new FContainer();
+    FContainer objectLayer = new FContainer();
     FContainer foreground = new FContainer();
 
     List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
+    List<Sign> signs = new List<Sign>();
 
     string lastMap = "";
     string lastWarpPoint = "";
@@ -39,6 +41,7 @@ public class World : FContainer
         map = new FTmxMap();
 
         this.AddChild(background);
+        this.AddChild(objectLayer);
         this.AddChild(playerLayer);
         this.AddChild(foreground);
         Futile.instance.SignalUpdate += Update;
@@ -89,10 +92,14 @@ public class World : FContainer
     public void LoadMap(string mapName)
     {
         spawnPoints.Clear();
+        signs.Clear();
+        objectLayer.RemoveAllChildren();
         background.RemoveAllChildren();
         foreground.RemoveAllChildren();
         this.map = new FTmxMap();
         this.map.LoadTMX("Maps/" + mapName);
+
+        
 
         FLabel mapNameLabel = new FLabel(C.largeFontName, map.mapName);
         C.getCameraInstance().AddChild(mapNameLabel);
@@ -150,6 +157,12 @@ public class World : FContainer
         spawnPoints.Add(spawn);
     }
 
+    public void addSign(Sign sign)
+    {
+        signs.Add(sign);
+        objectLayer.AddChild(sign);
+    }
+
     public void Update()
     {
         if (C.isTransitioning)
@@ -166,6 +179,9 @@ public class World : FContainer
         {
             Go.to(player, .4f, new TweenConfig().floatProp("x", spawnCollision.pos.x - player.hitBox.x).floatProp("y", spawnCollision.pos.y - player.hitBox.y).setEaseType(EaseType.QuadOut));
             LoadNewMap(spawnCollision.targetMap, spawnCollision.targetSpawn);
+            return;
         }
+        foreach (Sign s in signs)
+            s.CheckCollision(player);
     }
 }
