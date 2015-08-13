@@ -22,7 +22,8 @@ public class GameScript : MonoBehaviour
         World world = new World();
         Futile.stage.AddChild(world);
         Futile.stage.AddChild(C.getCameraInstance());
-        world.LoadMap("mapOne");
+        world.LoadMap("1_1");
+        world.SpawnPlayer("spawnpoint");
 
     }
 

@@ -12,7 +12,11 @@ public class FutileFourDirectionBaseObject : FutilePlatformerBaseObject
         DOWN,
         LEFT
     }
-    protected Direction _direction = Direction.UP;
+    protected Direction _direction = Direction.RIGHT;
+    public void SetDirection(Direction newDirection)
+    {
+        _direction = newDirection;
+    }
 
     public FutileFourDirectionBaseObject(RXRect hitBox, World world): base(hitBox, world)
     {

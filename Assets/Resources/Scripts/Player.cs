@@ -59,8 +59,11 @@ public class Player : FutileFourDirectionBaseObject
         this.AddChild(player);
     }
 
+    float maxJumpDist = 16 * 2.5f;
     public override void OnFixedUpdate()
     {
+        if (C.isTransitioning)
+            return;
         switch (State)
         {
             case PlayerState.IDLE:
@@ -68,15 +71,23 @@ public class Player : FutileFourDirectionBaseObject
                 if (C.getKey(C.JUMP_KEY))
                 {
                     State = PlayerState.JUMP;
+                    if (C.getKey(C.RIGHT_KEY))
+                        _direction = Direction.RIGHT;
+                    else if (C.getKey(C.DOWN_KEY))
+                        _direction = Direction.DOWN;
+                    else if (C.getKey(C.LEFT_KEY))
+                        _direction = Direction.LEFT;
+                    else if (C.getKey(C.UP_KEY))
+                        _direction = Direction.UP;
                     Go.killAllTweensWithTarget(this);
                     float newX = this.x;
                     float newY = this.y;
                     switch(_direction)
                     {
-                        case Direction.UP: newY += 32; while (!world.isPassable(this.x, newY + hitBox.height / 2f) || !world.isPassable(this.x, newY - hitBox.height/2f)) { newY -= 1f; } break;
-                        case Direction.RIGHT: newX += 32; while (!world.isPassable(newX + hitBox.width / 2f, this.y) || !world.isPassable(newX - hitBox.width/2f,this.y)) { newX -= 1f; } break;
-                        case Direction.DOWN: newY -= 32; while (!world.isPassable(this.x, newY + hitBox.height / 2f) || !world.isPassable(this.x, newY - hitBox.height / 2f)) { newY += 1f; } break;
-                        case Direction.LEFT: newX -= 32; while (!world.isPassable(newX + hitBox.width / 2f, this.y) || !world.isPassable(newX - hitBox.width / 2f, this.y)) { newX += 1f; } break;
+                        case Direction.UP: newY += maxJumpDist; while (!world.isPassable(this.x, newY + hitBox.height / 2f) || !world.isPassable(this.x, newY - hitBox.height/2f)) { newY -= 1f; } break;
+                        case Direction.RIGHT: newX += maxJumpDist; while (!world.isPassable(newX + hitBox.width / 2f, this.y) || !world.isPassable(newX - hitBox.width / 2f, this.y)) { newX -= 1f; } break;
+                        case Direction.DOWN: newY -= maxJumpDist; while (!world.isPassable(this.x, newY + hitBox.height / 2f) || !world.isPassable(this.x, newY - hitBox.height / 2f)) { newY += 1f; } break;
+                        case Direction.LEFT: newX -= maxJumpDist; while (!world.isPassable(newX + hitBox.width / 2f, this.y) || !world.isPassable(newX - hitBox.width / 2f, this.y)) { newX += 1f; } break;
                     }
                     xVel = 0;
                     yVel = 0;
@@ -144,7 +155,12 @@ public class Player : FutileFourDirectionBaseObject
         base.OnFixedUpdate();
 
 
-        player.play(State.ToString() + _direction.ToString(), false);
+        PlayAnim();
+    }
+
+    public void PlayAnim(bool forced = false)
+    {
+        player.play(State.ToString() + _direction.ToString(), forced);
     }
 
 }

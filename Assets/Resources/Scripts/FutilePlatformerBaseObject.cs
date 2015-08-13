@@ -120,6 +120,8 @@ public class FutilePlatformerBaseObject : FContainer
     }
     public virtual void OnFixedUpdate()
     {
+        if (C.isTransitioning)
+            return;
         hitLeft = false;
         hitRight = false;
         hitDown = false;

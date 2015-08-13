@@ -58,14 +58,15 @@
  <objectgroup name="objects" width="30" height="20">
   <object type="spawnPoint" gid="91" x="224" y="192">
    <properties>
+    <property name="exitdirection" value="up"/>
     <property name="name" value="spawnpoint"/>
    </properties>
   </object>
   <object type="spawnPoint" gid="91" x="256" y="128">
    <properties>
-    <property name="exit" value="down"/>
+    <property name="exitdirection" value="down"/>
     <property name="name" value="hole"/>
-    <property name="targetMap" value="1_1"/>
+    <property name="targetMap" value="1_2"/>
     <property name="targetSpawn" value="holeEntrance"/>
    </properties>
   </object>

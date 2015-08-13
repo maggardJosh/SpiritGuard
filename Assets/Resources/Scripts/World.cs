@@ -16,6 +16,8 @@ public class World : FContainer
     FContainer playerLayer = new FContainer();
     FContainer foreground = new FContainer();
 
+    List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
+
     string lastMap = "";
     string lastWarpPoint = "";
 
@@ -44,18 +46,49 @@ public class World : FContainer
         loadingBG.isVisible = false;
         loadingBG.x = -Futile.screen.halfWidth - loadingBG.width / 2;
         C.getCameraInstance().AddChild(loadingBG);
-        loadingBG.isVisible = true;
-        Go.to(loadingBG, 1.0f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth + loadingBG.width / 2).setDelay(1.0f).setEaseType(EaseType.QuadOut).onComplete(() =>
-        {
 
-            loadingBG.rotation = 180.0f;
-            loadingBG.x = Futile.screen.halfWidth - loadingBG.width / 2;
-            Go.to(loadingBG, 1.0f, new TweenConfig().floatProp("x", Futile.screen.halfWidth + loadingBG.width / 2).setDelay(.7f).setEaseType(EaseType.QuadIn));
+    }
+
+    public void ShowLoading(Action loadAction, bool fromRight = true)
+    {
+        float midPos;
+        float midStartPos;
+        float finalPos;
+        if (fromRight)
+        {
+            loadingBG.x = Futile.screen.halfWidth + loadingBG.width / 2f;
+            loadingBG.rotation = 180f;
+            midPos = Futile.screen.halfWidth - loadingBG.width / 2f;
+            midStartPos = -Futile.screen.halfWidth + loadingBG.width / 2f;
+            finalPos = -Futile.screen.halfWidth - loadingBG.width / 2f;
+        }
+        else
+        {
+            loadingBG.x = -Futile.screen.halfWidth - loadingBG.width / 2;
+            loadingBG.rotation = 0;
+            midPos = -Futile.screen.halfWidth + loadingBG.width / 2;
+            midStartPos = Futile.screen.halfWidth - loadingBG.width / 2;
+            finalPos = -Futile.screen.halfWidth - loadingBG.width / 2;
+        }
+
+        loadingBG.isVisible = true;
+        C.isTransitioning = true;
+        Go.to(loadingBG, 1.0f, new TweenConfig().floatProp("x", midPos).setDelay(.2f).setEaseType(EaseType.QuadOut).onComplete(() =>
+        {
+            loadAction.Invoke();
+            loadingBG.rotation += 180.0f;
+            loadingBG.x = midStartPos;
+            Go.to(loadingBG, 1.0f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
+            {
+                C.isTransitioning = false;
+                loadingBG.isVisible = false;
+            }));
         }));
     }
 
     public void LoadMap(string mapName)
     {
+        spawnPoints.Clear();
         background.RemoveAllChildren();
         foreground.RemoveAllChildren();
 
@@ -67,9 +100,12 @@ public class World : FContainer
         background.AddChild(collisionTilemap);
 
         if (player == null)
+        {
+
             player = new Player(this);
-        playerLayer.AddChild(player);
-        C.getCameraInstance().follow(player);
+            playerLayer.AddChild(player);
+            C.getCameraInstance().follow(player);
+        }
         C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height, collisionTilemap.width, collisionTilemap.height));
         collisionTilemap.clipNode = C.getCameraInstance();
         backgroundTilemap.clipNode = C.getCameraInstance();
@@ -86,13 +122,39 @@ public class World : FContainer
         return result;
     }
 
-    public void SpawnPlayer(Vector2 spawn)
+    public void SpawnPlayer(string spawnName)
     {
-        player.SetPosition(spawn);
+        foreach (SpawnPoint s in spawnPoints)
+            if (s.name.ToLower() == spawnName.ToLower())
+            {
+                s.SpawnPlayer(player);
+                return;
+            }
+    }
+
+    public void LoadNewMap(string mapName, string spawnName)
+    {
+        ShowLoading(() => { LoadMap(mapName); SpawnPlayer(spawnName); });
+    }
+
+    public void addSpawn(SpawnPoint spawn)
+    {
+        spawnPoints.Add(spawn);
     }
 
     public void Update()
     {
-
+        if (C.isTransitioning)
+            return;
+        SpawnPoint spawnCollision = null;
+        foreach (SpawnPoint p in spawnPoints)
+            if (!String.IsNullOrEmpty(p.targetMap))
+                if (p.CheckCollision(player))
+                {
+                    spawnCollision = p;
+                    break;
+                }
+        if (spawnCollision != null)
+            LoadNewMap(spawnCollision.targetMap, spawnCollision.targetSpawn);
     }
 }

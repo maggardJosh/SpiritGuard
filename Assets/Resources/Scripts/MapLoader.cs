@@ -15,19 +15,54 @@ public class MapLoader
             switch (node.attributes["type"].ToLower())
             {
                 case "spawnpoint":
-                    world.SpawnPlayer(parseSpawnPoint(node));
+                    world.addSpawn(parseSpawnPoint(node));
                     break;
             }
         }
     }
 
 
-    private static Vector2 parseSpawnPoint(XMLNode node)
+    private static SpawnPoint parseSpawnPoint(XMLNode node)
     {
-        Vector2 result = Vector2.zero;
+        SpawnPoint result;
+        string name = "";
+        string targetMap = "";
+        string targetSpawn = "";
+        FutileFourDirectionBaseObject.Direction exitDirection = FutileFourDirectionBaseObject.Direction.DOWN;
+        foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+        {
+            switch (property.attributes["name"].ToLower())
+            {
+                case "name":
+                    name = property.attributes["value"].ToLower();
+                    break;
+                case "targetmap":
+                    targetMap = property.attributes["value"].ToLower();
+                    break;
+                case "targetspawn":
+                    targetSpawn = property.attributes["value"].ToLower();
+                    break;
+                case "exitdirection":
+                    switch (property.attributes["value"].ToLower())
+                    {
+                        case "up":
+                            exitDirection = FutileFourDirectionBaseObject.Direction.UP;
+                            break;
+                        case "right":
+                            exitDirection = FutileFourDirectionBaseObject.Direction.RIGHT;
+                            break;
+                        case "down":
+                            exitDirection = FutileFourDirectionBaseObject.Direction.DOWN;
+                            break;
+                        case "left":
+                            exitDirection = FutileFourDirectionBaseObject.Direction.LEFT;
+                            break;
+                    }
+                    break;
+            }
+        }
 
-        result.x = (float.Parse(node.attributes["x"]));
-        result.y = -(float.Parse(node.attributes["y"]));
+        result = new SpawnPoint((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"])-  8f), name, targetMap, targetSpawn, exitDirection);
         return result;
     }
 
