@@ -143,12 +143,12 @@ public class FutilePlatformerBaseObject : FContainer
 
         if (xVel > 0)
         {
-            scaleX = 1;
+            scaleX = -1;
             hitRight = !TryMoveRight(xVel);
         }
         else if (xVel < 0)
         {
-            scaleX = -1;
+            scaleX = 1;
             hitLeft = !TryMoveLeft(xVel);
         }
     }

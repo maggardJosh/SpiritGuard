@@ -25,14 +25,14 @@ public class FutileFourDirectionBaseObject : FutilePlatformerBaseObject
 
     public override void OnFixedUpdate()
     {
-        if (xAcc > 0)
-            _direction = Direction.RIGHT;
-        else if (xAcc < 0)
-            _direction = Direction.LEFT;
-        else if (yAcc > 0)
+        if (yAcc > 0)
             _direction = Direction.UP;
         else if (yAcc < 0)
             _direction = Direction.DOWN;
+        else if (xAcc > 0)
+            _direction = Direction.RIGHT;
+        else if (xAcc < 0)
+            _direction = Direction.LEFT;
         base.OnFixedUpdate();
     }
 }

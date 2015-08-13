@@ -128,6 +128,8 @@ public class FFacetElementNode : FFacetNode
 	
 	virtual public void HandleElementChanged()
 	{
+        offsetWidth = _element.sourcePixelSize.x % 2 == 1;
+        offsetHeight = _element.sourcePixelSize.y % 2 == 1;
 		//override by parent things
 	}
 }
