@@ -53,10 +53,10 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.UP.ToString(), new int[] { 5, 6, 5, 8 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.DOWN.ToString(), new int[] { 1, 2, 1, 4 }, 150, true));
 
-        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.RIGHT.ToString(), new int[] { 13 }, 50, true));
-        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.LEFT.ToString(), new int[] { 13 }, 50, true));
-        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.UP.ToString(), new int[] { 13 }, 50, true));
-        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.DOWN.ToString(), new int[] { 13 }, 50, true));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.RIGHT.ToString(), new int[] { 18,19 }, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.LEFT.ToString(), new int[] { 18,19 }, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.UP.ToString(), new int[] { 16,17}, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.DOWN.ToString(), new int[] { 14, 15 }, 150, false));
         player.play(State.ToString());
         this.AddChild(player);
     }
@@ -93,7 +93,20 @@ public class Player : FutileFourDirectionBaseObject
                     }
                     xVel = 0;
                     yVel = 0;
-                    Go.to(this, .5f, new TweenConfig().floatProp("x", newX).floatProp("y", newY).setEaseType(EaseType.QuadOut).onComplete(() => { State = PlayerState.IDLE; }));
+                    float jumpTime = .5f;
+                    float jumpDisp = 10f;
+                    if (newX == this.x)
+                    {
+                        Go.to(this, jumpTime / 2f, new TweenConfig().floatProp("x", -jumpDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
+                        Go.to(this, jumpTime, new TweenConfig().floatProp("y", newY).setEaseType(EaseType.QuadOut).onComplete(() => { State = PlayerState.IDLE; }));
+
+                    }
+                    else
+                    {
+                        Go.to(this, jumpTime / 2f, new TweenConfig().floatProp("y", jumpDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
+                        Go.to(this, jumpTime, new TweenConfig().floatProp("x", newX).setEaseType(EaseType.QuadOut).onComplete(() => { State = PlayerState.IDLE; }));
+
+                    }
                     return;
                 }
                 if (C.getKey(C.LEFT_KEY))
