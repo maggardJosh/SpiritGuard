@@ -48,12 +48,12 @@ public class TitleScreen : FContainer
             {
                 Go.to(title, 2.0f, new TweenConfig().floatProp("y", 2, true).setEaseType(EaseType.BackIn).setIterations(-1, LoopType.PingPong));
                 //     Go.to(english, 2.0f, new TweenConfig().floatProp("y", 4, true).setEaseType(EaseType.QuadIn).setIterations(-1, LoopType.PingPong));
-                Futile.instance.SignalUpdate += Update;
 
             }));
             Go.to(play, 2.0f, new TweenConfig().floatProp("x", 0).setDelay(.5f).setEaseType(EaseType.BackOut));
             Go.to(exit, 2.0f, new TweenConfig().floatProp("x", 0).setDelay(.7f).setEaseType(EaseType.BackOut));
         }));
+                Futile.instance.SignalUpdate += Update;
         base.HandleAddedToStage();
     }
     public void Update()

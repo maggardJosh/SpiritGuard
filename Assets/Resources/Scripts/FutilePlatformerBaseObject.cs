@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class FutilePlatformerBaseObject : FContainer
 {
-    protected RXRect hitBox;
+    public RXRect hitBox;
     public float xAcc;
     public float yAcc;
     public float xVel;
@@ -42,6 +42,8 @@ public class FutilePlatformerBaseObject : FContainer
         if (C.isDebug)
         {
             collisionDebugSprite = new FSprite("boundingBox");
+            collisionDebugSprite.x = hitBox.x;
+            collisionDebugSprite.y = hitBox.y;
             collisionDebugSprite.width = hitBox.width;
             collisionDebugSprite.height = hitBox.height;
             collisionDebugSprite.sortZ = 100;
@@ -67,6 +69,8 @@ public class FutilePlatformerBaseObject : FContainer
         this.hitBox.height = newHeight;
         if (C.isDebug)
         {
+            collisionDebugSprite.x = hitBox.x;
+            collisionDebugSprite.y = hitBox.y;
             collisionDebugSprite.width = newWidth;
             collisionDebugSprite.height = newHeight;
         }
@@ -143,11 +147,15 @@ public class FutilePlatformerBaseObject : FContainer
 
         if (xVel > 0)
         {
+            if (scaleX != -1)
+                collisionDebugSprite.x *= -1;
             scaleX = -1;
             hitRight = !TryMoveRight(xVel);
         }
         else if (xVel < 0)
         {
+            if (scaleX != 1)
+                collisionDebugSprite.x *= -1;
             scaleX = 1;
             hitLeft = !TryMoveLeft(xVel);
         }
@@ -163,9 +171,9 @@ public class FutilePlatformerBaseObject : FContainer
             x += Mathf.Min(tileSize / 2, newX - x);
             foreach (float yCheck in horizontalYChecks)
             {
-                if (!world.isPassable(x + hitBox.width / 2, this.y + yCheck))
+                if (!world.isPassable(x + hitBox.x + hitBox.width / 2, this.y + hitBox.y + yCheck))
                 {
-                    this.x = Mathf.FloorToInt((this.x + hitBox.width / 2) / tileSize) * tileSize - hitBox.width / 2;
+                    this.x = Mathf.FloorToInt((this.x + hitBox.x + hitBox.width / 2) / tileSize) * tileSize - hitBox.x - hitBox.width / 2;
                     xVel *= -bounceiness;
                     return false;
                 }
@@ -184,9 +192,9 @@ public class FutilePlatformerBaseObject : FContainer
             x += Mathf.Max(-tileSize / 2, newX - x);
             foreach (float yCheck in horizontalYChecks)
             {
-                if (!world.isPassable(x - hitBox.width / 2, this.y + yCheck))
+                if (!world.isPassable(x + hitBox.x - hitBox.width / 2, this.y + hitBox.y + yCheck))
                 {
-                    this.x = Mathf.CeilToInt((this.x - hitBox.width / 2) / tileSize) * tileSize + hitBox.width / 2;
+                    this.x = Mathf.CeilToInt((this.x + hitBox.x - hitBox.width / 2) / tileSize) * tileSize - hitBox.x + hitBox.width / 2;
                     xVel *= -bounceiness;
                     return false;
                 }
@@ -205,7 +213,7 @@ public class FutilePlatformerBaseObject : FContainer
             y += Mathf.Max(-tileSize / 2, targetY - y);
             foreach (float xCheck in verticalXChecks)
             {
-                if (!world.isPassable(this.x + xCheck, y - hitBox.height / 2f - groundedMargin))
+                if (!world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2f - groundedMargin))
                 {
                     grounded = true;
                 }
@@ -215,11 +223,11 @@ public class FutilePlatformerBaseObject : FContainer
                     grounded = false;
                 }
 
-                if (!world.isPassable(this.x + xCheck, y - hitBox.height / 2))
+                if (!world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2))
                 {
                     grounded = true;
                     yVel *= -bounceiness;
-                    this.y = Mathf.CeilToInt((this.y - hitBox.height / 2f) / tileSize) * tileSize + hitBox.height / 2;
+                    this.y = Mathf.CeilToInt((this.y + hitBox.y - hitBox.height / 2f) / tileSize) * tileSize - hitBox.y + hitBox.height / 2;
                     return false;
                 }
             }
@@ -239,9 +247,9 @@ public class FutilePlatformerBaseObject : FContainer
             y += Mathf.Min(tileSize / 2, newY - y);
             foreach (float xCheck in verticalXChecks)
             {
-                if (!world.isPassable(this.x + xCheck, y + hitBox.height / 2))
+                if (!world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2))
                 {
-                    this.y = Mathf.FloorToInt((this.y + hitBox.height / 2f) / tileSize) * tileSize - hitBox.height / 2;
+                    this.y = Mathf.FloorToInt((this.y + hitBox.y + hitBox.height / 2f) / tileSize) * tileSize - hitBox.y - hitBox.height / 2;
                     if (bounceiness != 0)
                         yVel *= -bounceiness;
 

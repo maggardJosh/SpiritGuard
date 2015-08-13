@@ -34,7 +34,7 @@ public class Player : FutileFourDirectionBaseObject
     }
 
     public Player(World world)
-        : base(new RXRect(0, 0, 10,10), world)
+        : base(new RXRect(0, -8, 10,6), world)
     {
         maxXVel = 1;
         maxYVel = 1;
@@ -61,7 +61,7 @@ public class Player : FutileFourDirectionBaseObject
         this.AddChild(player);
     }
 
-    float maxJumpDist = 16 * 2.5f;
+    float maxJumpDist = 16 * 2.3f;
     public override void OnFixedUpdate()
     {
         if (C.isTransitioning)
@@ -86,10 +86,10 @@ public class Player : FutileFourDirectionBaseObject
                     float newY = this.y;
                     switch(_direction)
                     {
-                        case Direction.UP: newY += maxJumpDist; while (!world.isPassable(this.x, newY + hitBox.height / 2f) || !world.isPassable(this.x, newY - hitBox.height/2f)) { newY -= 1f; } break;
-                        case Direction.RIGHT: newX += maxJumpDist; while (!world.isPassable(newX + hitBox.width / 2f, this.y) || !world.isPassable(newX - hitBox.width / 2f, this.y)) { newX -= 1f; } break;
-                        case Direction.DOWN: newY -= maxJumpDist; while (!world.isPassable(this.x, newY + hitBox.height / 2f) || !world.isPassable(this.x, newY - hitBox.height / 2f)) { newY += 1f; } break;
-                        case Direction.LEFT: newX -= maxJumpDist; while (!world.isPassable(newX + hitBox.width / 2f, this.y) || !world.isPassable(newX - hitBox.width / 2f, this.y)) { newX += 1f; } break;
+                        case Direction.UP: newY += maxJumpDist; while (!world.isPassable(this.x + hitBox.x, newY +hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY +hitBox.y - hitBox.height/2f)) { newY -= 1f; } break;
+                        case Direction.RIGHT: newX += maxJumpDist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y)) { newX -= 1f; } break;
+                        case Direction.DOWN: newY -= maxJumpDist; while (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f)) { newY += 1f; } break;
+                        case Direction.LEFT: newX -= maxJumpDist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y+ hitBox.y)) { newX += 1f; } break;
                     }
                     xVel = 0;
                     yVel = 0;

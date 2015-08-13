@@ -164,7 +164,7 @@ public class World : FContainer
                 }
         if (spawnCollision != null)
         {
-            Go.to(player, .4f, new TweenConfig().floatProp("x", spawnCollision.pos.x).floatProp("y", spawnCollision.pos.y).setEaseType(EaseType.QuadOut));
+            Go.to(player, .4f, new TweenConfig().floatProp("x", spawnCollision.pos.x - player.hitBox.x).floatProp("y", spawnCollision.pos.y - player.hitBox.y).setEaseType(EaseType.QuadOut));
             LoadNewMap(spawnCollision.targetMap, spawnCollision.targetSpawn);
         }
     }

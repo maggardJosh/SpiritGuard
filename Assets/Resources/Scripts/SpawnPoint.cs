@@ -36,8 +36,8 @@ using UnityEngine;
         {
             if (p.State == Player.PlayerState.JUMP)
                 return false;
-            return Mathf.Abs(p.x - pos.x) < SPAWN_COLLISION_DIST &&
-                Mathf.Abs(p.y - pos.y) < SPAWN_COLLISION_DIST;
+            return Mathf.Abs(p.x + p.hitBox.x - pos.x) < SPAWN_COLLISION_DIST &&
+                Mathf.Abs(p.y + p.hitBox.y - pos.y) < SPAWN_COLLISION_DIST;
                 
         }
 

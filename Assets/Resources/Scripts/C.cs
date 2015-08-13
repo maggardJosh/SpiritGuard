@@ -17,7 +17,7 @@ public class C
     }
 
     public static bool isTransitioning = false;
-    public static bool isDebug = false;
+    public static bool isDebug = true;
 
     public const string smallFontName = "smallFont";
     public const string largeFontName = "largeFont";
