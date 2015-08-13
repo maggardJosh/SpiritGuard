@@ -22,14 +22,11 @@ public class GameScript : MonoBehaviour
         Futile.atlasManager.LoadFont(C.largeFontName, "largeFont_0", "Atlases/largeFont", 0, 0);
 
 
-        World world = new World();
-        Futile.stage.AddChild(world);
         Futile.stage.AddChild(C.getCameraInstance());
-        world.ShowLoading(() => { world.LoadMap("1_1"); world.SpawnPlayer("spawnpoint"); });
-        FLabel test = new FLabel(C.smallFontName, C.versionNumber);
-        Go.to(test, 5, new TweenConfig().floatProp("y", -Futile.screen.halfHeight + test.textRect.height/2f).setEaseType(EaseType.BounceOut));
-        C.getCameraInstance().AddChild(test);
+
+       
         C.getCameraInstance().SetPosition(Futile.screen.halfWidth, -Futile.screen.halfHeight);
+        C.getCameraInstance().AddChild(new TitleScreen());
 
     }
 
