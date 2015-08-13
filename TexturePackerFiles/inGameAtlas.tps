@@ -184,6 +184,8 @@
             <filename>loadingBG.png</filename>
             <filename>smallFont_0.png</filename>
             <filename>largeFont_0.png</filename>
+            <filename>Title</filename>
+            <filename>Objects</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
