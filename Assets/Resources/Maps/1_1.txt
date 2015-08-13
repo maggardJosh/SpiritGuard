@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="Name" value="AREA 1"/>
+ </properties>
  <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16">
   <tileoffset x="0" y="2"/>
   <image source="gfx/tilemap.png" width="160" height="144"/>

@@ -69,7 +69,7 @@ public class FTmxMap : FContainer
                 {
                     switch (property.attributes["name"].ToLower())
                     {
-                        case "mapname":
+                        case "name":
                             this.mapName = property.attributes["value"];
                             break;
                         case "mapdescription":

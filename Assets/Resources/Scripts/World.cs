@@ -73,12 +73,12 @@ public class World : FContainer
 
         loadingBG.isVisible = true;
         C.isTransitioning = true;
-        Go.to(loadingBG, 1.0f, new TweenConfig().floatProp("x", midPos).setDelay(.2f).setEaseType(EaseType.QuadOut).onComplete(() =>
+        Go.to(loadingBG, .7f, new TweenConfig().floatProp("x", midPos).setDelay(.1f).setEaseType(EaseType.QuadOut).onComplete(() =>
         {
             loadAction.Invoke();
             loadingBG.rotation += 180.0f;
             loadingBG.x = midStartPos;
-            Go.to(loadingBG, 1.0f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
+            Go.to(loadingBG, .8f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
             {
                 C.isTransitioning = false;
                 loadingBG.isVisible = false;
@@ -91,9 +91,17 @@ public class World : FContainer
         spawnPoints.Clear();
         background.RemoveAllChildren();
         foreground.RemoveAllChildren();
-
         this.map = new FTmxMap();
         this.map.LoadTMX("Maps/" + mapName);
+
+        FLabel mapNameLabel = new FLabel(C.largeFontName, map.mapName);
+        C.getCameraInstance().AddChild(mapNameLabel);
+        mapNameLabel.SetPosition(new Vector2(Futile.screen.width, Futile.screen.halfHeight * .8f));
+        Go.to(mapNameLabel, 1.5f, new TweenConfig().floatProp("x", 0).setEaseType(EaseType.BackOut).onComplete(() =>
+        {
+            Go.to(mapNameLabel, .7f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth).setDelay(.6f).setEaseType(EaseType.BackIn).onComplete(() => { mapNameLabel.RemoveFromContainer(); }));
+        }));
+
         collisionTilemap = (FTilemap)this.map.getLayerNamed("collision");
         backgroundTilemap = (FTilemap)this.map.getLayerNamed("background");
         background.AddChild(backgroundTilemap);

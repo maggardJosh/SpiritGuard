@@ -59,7 +59,7 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 			fixed4 frag(v2f IN) : COLOR
 			{
 
-				if (((IN.worldPos.x)%1 > .2) && IN.worldPos.y%1 < -.2) 
+				if (IN.worldPos.x%1 > .2 && IN.worldPos.y%1 < -.2) 
 				{
 					return tex2D( _MainTex, IN.texcoord) * IN.color;
 				}else{

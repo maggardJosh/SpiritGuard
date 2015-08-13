@@ -20,7 +20,7 @@ public class C
     public static bool isDebug = false;
 
     public const string smallFontName = "smallFont";
-    public const string smallDarkFontName = "smallFontDark";
+    public const string largeFontName = "largeFont";
 
     public static readonly KeyCode[] LEFT_KEY = new KeyCode[] { KeyCode.LeftArrow, KeyCode.A };
     public static readonly KeyCode[] RIGHT_KEY = new KeyCode[] { KeyCode.RightArrow, KeyCode.D };

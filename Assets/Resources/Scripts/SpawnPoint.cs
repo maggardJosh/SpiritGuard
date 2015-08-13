@@ -31,7 +31,7 @@ using UnityEngine;
             this.exitDirection = exitDirection;
         }
 
-        public const float SPAWN_COLLISION_DIST = 4;
+        public const float SPAWN_COLLISION_DIST = 6;
         public bool CheckCollision(Player p)
         {
             if (p.State == Player.PlayerState.JUMP)

@@ -183,6 +183,7 @@
             <filename>boundingBox.png</filename>
             <filename>loadingBG.png</filename>
             <filename>smallFont_0.png</filename>
+            <filename>largeFont_0.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
