@@ -42,6 +42,7 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 				float4 vertex	: POSITION;
 				float2 texcoord : TEXCOORD0;
 				float4 color	: COLOR;
+				float4 worldPos : TEXCOORD1;
 			};
 
 			v2f vert(appdata_t IN)
@@ -50,34 +51,20 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 				OUT.vertex = mul(UNITY_MATRIX_MVP, IN.vertex);
 				OUT.texcoord = TRANSFORM_TEX(IN.texcoord, _MainTex);
 				OUT.color = IN.color;
+				OUT.worldPos = IN.vertex;
 				return OUT;
-				// Snapping params
-				float hpcX = _ScreenParams.x * 0.5;
-				float hpcY = _ScreenParams.y * 0.5;
 				
-				#ifdef UNITY_HALF_TEXEL_OFFSET
-					float hpcOX = -0.5;
-					float hpcOY = 0.5;
-				#else
-					float hpcOX = 0;
-					float hpcOY = 0;
-				#endif	
-				
-				// Snap
-				float pos = floor(((OUT.vertex.x / OUT.vertex.w) * hpcX + 0.5f)/3)*3 + hpcOX;
-				OUT.vertex.x = pos / hpcX * OUT.vertex.w;
-
-				pos = floor(((OUT.vertex.y / OUT.vertex.w) * hpcY + 0.5f)/3)*3 + hpcOY;
-				OUT.vertex.y = pos / hpcY * OUT.vertex.w;
-				OUT.color = IN.color;
-
-				return OUT;
 			}
 
 			fixed4 frag(v2f IN) : COLOR
 			{
-			
-				return tex2D( _MainTex, IN.texcoord) * IN.color;
+
+				if ((IN.worldPos.x%1 > .2) && IN.worldPos.y%1 < -.2) 
+				{
+					return tex2D( _MainTex, IN.texcoord) * IN.color;
+				}else{
+					return fixed4(215.0/255.0,232.0/255.0,148.0/255.0,1);
+				}
 			}
 			ENDCG
 		}

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Player : FutileFourDirectionBaseObject
 {
-    private float moveSpeed = .004f;
+    private float moveSpeed = .1f;
     private FAnimatedSprite player;
 
     private enum PlayerState
@@ -36,6 +36,9 @@ public class Player : FutileFourDirectionBaseObject
     public Player(World world)
         : base(new RXRect(0, 0, 10,10), world)
     {
+        maxXVel = 1;
+        maxYVel = 1;
+        minYVel = -1;
         handleStateCount = true;
         bounceiness = 0f;
         player = new FAnimatedSprite("player");
