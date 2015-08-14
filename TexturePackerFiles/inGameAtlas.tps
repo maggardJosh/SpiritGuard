@@ -187,6 +187,7 @@
             <filename>Title</filename>
             <filename>Objects</filename>
             <filename>Particles</filename>
+            <filename>Villager</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

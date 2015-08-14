@@ -16,11 +16,12 @@ public class FutilePlatformerBaseObject : FContainer
     protected float minYVel = -2.5f;
     float tileSize;
     protected World world;
+    protected bool clearAcc = true;
 
     protected bool handleStateCount = false;
     protected float stateCount = 0;
 
-    bool applyGravity = true;
+    bool applyGravity = false;
     protected bool grounded = false;
     protected float groundedMargin = 16f;       //Amount off the ground that the player is considered to be grounded (Gives the player some leeway)
     protected float bounceiness = .8f;
@@ -135,8 +136,11 @@ public class FutilePlatformerBaseObject : FContainer
             this.yVel += world.gravity;
         this.xVel += xAcc;
         this.yVel += yAcc;
+        if (clearAcc)
+        {
         xAcc = 0;
         yAcc = 0;
+        }
 
         this.yVel = Mathf.Clamp(this.yVel, minYVel, maxYVel);
         this.xVel = Mathf.Clamp(this.xVel, -maxXVel, maxXVel);
@@ -177,7 +181,7 @@ public class FutilePlatformerBaseObject : FContainer
                     xVel *= -bounceiness;
                     return false;
                 }
-                RXRect objectCollision = world.CheckObjectCollision(this.x + hitBox.x + hitBox.width / 2, y + hitBox.y + yCheck);
+                RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x + hitBox.width / 2, y + hitBox.y + yCheck);
                 if (objectCollision != null)
                 {
                     xVel *= -bounceiness;
@@ -206,7 +210,7 @@ public class FutilePlatformerBaseObject : FContainer
                     return false;
                 }
 
-                RXRect objectCollision = world.CheckObjectCollision(this.x + hitBox.x - hitBox.width/2, y + hitBox.y + yCheck);
+                RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x - hitBox.width/2, y + hitBox.y + yCheck);
                 if (objectCollision != null)
                 {
                     xVel *= -bounceiness;
@@ -235,7 +239,7 @@ public class FutilePlatformerBaseObject : FContainer
                     this.y = Mathf.CeilToInt((this.y + hitBox.y - hitBox.height / 2f) / tileSize) * tileSize - hitBox.y + hitBox.height / 2;
                     return false;
                 }
-                RXRect objectCollision = world.CheckObjectCollision(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2);
+                RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2);
                 if (objectCollision != null)
                 {
                     yVel *= -bounceiness;
@@ -267,7 +271,7 @@ public class FutilePlatformerBaseObject : FContainer
 
                     return false;
                 }
-                RXRect objectCollision = world.CheckObjectCollision(this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2);
+                RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2);
                 if (objectCollision != null)
                 {
                     yVel *= -bounceiness;

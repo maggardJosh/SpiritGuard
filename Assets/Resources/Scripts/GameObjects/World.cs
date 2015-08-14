@@ -103,7 +103,6 @@ public class World : FContainer
         this.map.LoadTMX("Maps/" + mapName);
 
 
-
         FLabel mapNameLabel = new FLabel(C.largeFontName, map.mapName);
         C.getCameraInstance().AddChild(mapNameLabel);
         mapNameLabel.SetPosition(new Vector2(Futile.screen.width, Futile.screen.halfHeight * .8f));
@@ -122,6 +121,7 @@ public class World : FContainer
             player = new Player(this);
             C.getCameraInstance().follow(player);
         }
+        collisionObjects.Add(player);
         playerLayer.AddChild(player);
         C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height, collisionTilemap.width, collisionTilemap.height));
         collisionTilemap.clipNode = C.getCameraInstance();
@@ -167,10 +167,12 @@ public class World : FContainer
     }
 
     RXRect worldPos = new RXRect();
-    public RXRect CheckObjectCollision(float x, float y)
+    public RXRect CheckObjectCollision(FutilePlatformerBaseObject self, float x, float y)
     {
         foreach (FutilePlatformerBaseObject o in collisionObjects)
         {
+            if (o == self)
+                continue;
             worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
             worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
             worldPos.width = o.hitBox.width;

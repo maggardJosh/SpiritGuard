@@ -20,6 +20,10 @@ public class MapLoader
                 case "sign":
                     world.addObject(parseSign(node, world));
                     break;
+                case "enemy":
+                    RXDebug.Log("HI");
+                    world.addObject(parseEnemy(node, world));
+                    break;
             }
         }
     }
@@ -89,6 +93,15 @@ public class MapLoader
         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"])-  8f));
 
         return result;
-    } 
+    }
+
+     private static Enemy parseEnemy(XMLNode node, World world)
+     {
+
+         Enemy result = new Enemy(world);
+         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+
+         return result;
+     } 
 
 }

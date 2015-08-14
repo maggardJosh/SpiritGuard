@@ -8,7 +8,7 @@
   <image source="gfx/tilemap.png" width="160" height="144"/>
  </tileset>
  <tileset firstgid="91" name="objects" tilewidth="16" tileheight="16">
-  <image source="gfx/objects.png" width="32" height="16"/>
+  <image source="gfx/objects.png" width="48" height="16"/>
  </tileset>
  <layer name="background" width="30" height="20" opacity="0.51">
   <data encoding="csv">
@@ -88,5 +88,12 @@
     <property name="message" value="WATCH  OUT\nFOR HOLE!"/>
    </properties>
   </object>
+  <object type="enemy" gid="93" x="160" y="224"/>
+  <object type="enemy" gid="93" x="192" y="208"/>
+  <object type="enemy" gid="93" x="240" y="224"/>
+  <object type="enemy" gid="93" x="336" y="176"/>
+  <object type="enemy" gid="93" x="336" y="128"/>
+  <object type="enemy" gid="93" x="304" y="240"/>
+  <object type="enemy" gid="93" x="144" y="144"/>
  </objectgroup>
 </map>
