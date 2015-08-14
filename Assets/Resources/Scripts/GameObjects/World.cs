@@ -64,7 +64,7 @@ public class World : FContainer
             loadingBG.rotation = 180f;
             midPos = Futile.screen.halfWidth - loadingBG.width / 2f;
             midStartPos = -Futile.screen.halfWidth + loadingBG.width / 2f;
-            finalPos = -Futile.screen.halfWidth - loadingBG.width / 2f;
+            finalPos = -Futile.screen.halfWidth - loadingBG.width ;
         }
         else
         {
@@ -72,7 +72,7 @@ public class World : FContainer
             loadingBG.rotation = 0;
             midPos = -Futile.screen.halfWidth + loadingBG.width / 2;
             midStartPos = Futile.screen.halfWidth - loadingBG.width / 2;
-            finalPos = -Futile.screen.halfWidth - loadingBG.width / 2;
+            finalPos = -Futile.screen.halfWidth - loadingBG.width ;
         }
 
         loadingBG.isVisible = true;
@@ -82,7 +82,7 @@ public class World : FContainer
             loadAction.Invoke();
             loadingBG.rotation += 180.0f;
             loadingBG.x = midStartPos;
-            Go.to(loadingBG, .8f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
+            Go.to(loadingBG, 1.2f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
             {
                 C.isTransitioning = false;
                 loadingBG.isVisible = false;
@@ -94,6 +94,8 @@ public class World : FContainer
     {
         spawnPoints.Clear();
         signs.Clear();
+        collisionObjects.Clear();
+
         playerLayer.RemoveAllChildren();
         background.RemoveAllChildren();
         foreground.RemoveAllChildren();
