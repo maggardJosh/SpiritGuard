@@ -37,7 +37,7 @@ public class Player : FutileFourDirectionBaseObject
     }
 
     public Player(World world)
-        : base(new RXRect(0, -8, 8,6), world)
+        : base(new RXRect(0, -8, 8, 6), world)
     {
         maxXVel = 1;
         maxYVel = 1;
@@ -51,18 +51,18 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.UP.ToString(), new int[] { 5 }, 100, true));
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.DOWN.ToString(), new int[] { 1 }, 100, true));
 
-        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.RIGHT.ToString(), new int[] { 9,10,9,12 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.RIGHT.ToString(), new int[] { 9, 10, 9, 12 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.LEFT.ToString(), new int[] { 9, 10, 9, 12 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.UP.ToString(), new int[] { 5, 6, 5, 8 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.DOWN.ToString(), new int[] { 1, 2, 1, 4 }, 150, true));
 
-        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.RIGHT.ToString(), new int[] { 18,19 }, 150, false));
-        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.LEFT.ToString(), new int[] { 18,19 }, 150, false));
-        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.UP.ToString(), new int[] { 16,17}, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.RIGHT.ToString(), new int[] { 18, 19 }, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.LEFT.ToString(), new int[] { 18, 19 }, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.UP.ToString(), new int[] { 16, 17 }, 150, false));
         player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.DOWN.ToString(), new int[] { 14, 15 }, 150, false));
 
         int attackSpeed = 250;
-        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.RIGHT.ToString(), new int[] { 24,25 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.RIGHT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.LEFT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.UP.ToString(), new int[] { 22, 23 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.DOWN.ToString(), new int[] { 20, 21 }, attackSpeed, false));
@@ -72,12 +72,13 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.LEFT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.UP.ToString(), new int[] { 22, 23 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.DOWN.ToString(), new int[] { 20, 21 }, attackSpeed, false));
-       
+
 
         player.play(State.ToString());
         this.AddChild(player);
     }
 
+    bool hasSpawnedSpiritParticles = false;
     float maxJumpDist = 16 * 2.3f;
     public override void OnFixedUpdate()
     {
@@ -99,14 +100,17 @@ public class Player : FutileFourDirectionBaseObject
                     else if (C.getKey(C.UP_KEY))
                         _direction = Direction.UP;
                     Go.killAllTweensWithTarget(this);
+
+                    SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length));
+
                     float newX = this.x;
                     float newY = this.y;
-                    switch(_direction)
+                    switch (_direction)
                     {
-                        case Direction.UP: newY += maxJumpDist; while (!world.isPassable(this.x + hitBox.x, newY +hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY +hitBox.y - hitBox.height/2f)) { newY -= 1f; } break;
+                        case Direction.UP: newY += maxJumpDist; while (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f)) { newY -= 1f; } break;
                         case Direction.RIGHT: newX += maxJumpDist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y)) { newX -= 1f; } break;
                         case Direction.DOWN: newY -= maxJumpDist; while (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f)) { newY += 1f; } break;
-                        case Direction.LEFT: newX -= maxJumpDist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y+ hitBox.y)) { newX += 1f; } break;
+                        case Direction.LEFT: newX -= maxJumpDist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y)) { newX += 1f; } break;
                     }
                     xVel = 0;
                     yVel = 0;
@@ -135,6 +139,7 @@ public class Player : FutileFourDirectionBaseObject
                 float attackDisp = 3f;
                 if (C.getKey(C.ACTION_KEY) && !lastActionPress)
                 {
+                    hasSpawnedSpiritParticles = false;
                     State = PlayerState.SWORD;
                     if (C.getKey(C.RIGHT_KEY))
                         _direction = Direction.RIGHT;
@@ -144,6 +149,9 @@ public class Player : FutileFourDirectionBaseObject
                         _direction = Direction.LEFT;
                     else if (C.getKey(C.UP_KEY))
                         _direction = Direction.UP;
+
+                    SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length));
+
                     Go.killAllTweensWithTarget(this);
                     float newX = this.x;
                     float newY = this.y;
@@ -159,13 +167,13 @@ public class Player : FutileFourDirectionBaseObject
                     if (newX == this.x)
                     {
                         Go.to(this, attackTime / 2f, new TweenConfig().floatProp("x", -attackDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
-                        Go.to(this, attackTime, new TweenConfig().floatProp("y", newY).setEaseType(EaseType.BackInOut).onComplete(() => {  }));
+                        Go.to(this, attackTime, new TweenConfig().floatProp("y", newY).setEaseType(EaseType.BackInOut).onComplete(() => { }));
 
                     }
                     else
                     {
                         Go.to(this, attackTime / 2f, new TweenConfig().floatProp("y", attackDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
-                        Go.to(this, attackTime, new TweenConfig().floatProp("x", newX).setEaseType(EaseType.BackInOut).onComplete(() => {  }));
+                        Go.to(this, attackTime, new TweenConfig().floatProp("x", newX).setEaseType(EaseType.BackInOut).onComplete(() => { }));
 
                     }
                     if (_direction == Direction.RIGHT)
@@ -216,12 +224,14 @@ public class Player : FutileFourDirectionBaseObject
                     State = PlayerState.IDLE;
                 else if (stateCount > .3f)
                 {
+
                     if (C.getKey(C.ACTION_KEY) && !lastActionPress)
                     {
-                        float attack2Time = .2f;
+                        float attack2Time = .25f;
                         float attack2Dist = 20;
                         float attack2Disp = 5f;
                         State = PlayerState.SWORD_TWO;
+                        hasSpawnedSpiritParticles = false;
                         if (C.getKey(C.RIGHT_KEY))
                             _direction = Direction.RIGHT;
                         else if (C.getKey(C.DOWN_KEY))
@@ -230,6 +240,8 @@ public class Player : FutileFourDirectionBaseObject
                             _direction = Direction.LEFT;
                         else if (C.getKey(C.UP_KEY))
                             _direction = Direction.UP;
+                        SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length));
+
                         Go.killAllTweensWithTarget(this);
                         float newX = this.x;
                         float newY = this.y;
@@ -262,11 +274,25 @@ public class Player : FutileFourDirectionBaseObject
                             scaleX = 1;
                         return;
                     }
+                } else if (stateCount > .25f)
+                {
+                    if (!hasSpawnedSpiritParticles)
+                    {
+                        SpawnParticles(_direction);
+                        hasSpawnedSpiritParticles = true;
+                    }
                 }
+                
                 break;
             case PlayerState.SWORD_TWO:
                 if (stateCount > .6f)
                     State = PlayerState.IDLE;
+                else if(stateCount > .19f)
+                    if (!hasSpawnedSpiritParticles)
+                    {
+                        SpawnParticles(_direction, 30);
+                        hasSpawnedSpiritParticles = true;
+                    }
                 break;
 
         }
@@ -282,7 +308,7 @@ public class Player : FutileFourDirectionBaseObject
         }
         else
         {
-            switch(State)
+            switch (State)
             {
                 case PlayerState.MOVE:
                     State = PlayerState.IDLE;
@@ -296,6 +322,45 @@ public class Player : FutileFourDirectionBaseObject
         PlayAnim();
     }
 
+    private void SpawnParticles(Direction dir, int numParticles = 10)
+    {
+        for (int i = 0; i < numParticles; i++)
+        {
+            Particle.ParticleOne p = Particle.ParticleOne.getParticle();
+            Vector2 vel = new Vector2(RXRandom.Float() * 60 - 30, RXRandom.Float() * 60);
+            Vector2 acc = new Vector2(-vel.x * (RXRandom.Float() * .5f), -vel.y * -1.0f);
+            switch (dir)
+            {
+                case Direction.DOWN:
+                    vel.y *= -1;
+                    acc.y *= -1;
+                    break;
+                case Direction.RIGHT:
+                    float tempX = vel.x;
+                    vel.x = vel.y;
+                    vel.y = tempX;
+                    tempX = acc.x;
+                    acc.x = acc.y;
+                    acc.y = tempX;
+                    break;
+                case Direction.UP:
+
+                    break;
+                case Direction.LEFT:
+                    tempX = vel.x;
+                    vel.x = vel.y;
+                    vel.y = tempX;
+                    tempX = acc.x;
+                    acc.x = acc.y;
+                    acc.y = tempX;
+                    vel.x *= -1;
+                    acc.x *= -1;
+                    break;
+            }
+            p.activate(this.GetPosition() + new Vector2(RXRandom.Float() * 16 - 8, RXRandom.Float() * 16 - 8), vel, acc, RXRandom.Bool() ? 180.0f : 0);
+            this.container.AddChild(p);
+        }
+    }
     public void PlayAnim(bool forced = false)
     {
         player.play(State.ToString() + _direction.ToString(), forced);

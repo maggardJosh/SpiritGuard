@@ -186,6 +186,7 @@
             <filename>largeFont_0.png</filename>
             <filename>Title</filename>
             <filename>Objects</filename>
+            <filename>Particles</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
