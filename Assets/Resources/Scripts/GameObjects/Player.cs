@@ -62,16 +62,16 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.DOWN.ToString(), new int[] { 14, 15 }, 150, false));
 
         int attackSpeed = 250;
-        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.RIGHT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
-        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.LEFT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
-        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.UP.ToString(), new int[] { 22, 23 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.RIGHT.ToString(), new int[] { 28, 29 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.LEFT.ToString(), new int[] { 28, 29 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.UP.ToString(), new int[] { 24, 25 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.DOWN.ToString(), new int[] { 20, 21 }, attackSpeed, false));
 
 
-        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.RIGHT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
-        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.LEFT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
-        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.UP.ToString(), new int[] { 22, 23 }, attackSpeed, false));
-        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.DOWN.ToString(), new int[] { 20, 21 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.RIGHT.ToString(), new int[] { 30,31 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.LEFT.ToString(), new int[] { 30,31 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.UP.ToString(), new int[] { 26, 27 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.DOWN.ToString(), new int[] { 22, 23 }, attackSpeed, false));
 
 
         PlayAnim(true);
@@ -274,7 +274,8 @@ public class Player : FutileFourDirectionBaseObject
                             scaleX = 1;
                         return;
                     }
-                } else if (stateCount > .25f)
+                }
+                else if (stateCount > .25f)
                 {
                     if (!hasSpawnedSpiritParticles)
                     {
@@ -282,12 +283,12 @@ public class Player : FutileFourDirectionBaseObject
                         hasSpawnedSpiritParticles = true;
                     }
                 }
-                
+
                 break;
             case PlayerState.SWORD_TWO:
                 if (stateCount > .6f)
                     State = PlayerState.IDLE;
-                else if(stateCount > .19f)
+                else if (stateCount > .19f)
                     if (!hasSpawnedSpiritParticles)
                     {
                         SpawnParticles(_direction, 30);
