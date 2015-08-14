@@ -78,5 +78,15 @@
     <property name="message" value="WATCH  OUT\nFOR HOLE!"/>
    </properties>
   </object>
+  <object type="sign" gid="92" x="240" y="144">
+   <properties>
+    <property name="message" value="WATCH  OUT\nFOR HOLE!"/>
+   </properties>
+  </object>
+  <object type="sign" gid="92" x="256" y="144">
+   <properties>
+    <property name="message" value="WATCH  OUT\nFOR HOLE!"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

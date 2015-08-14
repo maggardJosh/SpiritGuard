@@ -89,7 +89,7 @@ public class FutilePlatformerBaseObject : FContainer
 
     private void UpdateCollisionChecks()
     {
-        float sideMargin = 4;
+        float sideMargin = 2;
         horizontalYChecks = new float[2 + Mathf.FloorToInt((hitBox.height - (sideMargin * 2)) / (tileSize / 2f))];
         int ind = 0;
         for (float i = -hitBox.height / 2 + sideMargin; i < hitBox.height / 2 - sideMargin; i += tileSize / 2f)
@@ -147,14 +147,14 @@ public class FutilePlatformerBaseObject : FContainer
 
         if (xVel > 0)
         {
-            if (scaleX != -1)
+            if (scaleX != -1 && collisionDebugSprite != null)
                 collisionDebugSprite.x *= -1;
             scaleX = -1;
             hitRight = !TryMoveRight(xVel);
         }
         else if (xVel < 0)
         {
-            if (scaleX != 1)
+            if (scaleX != 1 && collisionDebugSprite != null)
                 collisionDebugSprite.x *= -1;
             scaleX = 1;
             hitLeft = !TryMoveLeft(xVel);
@@ -175,6 +175,13 @@ public class FutilePlatformerBaseObject : FContainer
                 {
                     this.x = Mathf.FloorToInt((this.x + hitBox.x + hitBox.width / 2) / tileSize) * tileSize - hitBox.x - hitBox.width / 2;
                     xVel *= -bounceiness;
+                    return false;
+                }
+                RXRect objectCollision = world.CheckObjectCollision(this.x + hitBox.x + hitBox.width / 2, y + hitBox.y + yCheck);
+                if (objectCollision != null)
+                {
+                    xVel *= -bounceiness;
+                    this.x = objectCollision.x - hitBox.x - hitBox.width / 2;
                     return false;
                 }
             }
@@ -198,6 +205,14 @@ public class FutilePlatformerBaseObject : FContainer
                     xVel *= -bounceiness;
                     return false;
                 }
+
+                RXRect objectCollision = world.CheckObjectCollision(this.x + hitBox.x - hitBox.width/2, y + hitBox.y + yCheck);
+                if (objectCollision != null)
+                {
+                    xVel *= -bounceiness;
+                    this.x = objectCollision.x + objectCollision.width - hitBox.x + hitBox.width / 2;
+                    return false;
+                }
             }
             lastX = x;
         }
@@ -213,21 +228,18 @@ public class FutilePlatformerBaseObject : FContainer
             y += Mathf.Max(-tileSize / 2, targetY - y);
             foreach (float xCheck in verticalXChecks)
             {
-                if (!world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2f - groundedMargin))
-                {
-                    grounded = true;
-                }
-                else
-                {
-                    //Timer to remove grounded bool after leaving platforms
-                    grounded = false;
-                }
-
                 if (!world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2))
                 {
                     grounded = true;
                     yVel *= -bounceiness;
                     this.y = Mathf.CeilToInt((this.y + hitBox.y - hitBox.height / 2f) / tileSize) * tileSize - hitBox.y + hitBox.height / 2;
+                    return false;
+                }
+                RXRect objectCollision = world.CheckObjectCollision(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2);
+                if (objectCollision != null)
+                {
+                    yVel *= -bounceiness;
+                    this.y = objectCollision.y + objectCollision.height - hitBox.y + hitBox.height / 2;
                     return false;
                 }
             }
@@ -253,6 +265,13 @@ public class FutilePlatformerBaseObject : FContainer
                     if (bounceiness != 0)
                         yVel *= -bounceiness;
 
+                    return false;
+                }
+                RXRect objectCollision = world.CheckObjectCollision(this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2);
+                if (objectCollision != null)
+                {
+                    yVel *= -bounceiness;
+                    this.y = objectCollision.y - hitBox.y - hitBox.height / 2;
                     return false;
                 }
             }

@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class Sign : FContainer
+public class Sign : FutilePlatformerBaseObject
 {
     FSprite sign;
     FLabel message;
     private float _mScale = 1;
 
-    public Sign(string message)
+    public Sign(World world, string message): base(new RXRect(0,-6,8,6), world)
     {
+        this.shouldSortByZ = false;
         sign = new FSprite("object_sign_01");
         this.AddChild(sign);
         this.message = new FLabel(C.smallFontName, message.Replace("\\n", "\n"));
@@ -23,7 +24,7 @@ public class Sign : FContainer
     {
         if (p.x + p.hitBox.x > this.x - this.sign.width / 2 &&
             p.x + p.hitBox.x < this.x + this.sign.width / 2 &&
-            p.y + p.hitBox.y > this.y - this.sign.height && p.y + p.hitBox.y < this.y)
+            p.y + p.hitBox.y > this.y - 16 && p.y + p.hitBox.y < this.y)
         {
           
             if (!inFrontOf)

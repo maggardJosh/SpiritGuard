@@ -8,12 +8,15 @@ public class Player : FutileFourDirectionBaseObject
 {
     private float moveSpeed = .1f;
     private FAnimatedSprite player;
+    bool lastActionPress = false;
 
     public enum PlayerState
     {
         IDLE,
         MOVE,
-        JUMP
+        JUMP,
+        SWORD,
+        SWORD_TWO
     }
 
     private PlayerState _state = PlayerState.IDLE;
@@ -34,7 +37,7 @@ public class Player : FutileFourDirectionBaseObject
     }
 
     public Player(World world)
-        : base(new RXRect(0, -8, 10,6), world)
+        : base(new RXRect(0, -8, 8,6), world)
     {
         maxXVel = 1;
         maxYVel = 1;
@@ -57,6 +60,20 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.LEFT.ToString(), new int[] { 18,19 }, 150, false));
         player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.UP.ToString(), new int[] { 16,17}, 150, false));
         player.addAnimation(new FAnimation(PlayerState.JUMP.ToString() + Direction.DOWN.ToString(), new int[] { 14, 15 }, 150, false));
+
+        int attackSpeed = 250;
+        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.RIGHT.ToString(), new int[] { 24,25 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.LEFT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.UP.ToString(), new int[] { 22, 23 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.DOWN.ToString(), new int[] { 20, 21 }, attackSpeed, false));
+
+
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.RIGHT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.LEFT.ToString(), new int[] { 24, 25 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.UP.ToString(), new int[] { 22, 23 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.DOWN.ToString(), new int[] { 20, 21 }, attackSpeed, false));
+       
+
         player.play(State.ToString());
         this.AddChild(player);
     }
@@ -107,6 +124,54 @@ public class Player : FutileFourDirectionBaseObject
                         Go.to(this, jumpTime, new TweenConfig().floatProp("x", newX).setEaseType(EaseType.QuadOut).onComplete(() => { State = PlayerState.IDLE; }));
 
                     }
+                    if (_direction == Direction.RIGHT)
+                        scaleX = -1;
+                    else if (_direction == Direction.LEFT)
+                        scaleX = 1;
+                    return;
+                }
+                float attackTime = .4f;
+                float attackDist = 16;
+                float attackDisp = 3f;
+                if (C.getKey(C.ACTION_KEY) && !lastActionPress)
+                {
+                    State = PlayerState.SWORD;
+                    if (C.getKey(C.RIGHT_KEY))
+                        _direction = Direction.RIGHT;
+                    else if (C.getKey(C.DOWN_KEY))
+                        _direction = Direction.DOWN;
+                    else if (C.getKey(C.LEFT_KEY))
+                        _direction = Direction.LEFT;
+                    else if (C.getKey(C.UP_KEY))
+                        _direction = Direction.UP;
+                    Go.killAllTweensWithTarget(this);
+                    float newX = this.x;
+                    float newY = this.y;
+                    switch (_direction)
+                    {
+                        case Direction.UP: newY += attackDist; while (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f)) { newY -= 1f; } break;
+                        case Direction.RIGHT: newX += attackDist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y)) { newX -= 1f; } break;
+                        case Direction.DOWN: newY -= attackDist; while (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f)) { newY += 1f; } break;
+                        case Direction.LEFT: newX -= attackDist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y)) { newX += 1f; } break;
+                    }
+                    xVel = 0;
+                    yVel = 0;
+                    if (newX == this.x)
+                    {
+                        Go.to(this, attackTime / 2f, new TweenConfig().floatProp("x", -attackDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
+                        Go.to(this, attackTime, new TweenConfig().floatProp("y", newY).setEaseType(EaseType.BackInOut).onComplete(() => {  }));
+
+                    }
+                    else
+                    {
+                        Go.to(this, attackTime / 2f, new TweenConfig().floatProp("y", attackDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
+                        Go.to(this, attackTime, new TweenConfig().floatProp("x", newX).setEaseType(EaseType.BackInOut).onComplete(() => {  }));
+
+                    }
+                    if (_direction == Direction.RIGHT)
+                        scaleX = -1;
+                    else if (_direction == Direction.LEFT)
+                        scaleX = 1;
                     return;
                 }
                 if (C.getKey(C.LEFT_KEY))
@@ -146,6 +211,64 @@ public class Player : FutileFourDirectionBaseObject
 
 
                 break;
+            case PlayerState.SWORD:
+                if (stateCount > .6f)
+                    State = PlayerState.IDLE;
+                else if (stateCount > .3f)
+                {
+                    if (C.getKey(C.ACTION_KEY) && !lastActionPress)
+                    {
+                        float attack2Time = .2f;
+                        float attack2Dist = 20;
+                        float attack2Disp = 5f;
+                        State = PlayerState.SWORD_TWO;
+                        if (C.getKey(C.RIGHT_KEY))
+                            _direction = Direction.RIGHT;
+                        else if (C.getKey(C.DOWN_KEY))
+                            _direction = Direction.DOWN;
+                        else if (C.getKey(C.LEFT_KEY))
+                            _direction = Direction.LEFT;
+                        else if (C.getKey(C.UP_KEY))
+                            _direction = Direction.UP;
+                        Go.killAllTweensWithTarget(this);
+                        float newX = this.x;
+                        float newY = this.y;
+                        PlayAnim(true);
+                        switch (_direction)
+                        {
+                            case Direction.UP: newY += attack2Dist; while (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f)) { newY -= 1f; } break;
+                            case Direction.RIGHT: newX += attack2Dist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y)) { newX -= 1f; } break;
+                            case Direction.DOWN: newY -= attack2Dist; while (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f)) { newY += 1f; } break;
+                            case Direction.LEFT: newX -= attack2Dist; while (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y)) { newX += 1f; } break;
+                        }
+                        xVel = 0;
+                        yVel = 0;
+                        Go.killAllTweensWithTarget(this);
+                        if (newX == this.x)
+                        {
+                            Go.to(this, attack2Time / 2f, new TweenConfig().floatProp("x", -attack2Disp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
+                            Go.to(this, attack2Time, new TweenConfig().floatProp("y", newY).setEaseType(EaseType.BackInOut).onComplete(() => { }));
+
+                        }
+                        else
+                        {
+                            Go.to(this, attack2Time / 2f, new TweenConfig().floatProp("y", attack2Disp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
+                            Go.to(this, attack2Time, new TweenConfig().floatProp("x", newX).setEaseType(EaseType.BackInOut).onComplete(() => { }));
+
+                        }
+                        if (_direction == Direction.RIGHT)
+                            scaleX = -1;
+                        else if (_direction == Direction.LEFT)
+                            scaleX = 1;
+                        return;
+                    }
+                }
+                break;
+            case PlayerState.SWORD_TWO:
+                if (stateCount > .6f)
+                    State = PlayerState.IDLE;
+                break;
+
         }
 
         if (xAcc != 0 || yAcc != 0)
@@ -169,7 +292,7 @@ public class Player : FutileFourDirectionBaseObject
 
         base.OnFixedUpdate();
 
-
+        lastActionPress = C.getKey(C.ACTION_KEY);
         PlayAnim();
     }
 

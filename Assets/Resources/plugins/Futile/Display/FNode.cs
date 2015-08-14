@@ -346,6 +346,8 @@ public class FNode
 	public void UpdateMatrix()
 	{
 		if(!_isMatrixDirty) return;
+
+        
 		
 		//do NOT set _isMatrixDirty to false here because it is used in the redraw loop and will be set false then
 
@@ -517,7 +519,7 @@ public class FNode
 	public float y
 	{
 		get { return _y;}
-		set { _y = value; _isMatrixDirty = true;}
+        set { _y = value; _isMatrixDirty = true; _sortZ = -value; }
 	}
 
 	public float meshZ

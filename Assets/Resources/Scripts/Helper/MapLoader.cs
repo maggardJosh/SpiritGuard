@@ -18,7 +18,7 @@ public class MapLoader
                     world.addSpawn(parseSpawnPoint(node));
                     break;
                 case "sign":
-                    world.addSign(parseSign(node));
+                    world.addObject(parseSign(node, world));
                     break;
             }
         }
@@ -69,7 +69,7 @@ public class MapLoader
         return result;
     }
 
-     private static Sign parseSign(XMLNode node)
+     private static Sign parseSign(XMLNode node, World world)
     {
         string message = "Default";
         if (node.children[0] != null)
@@ -85,7 +85,7 @@ public class MapLoader
                 }
             }
         }
-        Sign result= new Sign(message);
+        Sign result= new Sign(world, message);
         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"])-  8f));
 
         return result;

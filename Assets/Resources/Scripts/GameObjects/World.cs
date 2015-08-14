@@ -14,10 +14,10 @@ public class World : FContainer
 
     FContainer background = new FContainer();
     FContainer playerLayer = new FContainer();
-    FContainer objectLayer = new FContainer();
     FContainer foreground = new FContainer();
 
     List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
+    List<FutilePlatformerBaseObject> collisionObjects = new List<FutilePlatformerBaseObject>();
     List<Sign> signs = new List<Sign>();
 
     string lastMap = "";
@@ -40,8 +40,9 @@ public class World : FContainer
     {
         map = new FTmxMap();
 
+        playerLayer.shouldSortByZ = true;
+
         this.AddChild(background);
-        this.AddChild(objectLayer);
         this.AddChild(playerLayer);
         this.AddChild(foreground);
         Futile.instance.SignalUpdate += Update;
@@ -93,13 +94,13 @@ public class World : FContainer
     {
         spawnPoints.Clear();
         signs.Clear();
-        objectLayer.RemoveAllChildren();
+        playerLayer.RemoveAllChildren();
         background.RemoveAllChildren();
         foreground.RemoveAllChildren();
         this.map = new FTmxMap();
         this.map.LoadTMX("Maps/" + mapName);
 
-        
+
 
         FLabel mapNameLabel = new FLabel(C.largeFontName, map.mapName);
         C.getCameraInstance().AddChild(mapNameLabel);
@@ -116,11 +117,10 @@ public class World : FContainer
 
         if (player == null)
         {
-
             player = new Player(this);
-            playerLayer.AddChild(player);
             C.getCameraInstance().follow(player);
         }
+        playerLayer.AddChild(player);
         C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height, collisionTilemap.width, collisionTilemap.height));
         collisionTilemap.clipNode = C.getCameraInstance();
         backgroundTilemap.clipNode = C.getCameraInstance();
@@ -128,11 +128,9 @@ public class World : FContainer
         MapLoader.loadObjects(this, map.objects);
     }
 
-    public bool isPassable(float x, float y, bool checkBreakableWalls = true)
+    public bool isPassable(float x, float y)
     {
         bool result = collisionTilemap.IsPassable(x, y);
-        int tileX = Mathf.FloorToInt(x / collisionTilemap.tileWidth);
-        int tileY = Mathf.FloorToInt(y / collisionTilemap.tileHeight);
 
         return result;
     }
@@ -157,10 +155,28 @@ public class World : FContainer
         spawnPoints.Add(spawn);
     }
 
-    public void addSign(Sign sign)
+    public void addObject(FNode objectToAdd)
     {
-        signs.Add(sign);
-        objectLayer.AddChild(sign);
+        if (objectToAdd is FutilePlatformerBaseObject)
+            collisionObjects.Add((FutilePlatformerBaseObject)objectToAdd);
+        if (objectToAdd is Sign)
+            signs.Add((Sign)objectToAdd);
+        playerLayer.AddChild(objectToAdd);
+    }
+
+    RXRect worldPos = new RXRect();
+    public RXRect CheckObjectCollision(float x, float y)
+    {
+        foreach (FutilePlatformerBaseObject o in collisionObjects)
+        {
+            worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
+            worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
+            worldPos.width = o.hitBox.width;
+            worldPos.height = o.hitBox.height;
+            if (worldPos.Contains(x, y))
+                return worldPos;
+        }
+        return null;
     }
 
     public void Update()
