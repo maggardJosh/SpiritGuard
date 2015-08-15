@@ -13,6 +13,7 @@ public class FutileFourDirectionBaseObject : FutilePlatformerBaseObject
         LEFT
     }
     protected Direction _direction = Direction.RIGHT;
+    public Direction CurrentDirection { get { return _direction; } }
     public void SetDirection(Direction newDirection)
     {
         _direction = newDirection;

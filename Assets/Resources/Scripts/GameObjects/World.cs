@@ -169,7 +169,10 @@ public class World : FContainer
 
         if (objectToAdd is Sign)
             signs.Add((Sign)objectToAdd);
-        playerLayer.AddChild(objectToAdd);
+        if (objectToAdd is PushBlock)
+            background.AddChild(objectToAdd);
+        else
+            playerLayer.AddChild(objectToAdd);
     }
 
     public void removeObject(FNode objectToRemove)
@@ -183,7 +186,7 @@ public class World : FContainer
 
         if (objectToRemove is Sign)
             signs.Remove((Sign)objectToRemove);
-        playerLayer.RemoveChild(objectToRemove);
+        objectToRemove.RemoveFromContainer();
     }
 
     RXRect worldPos = new RXRect();
@@ -200,7 +203,11 @@ public class World : FContainer
             worldPos.width = o.hitBox.width;
             worldPos.height = o.hitBox.height;
             if (worldPos.Contains(x, y))
+            {
+                if (self is Player && o is PushBlock)
+                    ((PushBlock)o).HandlePlayerCollision((Player)self);
                 return worldPos;
+            }
         }
         return null;
     }

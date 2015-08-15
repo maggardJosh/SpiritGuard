@@ -26,6 +26,9 @@ public class MapLoader
                 case "villager":
                     world.addObject(parseVillager(node, world));
                     break;
+                case "pushblock":
+                    world.addObject(parsePushBlock(node, world));
+                    break;
             }
         }
     }
@@ -109,6 +112,14 @@ public class MapLoader
      {
 
          Villager result = new Villager(world);
+         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+
+         return result;
+     }
+     private static PushBlock parsePushBlock(XMLNode node, World world)
+     {
+
+         PushBlock result = new PushBlock(world);
          result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
          return result;
