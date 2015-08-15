@@ -434,7 +434,7 @@ public class Player : FutileFourDirectionBaseObject
         base.OnFixedUpdate();
         if (stateCount == 0 && State == PlayerState.MOVE)
 
-            SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 5);
+            SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
         lastActionPress = C.getKey(C.ACTION_KEY);
         lastJumpPress = C.getKey(C.JUMP_KEY);
         PlayAnim();
@@ -457,7 +457,7 @@ public class Player : FutileFourDirectionBaseObject
         for (int i = 0; i < numParticles; i++)
         {
             Particle.ParticleOne p = Particle.ParticleOne.getParticle();
-            Vector2 vel = new Vector2(RXRandom.Float() * 20 - 10, RXRandom.Float() * 20);
+            Vector2 vel = new Vector2(RXRandom.Float() * 20 - 10, RXRandom.Float() * 10);
             Vector2 acc = new Vector2(-vel.x * (RXRandom.Float() * .5f), -vel.y * -1.0f);
             switch (dir)
             {
@@ -496,14 +496,15 @@ public class Player : FutileFourDirectionBaseObject
         for (int i = 0; i < numParticles; i++)
         {
             Particle.ParticleOne p = Particle.ParticleOne.getParticle();
-            Vector2 vel = new Vector2(RXRandom.Float() * 60 - 30, RXRandom.Float() * 60);
+            Vector2 vel = new Vector2(RXRandom.Float() * 60, RXRandom.Float() * 30);
             Vector2 acc = new Vector2(-vel.x * (RXRandom.Float() * .5f), -vel.y * -1.0f);
             Vector2 pos = new Vector2(RXRandom.Float() * 10 - 5, -8);
             switch (dir)
             {
                 case Direction.DOWN:
-                    vel.y *= -1;
+                    //vel.y *= -1;
                     acc.y *= -1;
+                    pos.y = -10;
 
                     break;
                 case Direction.RIGHT:

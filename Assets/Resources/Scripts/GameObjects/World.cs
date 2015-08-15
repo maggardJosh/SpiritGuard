@@ -217,6 +217,22 @@ public class World : FContainer
         foreach (FutilePlatformerBaseObject o in damageObjects)
             CheckDamageObjectCollision(o);
     }
+    public bool CheckDamageObjectCollision(FutilePlatformerBaseObject self, float x, float y)
+    {
+        foreach (FutilePlatformerBaseObject o in damageObjects)
+        {
+            if (o == self)
+                continue;
+            worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
+            worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
+            worldPos.width = o.hitBox.width;
+            worldPos.height = o.hitBox.height;
+            if (worldPos.Contains(x, y))
+                return true;
+        }
+        return false;
+
+    }
     public void CheckDamageObjectCollision(FutilePlatformerBaseObject o)
     {
         if (o is Knight)

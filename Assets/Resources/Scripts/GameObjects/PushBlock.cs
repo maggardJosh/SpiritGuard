@@ -8,6 +8,7 @@ public class PushBlock : FutilePlatformerBaseObject
 {
     FSprite sprite;
     private float pushCount = 0;
+    bool isMoving = false;
     bool isBeingPushed = false;
     FutileFourDirectionBaseObject.Direction pushDir = FutileFourDirectionBaseObject.Direction.UP;
     public PushBlock(World world)
@@ -26,6 +27,9 @@ public class PushBlock : FutilePlatformerBaseObject
         isBeingPushed = false;
         if (pushCount > PUSH_TIME)
             TryPush();
+
+        if (isMoving)
+            SpawnParticles(pushDir, 1);
         
         base.OnFixedUpdate();
     }
@@ -41,18 +45,67 @@ public class PushBlock : FutilePlatformerBaseObject
             case FutileFourDirectionBaseObject.Direction.DOWN: newY -= 16; break;
             case FutileFourDirectionBaseObject.Direction.LEFT: newX -= 16; break;
         }
-        if (world.isPassable(newX, newY) && world.CheckObjectCollision(this, newX, newY)== null)
+        if (world.isPassable(newX, newY) && world.CheckObjectCollision(this, newX, newY)== null && !world.CheckDamageObjectCollision(this, newX, newY))
         {
-            Go.to(this, 1.0f, new TweenConfig().floatProp("x", newX).floatProp("y", newY).setEaseType(EaseType.QuadInOut));
+            isMoving = true;
+            Go.to(this, 1.0f, new TweenConfig().floatProp("x", newX).floatProp("y", newY).setEaseType(EaseType.QuadInOut).onComplete(() => { isMoving = false; }));
             isBeingPushed = false;
             pushCount = 0;
+        }
+    }
+
+    private void SpawnParticles(FutileFourDirectionBaseObject.Direction dir, int numParticles = 10)
+    {
+        for (int i = 0; i < numParticles; i++)
+        {
+            Particle.ParticleOne p = Particle.ParticleOne.getParticle();
+            Vector2 vel = new Vector2(-RXRandom.Float() * 20 + 10, -RXRandom.Float() * 20);
+            Vector2 acc = new Vector2(-vel.x * (RXRandom.Float() * .5f), -vel.y * -1.0f);
+            Vector2 pos = new Vector2(RXRandom.Float() * 16 - 8, 8);
+            switch (dir)
+            {
+                case FutileFourDirectionBaseObject.Direction.DOWN:
+                    vel.y *= -1;
+                    acc.y *= -1;
+                    break;
+                case FutileFourDirectionBaseObject.Direction.RIGHT:
+                    float tempX = vel.x;
+                    vel.x = vel.y;
+                    vel.y = tempX;
+                    tempX = acc.x;
+                    acc.x = acc.y;
+                    acc.y = tempX;
+                    tempX = pos.x;
+                    pos.x = pos.y;
+                    pos.y = tempX;
+                    pos.x *= -1;
+                    break;
+                case FutileFourDirectionBaseObject.Direction.UP:
+                    pos.y *= -1;
+                    break;
+                case FutileFourDirectionBaseObject.Direction.LEFT:
+                    tempX = vel.x;
+                    vel.x = vel.y;
+                    vel.y = tempX;
+                    tempX = acc.x;
+                    acc.x = acc.y;
+                    acc.y = tempX;
+                    tempX = pos.x;
+                    pos.x = pos.y;
+                    pos.y = tempX;
+                    vel.x *= -1;
+                    acc.x *= -1;
+                    break;
+            }
+            p.activate(this.GetPosition() +pos, vel, acc, RXRandom.Bool() ? 180.0f : 0);
+            this.container.AddChild(p);
         }
     }
 
     public void HandlePlayerCollision(Player p)
     {
         isBeingPushed = true;
-        if (p.x + p.hitBox.x > this.x  - 8 && p.x + p.hitBox.x< this.x  + 8)
+        if (Mathf.Round(p.x + p.hitBox.x + p.hitBox.width/2f) > this.x - 8 && Mathf.Round( p.x + p.hitBox.x - p.hitBox.width/2f) < this.x  + 8)
         {
             if (p.y + p.hitBox.y > this.y)
                 pushDir = FutileFourDirectionBaseObject.Direction.DOWN;
