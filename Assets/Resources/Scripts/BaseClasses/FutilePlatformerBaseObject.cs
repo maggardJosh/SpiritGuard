@@ -20,7 +20,7 @@ public class FutilePlatformerBaseObject : FContainer
 
     protected bool handleStateCount = false;
     protected float stateCount = 0;
-
+    public float StateCount { get { return stateCount; } } 
     bool applyGravity = false;
     protected bool grounded = false;
     protected float groundedMargin = 16f;       //Amount off the ground that the player is considered to be grounded (Gives the player some leeway)
@@ -54,7 +54,16 @@ public class FutilePlatformerBaseObject : FContainer
 
         UpdateCollisionChecks();
     }
-
+    public void UpdateHitBoxSprite()
+    {
+        if (C.isDebug)
+        {
+            collisionDebugSprite.x = hitBox.x;
+            collisionDebugSprite.y = hitBox.y;
+            collisionDebugSprite.width = hitBox.width;
+            collisionDebugSprite.height = hitBox.height;
+        }
+    }
     public void UpdateHitBox(float newWidth, float newHeight)
     {
         if (this.hitBox.width == newWidth &&
@@ -138,12 +147,17 @@ public class FutilePlatformerBaseObject : FContainer
         this.yVel += yAcc;
         if (clearAcc)
         {
-        xAcc = 0;
-        yAcc = 0;
+            xAcc = 0;
+            yAcc = 0;
         }
 
         this.yVel = Mathf.Clamp(this.yVel, minYVel, maxYVel);
         this.xVel = Mathf.Clamp(this.xVel, -maxXVel, maxXVel);
+   
+        if (this is Player)
+            world.CheckDamageObjectCollision();
+        else if (this is Knight)
+            world.CheckDamageObjectCollision(this);
         if (yVel > 0)
             hitUp = !TryMoveUp(yVel);
         else if (yVel < 0)
@@ -181,6 +195,7 @@ public class FutilePlatformerBaseObject : FContainer
                     xVel *= -bounceiness;
                     return false;
                 }
+
                 RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x + hitBox.width / 2, y + hitBox.y + yCheck);
                 if (objectCollision != null)
                 {
@@ -210,7 +225,7 @@ public class FutilePlatformerBaseObject : FContainer
                     return false;
                 }
 
-                RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x - hitBox.width/2, y + hitBox.y + yCheck);
+                RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x - hitBox.width / 2, y + hitBox.y + yCheck);
                 if (objectCollision != null)
                 {
                     xVel *= -bounceiness;
@@ -282,6 +297,15 @@ public class FutilePlatformerBaseObject : FContainer
             lastY = y;
         }
         return true;
+    }
+
+    public bool isColliding(FutilePlatformerBaseObject other)
+    {
+
+        return this.x + hitBox.x - hitBox.width / 2f < other.x + other.hitBox.x + other.hitBox.width / 2f &&
+            this.x + hitBox.x + hitBox.width / 2f > other.x + other.hitBox.x - other.hitBox.width / 2f &&
+            this.y + hitBox.y + hitBox.height / 2f > other.y + other.hitBox.y - other.hitBox.height / 2f &&
+            this.y + hitBox.y - hitBox.height / 2f < other.y + other.hitBox.y + other.hitBox.height / 2f;
     }
 }
 

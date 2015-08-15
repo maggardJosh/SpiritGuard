@@ -95,10 +95,10 @@ public class MapLoader
         return result;
     }
 
-     private static Enemy parseEnemy(XMLNode node, World world)
+     private static Knight parseEnemy(XMLNode node, World world)
      {
 
-         Enemy result = new Enemy(world);
+         Knight result = new Knight(world);
          result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
          return result;

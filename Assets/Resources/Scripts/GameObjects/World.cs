@@ -18,6 +18,7 @@ public class World : FContainer
 
     List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
     List<FutilePlatformerBaseObject> collisionObjects = new List<FutilePlatformerBaseObject>();
+    List<FutilePlatformerBaseObject> damageObjects = new List<FutilePlatformerBaseObject>();
     List<Sign> signs = new List<Sign>();
 
     string lastMap = "";
@@ -64,7 +65,7 @@ public class World : FContainer
             loadingBG.rotation = 180f;
             midPos = Futile.screen.halfWidth - loadingBG.width / 2f;
             midStartPos = -Futile.screen.halfWidth + loadingBG.width / 2f;
-            finalPos = -Futile.screen.halfWidth - loadingBG.width ;
+            finalPos = -Futile.screen.halfWidth - loadingBG.width;
         }
         else
         {
@@ -72,7 +73,7 @@ public class World : FContainer
             loadingBG.rotation = 0;
             midPos = -Futile.screen.halfWidth + loadingBG.width / 2;
             midStartPos = Futile.screen.halfWidth - loadingBG.width / 2;
-            finalPos = -Futile.screen.halfWidth - loadingBG.width ;
+            finalPos = -Futile.screen.halfWidth - loadingBG.width;
         }
 
         loadingBG.isVisible = true;
@@ -95,6 +96,7 @@ public class World : FContainer
         spawnPoints.Clear();
         signs.Clear();
         collisionObjects.Clear();
+        damageObjects.Clear();
 
         playerLayer.RemoveAllChildren();
         background.RemoveAllChildren();
@@ -159,11 +161,29 @@ public class World : FContainer
 
     public void addObject(FNode objectToAdd)
     {
-        if (objectToAdd is FutilePlatformerBaseObject)
-            collisionObjects.Add((FutilePlatformerBaseObject)objectToAdd);
+        if (objectToAdd is Knight)
+            damageObjects.Add((Knight)objectToAdd);
+        else
+            if (objectToAdd is FutilePlatformerBaseObject)
+                collisionObjects.Add((FutilePlatformerBaseObject)objectToAdd);
+
         if (objectToAdd is Sign)
             signs.Add((Sign)objectToAdd);
         playerLayer.AddChild(objectToAdd);
+    }
+
+    public void removeObject(FNode objectToRemove)
+    {
+
+        if (objectToRemove is Knight)
+            damageObjects.Remove((Knight)objectToRemove);
+        else
+            if (objectToRemove is FutilePlatformerBaseObject)
+                collisionObjects.Remove((FutilePlatformerBaseObject)objectToRemove);
+
+        if (objectToRemove is Sign)
+            signs.Remove((Sign)objectToRemove);
+        playerLayer.RemoveChild(objectToRemove);
     }
 
     RXRect worldPos = new RXRect();
@@ -171,6 +191,8 @@ public class World : FContainer
     {
         foreach (FutilePlatformerBaseObject o in collisionObjects)
         {
+            if ((self is Knight && o is Player))
+                continue;
             if (o == self)
                 continue;
             worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
@@ -181,6 +203,17 @@ public class World : FContainer
                 return worldPos;
         }
         return null;
+    }
+
+    public void CheckDamageObjectCollision()
+    {
+        foreach (FutilePlatformerBaseObject o in damageObjects)
+            CheckDamageObjectCollision(o);
+    }
+    public void CheckDamageObjectCollision(FutilePlatformerBaseObject o)
+    {
+        if (o is Knight)
+            ((Knight)o).CheckDamage(player);
     }
 
     public void Update()

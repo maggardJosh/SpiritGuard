@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class Enemy : FutileFourDirectionBaseObject
+public class Villager : FutileFourDirectionBaseObject
 {
     private FAnimatedSprite sprite;
     private float moveSpeed = .5f;
-    private EnemyState _state = EnemyState.IDLE;
-    public EnemyState State
+    private VillagerState _state = VillagerState.IDLE;
+    public VillagerState State
     {
         get
         {
@@ -23,12 +23,12 @@ public class Enemy : FutileFourDirectionBaseObject
             }
         }
     }
-    public enum EnemyState
+    public enum VillagerState
     {
         IDLE,
         MOVING
     }
-    public Enemy(World world)
+    public Villager(World world)
         : base(new RXRect(0, -6, 10, 8), world)
     {
         maxXVel = .5f;
@@ -39,15 +39,15 @@ public class Enemy : FutileFourDirectionBaseObject
         clearAcc = false;
 
         sprite = new FAnimatedSprite("villagerA");
-        sprite.addAnimation(new FAnimation(EnemyState.MOVING.ToString() + Direction.DOWN, new int[] { 1, 2, 3, 4 }, 150, true));
-        sprite.addAnimation(new FAnimation(EnemyState.MOVING.ToString() + Direction.UP, new int[] { 5, 6, 7, 8 }, 150, true));
-        sprite.addAnimation(new FAnimation(EnemyState.MOVING.ToString() + Direction.LEFT, new int[] { 9, 10, 11, 12 }, 150, true));
-        sprite.addAnimation(new FAnimation(EnemyState.MOVING.ToString() + Direction.RIGHT, new int[] { 9, 10, 11, 12 }, 150, true));
+        sprite.addAnimation(new FAnimation(VillagerState.MOVING.ToString() + Direction.DOWN, new int[] { 1, 2, 3, 4 }, 150, true));
+        sprite.addAnimation(new FAnimation(VillagerState.MOVING.ToString() + Direction.UP, new int[] { 5, 6, 7, 8 }, 150, true));
+        sprite.addAnimation(new FAnimation(VillagerState.MOVING.ToString() + Direction.LEFT, new int[] { 9, 10, 11, 12 }, 150, true));
+        sprite.addAnimation(new FAnimation(VillagerState.MOVING.ToString() + Direction.RIGHT, new int[] { 9, 10, 11, 12 }, 150, true));
 
-        sprite.addAnimation(new FAnimation(EnemyState.IDLE.ToString() + Direction.DOWN, new int[] { 1 }, 150, true));
-        sprite.addAnimation(new FAnimation(EnemyState.IDLE.ToString() + Direction.UP, new int[] { 5 }, 150, true));
-        sprite.addAnimation(new FAnimation(EnemyState.IDLE.ToString() + Direction.LEFT, new int[] { 9 }, 150, true));
-        sprite.addAnimation(new FAnimation(EnemyState.IDLE.ToString() + Direction.RIGHT, new int[] { 9 }, 150, true));
+        sprite.addAnimation(new FAnimation(VillagerState.IDLE.ToString() + Direction.DOWN, new int[] { 1 }, 150, true));
+        sprite.addAnimation(new FAnimation(VillagerState.IDLE.ToString() + Direction.UP, new int[] { 5 }, 150, true));
+        sprite.addAnimation(new FAnimation(VillagerState.IDLE.ToString() + Direction.LEFT, new int[] { 9 }, 150, true));
+        sprite.addAnimation(new FAnimation(VillagerState.IDLE.ToString() + Direction.RIGHT, new int[] { 9 }, 150, true));
 
         PlayAnim();
         this.AddChild(sprite);
@@ -62,7 +62,7 @@ public class Enemy : FutileFourDirectionBaseObject
             {
                 switch (State)
                 {
-                    case EnemyState.IDLE:
+                    case VillagerState.IDLE:
                         if (RXRandom.Float() < .5f)
                         {
                             //left or right
@@ -79,13 +79,13 @@ public class Enemy : FutileFourDirectionBaseObject
                             else
                                 yAcc = -moveSpeed;
                         }
-                        State = EnemyState.MOVING;
+                        State = VillagerState.MOVING;
                         break;
-                    case EnemyState.MOVING:
+                    case VillagerState.MOVING:
                         if (RXRandom.Float() < .3f)
                         {
                             //stop
-                            State = EnemyState.IDLE;
+                            State = VillagerState.IDLE;
                             PlayAnim(true);
                             xAcc = 0;
                             yAcc = 0;

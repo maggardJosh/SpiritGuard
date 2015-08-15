@@ -9,14 +9,20 @@ public class Player : FutileFourDirectionBaseObject
     private float moveSpeed = .1f;
     private FAnimatedSprite player;
     bool lastActionPress = false;
-
+    bool lastJumpPress = false;
+    public bool shouldDamage = false;
+    int health = 3;
+    public FutilePlatformerBaseObject swordCollision;
+    public float invulnCount = 0;
+    float invulnerableStunTime = 1.4f;
     public enum PlayerState
     {
         IDLE,
         MOVE,
         JUMP,
         SWORD,
-        SWORD_TWO
+        SWORD_TWO,
+        INVULNERABLE
     }
 
     private PlayerState _state = PlayerState.IDLE;
@@ -39,6 +45,8 @@ public class Player : FutileFourDirectionBaseObject
     public Player(World world)
         : base(new RXRect(0, -8, 8, 6), world)
     {
+        swordCollision = new FutilePlatformerBaseObject(new RXRect(6, -8, 15, 10), world);
+
         maxXVel = 1;
         maxYVel = 1;
         minYVel = -1;
@@ -50,6 +58,11 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.LEFT.ToString(), new int[] { 9 }, 100, true));
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.UP.ToString(), new int[] { 5 }, 100, true));
         player.addAnimation(new FAnimation(PlayerState.IDLE.ToString() + Direction.DOWN.ToString(), new int[] { 1 }, 100, true));
+
+        player.addAnimation(new FAnimation(PlayerState.INVULNERABLE.ToString() + Direction.RIGHT.ToString(), new int[] { 9 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.INVULNERABLE.ToString() + Direction.LEFT.ToString(), new int[] { 9 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.INVULNERABLE.ToString() + Direction.UP.ToString(), new int[] { 5 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.INVULNERABLE.ToString() + Direction.DOWN.ToString(), new int[] { 1 }, 100, true));
 
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.RIGHT.ToString(), new int[] { 9, 10, 9, 12 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.LEFT.ToString(), new int[] { 9, 10, 9, 12 }, 150, true));
@@ -67,9 +80,8 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.UP.ToString(), new int[] { 24, 25 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD.ToString() + Direction.DOWN.ToString(), new int[] { 20, 21 }, attackSpeed, false));
 
-
-        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.RIGHT.ToString(), new int[] { 30,31 }, attackSpeed, false));
-        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.LEFT.ToString(), new int[] { 30,31 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.RIGHT.ToString(), new int[] { 30, 31 }, attackSpeed, false));
+        player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.LEFT.ToString(), new int[] { 30, 31 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.UP.ToString(), new int[] { 26, 27 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.DOWN.ToString(), new int[] { 22, 23 }, attackSpeed, false));
 
@@ -78,16 +90,81 @@ public class Player : FutileFourDirectionBaseObject
         this.AddChild(player);
     }
 
+    public override void HandleAddedToContainer(FContainer container)
+    {
+        container.AddChild(swordCollision);
+        base.HandleAddedToContainer(container);
+    }
+
+    public void TakeDamage(Vector2 pos)
+    {
+        this.health--;
+        State = PlayerState.INVULNERABLE;
+        invulnCount = 3.0f;
+      
+        
+        Vector2 dist = (this.GetPosition() - pos).normalized * 4;
+        if (dist == Vector2.zero)
+            dist = RXRandom.Vector2Normalized() * 4;
+        maxXVel = 50f;
+        maxYVel = 50f;
+        minYVel = -50f;
+        xVel = dist.x;
+        yVel = dist.y;
+        xAcc = 0;
+        yAcc = 0;
+
+    }
+
+    
+
     bool hasSpawnedSpiritParticles = false;
     float maxJumpDist = 16 * 2.3f;
     public override void OnFixedUpdate()
     {
+        swordCollision.SetPosition(this.GetPosition());
+        switch (_direction)
+        {
+            case Direction.RIGHT:
+                swordCollision.hitBox.x = 6;
+                swordCollision.hitBox.y = -8;
+                swordCollision.hitBox.width = 15;
+                swordCollision.hitBox.height = 12;
+                break;
+            case Direction.LEFT:
+
+                swordCollision.hitBox.x = -6;
+                swordCollision.hitBox.y = -8;
+                swordCollision.hitBox.width = 15;
+                swordCollision.hitBox.height = 12;
+
+                break;
+            case Direction.DOWN:
+                swordCollision.hitBox.x = 0;
+                swordCollision.hitBox.y = -12;
+                swordCollision.hitBox.width = 12;
+                swordCollision.hitBox.height = 15;
+
+                break;
+            case Direction.UP:
+                swordCollision.hitBox.x = 0;
+                swordCollision.hitBox.y = 8;
+                swordCollision.hitBox.width = 12;
+                swordCollision.hitBox.height = 15;
+                break;
+        }
+        swordCollision.UpdateHitBoxSprite();
+
         if (C.isTransitioning)
             return;
         switch (State)
         {
             case PlayerState.IDLE:
             case PlayerState.MOVE:
+                if (State == PlayerState.MOVE)
+                    if (RXRandom.Float() < .04f)
+                        SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
+                shouldDamage = false;
                 if (C.getKey(C.JUMP_KEY))
                 {
                     State = PlayerState.JUMP;
@@ -187,7 +264,11 @@ public class Player : FutileFourDirectionBaseObject
 
                     xAcc = -moveSpeed;
                     if (xVel > 0)
+                    {
+
+                        SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
                         xVel *= .8f;
+                    }
 
                 }
                 else
@@ -196,7 +277,10 @@ public class Player : FutileFourDirectionBaseObject
 
                         xAcc = moveSpeed;
                         if (xVel < 0)
+                        {
+                            SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
                             xVel *= .8f;
+                        }
 
                     }
                     else
@@ -205,14 +289,22 @@ public class Player : FutileFourDirectionBaseObject
                 {
                     yAcc = moveSpeed;
                     if (yVel < 0)
+                    {
+
+                        SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
                         yVel *= .8f;
+                    }
 
                 }
                 else if (C.getKey(C.DOWN_KEY))
                 {
                     yAcc = -moveSpeed;
                     if (yVel > 0)
+                    {
+
+                        SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
                         yVel *= .8f;
+                    }
                 }
                 else
                     yVel *= .7f;
@@ -220,6 +312,7 @@ public class Player : FutileFourDirectionBaseObject
 
                 break;
             case PlayerState.SWORD:
+                shouldDamage = stateCount > .2f && stateCount < .4f;
                 if (stateCount > .6f)
                     State = PlayerState.IDLE;
                 else if (stateCount > .3f)
@@ -286,6 +379,7 @@ public class Player : FutileFourDirectionBaseObject
 
                 break;
             case PlayerState.SWORD_TWO:
+                shouldDamage = stateCount > .2f;
                 if (stateCount > .6f)
                     State = PlayerState.IDLE;
                 else if (stateCount > .19f)
@@ -295,6 +389,24 @@ public class Player : FutileFourDirectionBaseObject
                         hasSpawnedSpiritParticles = true;
                     }
                 break;
+            case PlayerState.INVULNERABLE:
+                 if (RXRandom.Float() < .2f) 
+                    SpawnParticles(Direction.UP, 1);
+                this.isVisible = stateCount * 100 % 10 < 5;
+                if (stateCount > invulnerableStunTime)
+                {
+                    State = PlayerState.IDLE;
+
+                    maxXVel = 1;
+                    maxYVel = 1;
+                    minYVel = -1;
+                    this.isVisible = true;
+                }
+                this.xVel *= .9f;
+                this.yVel *= .9f;
+
+                break;
+
 
         }
 
@@ -303,7 +415,9 @@ public class Player : FutileFourDirectionBaseObject
             switch (State)
             {
                 case PlayerState.IDLE:
-                    State = PlayerState.MOVE;
+                    {
+                        State = PlayerState.MOVE;
+                    }
                     break;
             }
         }
@@ -318,17 +432,32 @@ public class Player : FutileFourDirectionBaseObject
         }
 
         base.OnFixedUpdate();
+        if (stateCount == 0 && State == PlayerState.MOVE)
 
+            SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 5);
         lastActionPress = C.getKey(C.ACTION_KEY);
+        lastJumpPress = C.getKey(C.JUMP_KEY);
         PlayAnim();
     }
 
-    private void SpawnParticles(Direction dir, int numParticles = 10)
+    protected override void OnUpdate()
+    {
+        if (invulnCount > 0)
+        {
+            this.isVisible = invulnCount * 50 % 10 < 5;
+            invulnCount -= Time.deltaTime;
+        }
+        else
+            this.isVisible = true;
+        base.OnUpdate();
+    }
+
+    private void SpawnDeathParticles(Direction dir, int numParticles = 10)
     {
         for (int i = 0; i < numParticles; i++)
         {
             Particle.ParticleOne p = Particle.ParticleOne.getParticle();
-            Vector2 vel = new Vector2(RXRandom.Float() * 60 - 30, RXRandom.Float() * 60);
+            Vector2 vel = new Vector2(RXRandom.Float() * 20 - 10, RXRandom.Float() * 20);
             Vector2 acc = new Vector2(-vel.x * (RXRandom.Float() * .5f), -vel.y * -1.0f);
             switch (dir)
             {
@@ -359,6 +488,58 @@ public class Player : FutileFourDirectionBaseObject
                     break;
             }
             p.activate(this.GetPosition() + new Vector2(RXRandom.Float() * 16 - 8, RXRandom.Float() * 16 - 8), vel, acc, RXRandom.Bool() ? 180.0f : 0);
+            this.container.AddChild(p);
+        }
+    }
+    private void SpawnParticles(Direction dir, int numParticles = 10)
+    {
+        for (int i = 0; i < numParticles; i++)
+        {
+            Particle.ParticleOne p = Particle.ParticleOne.getParticle();
+            Vector2 vel = new Vector2(RXRandom.Float() * 60 - 30, RXRandom.Float() * 60);
+            Vector2 acc = new Vector2(-vel.x * (RXRandom.Float() * .5f), -vel.y * -1.0f);
+            Vector2 pos = new Vector2(RXRandom.Float() * 10 - 5, -8);
+            switch (dir)
+            {
+                case Direction.DOWN:
+                    vel.y *= -1;
+                    acc.y *= -1;
+
+                    break;
+                case Direction.RIGHT:
+                    float tempX = vel.x;
+                    vel.x = vel.y;
+                    vel.y = tempX;
+                    tempX = acc.x;
+                    acc.x = acc.y;
+                    acc.y = tempX;
+                    tempX = pos.x;
+                    pos.x = pos.y;
+                    pos.y = tempX;
+                    pos.x *= .5f;
+                    pos.y = -8;
+                    pos.x *= -1;
+                    break;
+                case Direction.UP:
+                    pos.y = 0;
+                    break;
+                case Direction.LEFT:
+                    tempX = vel.x;
+                    vel.x = vel.y;
+                    vel.y = tempX;
+                    tempX = acc.x;
+                    acc.x = acc.y;
+                    acc.y = tempX;
+                    tempX = pos.x;
+                    pos.x = pos.y;
+                    pos.y = tempX;
+                    pos.x *= .5f;
+                    pos.y = -8;
+                    vel.x *= -1;
+                    acc.x *= -1;
+                    break;
+            }
+            p.activate(this.GetPosition() + pos, vel, acc, RXRandom.Bool() ? 180.0f : 0);
             this.container.AddChild(p);
         }
     }
