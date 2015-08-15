@@ -10,7 +10,8 @@ public class World : FContainer
     FTilemap wallCollisionTilemap;
     FTilemap collisionTilemap;
     FTilemap backgroundTilemap;
-    FSprite loadingBG;
+    public FSprite loadingBG;
+    public UI ui;
     Player player;
 
     FContainer background = new FContainer();
@@ -52,6 +53,7 @@ public class World : FContainer
         loadingBG.isVisible = false;
         loadingBG.x = -Futile.screen.halfWidth - loadingBG.width / 2;
         C.getCameraInstance().AddChild(loadingBG);
+        ui = new UI();
 
     }
 

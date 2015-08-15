@@ -6,18 +6,21 @@ using UnityEngine;
 
 public class C
 {
-    public const string versionNumber = "v0.2 ";
+    public const string versionNumber = "v0.2";
 
     private static FCamObject camera;
     public static FCamObject getCameraInstance()
     {
         if (camera == null)
+        {
             camera = new FCamObject();
+            camera.shakeHUD = false;
+        }
         return camera;
     }
 
     public static bool isTransitioning = false;
-    public static bool isDebug = true;
+    public static bool isDebug = false;
 
     public const string smallFontName = "smallFont";
     public const string largeFontName = "largeFont";
@@ -28,6 +31,7 @@ public class C
     public static readonly KeyCode[] DOWN_KEY = new KeyCode[] { KeyCode.DownArrow, KeyCode.S };
     public static readonly KeyCode[] JUMP_KEY = new KeyCode[] { KeyCode.X, KeyCode.L, KeyCode.Space };
     public static readonly KeyCode[] ACTION_KEY = new KeyCode[] { KeyCode.Z, KeyCode.K };
+    public static readonly KeyCode[] SELECT_KEY = new KeyCode[] { KeyCode.Tab };
 
     private static float lastVerticalValue = 0;
     public static bool getUpPress()

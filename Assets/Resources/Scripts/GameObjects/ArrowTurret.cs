@@ -11,7 +11,6 @@ public class ArrowTurret : FutileFourDirectionBaseObject
     private float initDelay = 0;
     public ArrowTurret(float interval, float initDelay, World world): base(new RXRect(0,-4,12,8), world)
     {
-        RXDebug.Log(initDelay);
         this.interval = interval;
         handleStateCount = true;
         this.initDelay = initDelay;

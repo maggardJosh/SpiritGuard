@@ -60,11 +60,10 @@ public class TitleScreen : FContainer
     {
         if (C.getKeyDown(C.JUMP_KEY))
         {
-
             World world = new World();
             world.ShowLoading(() =>
             {
-
+                C.getCameraInstance().AddChild(world.ui);
                 Futile.stage.AddChild(world);
                 C.getCameraInstance().MoveToFront();
                 world.LoadMap("1_1"); world.SpawnPlayer("spawnpoint");

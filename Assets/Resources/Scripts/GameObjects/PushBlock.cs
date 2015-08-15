@@ -57,7 +57,6 @@ public class PushBlock : FutilePlatformerBaseObject
 
     private void SpawnParticles(FutileFourDirectionBaseObject.Direction dir, int numParticles = 10)
     {
-        RXDebug.Log(dir);
         for (int i = 0; i < numParticles; i++)
         {
             Particle.ParticleOne p = Particle.ParticleOne.getParticle();

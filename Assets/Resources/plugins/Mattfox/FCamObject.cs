@@ -135,8 +135,9 @@ public class FCamObject : FContainer {
         Futile.stage.y = -Mathf.FloorToInt(y + _shakeOffset.y);
 		
 		if (!_shakeIncludeHUD) {
-			x -= _shakeOffset.x;
-			y -= _shakeOffset.y;
+            RXDebug.Log(_shakeOffset);
+            x += _shakeOffset.x;
+            y += _shakeOffset.y;
 		} else {
 			x -= _shakeOffset.x/2;
 			y -= _shakeOffset.y/2;

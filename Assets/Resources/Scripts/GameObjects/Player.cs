@@ -9,13 +9,14 @@ public class Player : FutileFourDirectionBaseObject
     private float moveSpeed = .1f;
     private FAnimatedSprite player;
     bool lastActionPress = false;
+    bool lastSelectPress = false;
     bool lastJumpPress = false;
     public bool shouldDamage = false;
     int health = 3;
     public FutilePlatformerBaseObject swordCollision;
     public float invulnCount = 0;
     float invulnerableStunTime = .6f;
-    SecondaryItem selectedItem = SecondaryItem.BOW;
+    SecondaryItem selectedItem = SecondaryItem.SWORD;
 
     public enum SecondaryItem
     {
@@ -232,6 +233,14 @@ public class Player : FutileFourDirectionBaseObject
                 float attackTime = .4f;
                 float attackDist = 16;
                 float attackDisp = 3f;
+                if (C.getKey(C.SELECT_KEY) && !lastSelectPress)
+                {
+                    if (selectedItem == SecondaryItem.SWORD)
+                        selectedItem = SecondaryItem.BOW;
+                    else
+                        selectedItem = SecondaryItem.SWORD;
+                    world.ui.UpdateSelectedItem(selectedItem);
+                }
                 if (C.getKey(C.ACTION_KEY) && !lastActionPress)
                 {
                     hasSpawnedSpiritParticles = false;
@@ -503,6 +512,7 @@ public class Player : FutileFourDirectionBaseObject
 
             SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
         lastActionPress = C.getKey(C.ACTION_KEY);
+        lastSelectPress = C.getKey(C.SELECT_KEY);
         lastJumpPress = C.getKey(C.JUMP_KEY);
         PlayAnim();
     }
