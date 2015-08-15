@@ -25,7 +25,7 @@ public class Arrow : FutileFourDirectionBaseObject
         sprite.addAnimation(new FAnimation(Direction.RIGHT.ToString(), new int[] { 2 }, 150, false));
         sprite.addAnimation(new FAnimation(Direction.LEFT.ToString(), new int[] { 2 }, 150, false));
         this.AddChild(sprite);
-        
+
         PlayAnim();
     }
 
@@ -68,9 +68,15 @@ public class Arrow : FutileFourDirectionBaseObject
         }
         base.OnFixedUpdate();
     }
-
+    public void HandlePlayerCollision(Player p)
+    {
+        if (this.isColliding(p))
+            HandleDamageObjectCollision(p);
+    }
     protected override bool HandleDamageObjectCollision(FutilePlatformerBaseObject damageObject)
     {
+        if (owner == damageObject)
+            return false;
         if (damageObject is Knight)
         {
             Knight k = (Knight)damageObject;
@@ -79,6 +85,18 @@ public class Arrow : FutileFourDirectionBaseObject
             k.TakeDamage(this.GetPosition());
             stuckInThing = k;
             stuckInThingDisp = this.GetPosition() - k.GetPosition();
+            firstHit = true;
+            return true;
+        }
+        else if (damageObject is Player)
+        {
+
+            Player p = (Player)damageObject;
+            if (p.invulnCount > 0)
+                return false;
+            p.TakeDamage(this.GetPosition());
+            stuckInThing = p;
+            stuckInThingDisp = this.GetPosition() - p.GetPosition();
             firstHit = true;
             return true;
         }
@@ -107,9 +125,9 @@ public class Arrow : FutileFourDirectionBaseObject
                 hitBox.height = 5;
                 hitBox.width = 12;
                 break;
-        
+
         }
-                UpdateHitBoxSprite();
+        UpdateHitBoxSprite();
         sprite.play(CurrentDirection.ToString());
     }
 }

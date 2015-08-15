@@ -46,5 +46,16 @@ public class UI : FContainer
             case Player.SecondaryItem.BOW: slotBSelected.SetElementByName("bow_soul"); break;
         }
     }
+
+    public void UpdateHealth(int health)
+    {
+        switch (health)
+        {
+            case 0: hearts.SetElementByName("heart_container"); break;
+            case 1: hearts.SetElementByName("heart_container1"); break;
+            case 2: hearts.SetElementByName("heart_container2"); break;
+            case 3: hearts.SetElementByName("heart_full"); break;
+        }
+    }
 }
 

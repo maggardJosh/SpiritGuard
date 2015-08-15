@@ -118,6 +118,7 @@ public class Player : FutileFourDirectionBaseObject
     public void TakeDamage(Vector2 pos)
     {
         this.health--;
+        world.ui.UpdateHealth(this.health);
         State = PlayerState.INVULNERABLE;
         invulnCount = 3.0f;
 

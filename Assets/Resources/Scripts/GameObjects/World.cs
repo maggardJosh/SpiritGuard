@@ -210,6 +210,8 @@ public class World : FContainer
                 continue;
             if (self is Arrow && ((Arrow)self).owner == o)
                 continue;
+            if (self is Arrow && o is Player)
+            continue;
             if (o == self)
                 continue;
             worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
@@ -256,7 +258,11 @@ public class World : FContainer
         {
             Knight k = (Knight)o;
             k.CheckDamage(player);
-
+        }
+        else if (o is Arrow)
+        {
+            Arrow a = (Arrow)o;
+            a.HandlePlayerCollision(player);
         }
 
     }
