@@ -110,7 +110,7 @@ public class Knight : FutileFourDirectionBaseObject
         }
         else
         {
-            if (p.invulnCount > 0 || (p.StateCount > .01f && p.State == Player.PlayerState.JUMP))
+            if (p.invulnCount > 0)// || (p.StateCount > .01f && p.State == Player.PlayerState.JUMP))
                 return;
             if (isColliding(p))
             {

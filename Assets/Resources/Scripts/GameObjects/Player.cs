@@ -117,6 +117,7 @@ public class Player : FutileFourDirectionBaseObject
 
     public void TakeDamage(Vector2 pos)
     {
+        Go.killAllTweensWithTarget(this);
         this.health--;
         world.ui.UpdateHealth(this.health);
         State = PlayerState.INVULNERABLE;

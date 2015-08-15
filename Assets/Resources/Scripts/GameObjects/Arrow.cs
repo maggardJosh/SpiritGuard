@@ -75,6 +75,8 @@ public class Arrow : FutileFourDirectionBaseObject
     }
     protected override bool HandleDamageObjectCollision(FutilePlatformerBaseObject damageObject)
     {
+        if (firstHit)
+            return false;
         if (owner == damageObject)
             return false;
         if (damageObject is Knight)
