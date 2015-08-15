@@ -29,6 +29,9 @@ public class MapLoader
                 case "pushblock":
                     world.addObject(parsePushBlock(node, world));
                     break;
+                case "arrowturret":
+                    world.addObject(parseArrowTurret(node, world));
+                    break;
             }
         }
     }
@@ -123,6 +126,44 @@ public class MapLoader
          result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
          return result;
-     } 
+     }
+
+     private static ArrowTurret parseArrowTurret(XMLNode node, World world)
+     {
+         float interval = 1;
+         float initdelay = 0;
+         FutileFourDirectionBaseObject.Direction turretDirection = FutileFourDirectionBaseObject.Direction.DOWN;
+         if (node.children[0] != null)
+         {
+
+             foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+             {
+                 switch (property.attributes["name"].ToLower())
+                 {
+                     case "interval":
+                         float.TryParse(property.attributes["value"], out interval);
+                         break;
+                     case "direction":
+                         switch (property.attributes["value"].ToUpper())
+                         {
+                             case "UP": turretDirection = FutileFourDirectionBaseObject.Direction.UP; break;
+                             case "RIGHT": turretDirection = FutileFourDirectionBaseObject.Direction.RIGHT; break;
+                             case "DOWN": turretDirection = FutileFourDirectionBaseObject.Direction.DOWN; break;
+                             case "LEFT": turretDirection = FutileFourDirectionBaseObject.Direction.LEFT; break;
+                         }
+                         break;
+                     case "initdelay":
+                         float.TryParse(property.attributes["value"], out initdelay);
+                         break;
+                 }
+             }
+         }
+         ArrowTurret result = new ArrowTurret(interval, initdelay, world);
+         result.SetDirection(turretDirection);
+         result.PlayAnim();
+         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+
+         return result;
+     }
 
 }

@@ -47,6 +47,7 @@ public class PushBlock : FutilePlatformerBaseObject
         }
         if (world.isPassable(newX, newY) && world.CheckObjectCollision(this, newX, newY)== null && !world.CheckDamageObjectCollision(this, newX, newY))
         {
+            C.getCameraInstance().shake(.7f, .5f);
             isMoving = true;
             Go.to(this, 1.0f, new TweenConfig().floatProp("x", newX).floatProp("y", newY).setEaseType(EaseType.QuadInOut).onComplete(() => { isMoving = false; }));
             isBeingPushed = false;
