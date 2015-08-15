@@ -21,8 +21,10 @@ public class MapLoader
                     world.addObject(parseSign(node, world));
                     break;
                 case "enemy":
-                    RXDebug.Log("HI");
                     world.addObject(parseEnemy(node, world));
+                    break;
+                case "villager":
+                    world.addObject(parseVillager(node, world));
                     break;
             }
         }
@@ -99,6 +101,14 @@ public class MapLoader
      {
 
          Knight result = new Knight(world);
+         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+
+         return result;
+     }
+     private static Villager parseVillager(XMLNode node, World world)
+     {
+
+         Villager result = new Villager(world);
          result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
          return result;
