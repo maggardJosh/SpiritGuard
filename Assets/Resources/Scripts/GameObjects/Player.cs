@@ -14,7 +14,7 @@ public class Player : FutileFourDirectionBaseObject
     int health = 3;
     public FutilePlatformerBaseObject swordCollision;
     public float invulnCount = 0;
-    float invulnerableStunTime = 1.4f;
+    float invulnerableStunTime = .6f;
     SecondaryItem selectedItem = SecondaryItem.BOW;
 
     public enum SecondaryItem

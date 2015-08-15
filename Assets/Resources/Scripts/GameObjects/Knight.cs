@@ -79,8 +79,8 @@ public class Knight : FutileFourDirectionBaseObject
 
         PlayAnim();
         this.AddChild(sprite);
-    
-}
+
+    }
 
     protected override bool HandleDamageObjectCollision(FutilePlatformerBaseObject damageObject)
     {
@@ -182,6 +182,7 @@ public class Knight : FutileFourDirectionBaseObject
     FNode attackTarget = null;
     float invulnerableCount = 1.3f;
     float minState = .8f;
+    bool changeDirAfterAttack = false;
     public override void OnFixedUpdate()
     {
         switch (State)
@@ -274,10 +275,59 @@ public class Knight : FutileFourDirectionBaseObject
                 if (stateCount > attackTime * 1.4f)
                 {
                     State = KnightState.IDLE;
+                    if (changeDirAfterAttack)
+                    {
+                        switch (CurrentDirection)
+                        {
+                            case Direction.UP:
+                                xAcc = RXRandom.Bool() ? moveSpeed : -moveSpeed;
+                                yAcc = 0;
+                                break;
+                            case Direction.RIGHT:
+                                xAcc = 0;
+                                yAcc = RXRandom.Bool() ? moveSpeed : -moveSpeed;
+                                break;
+                            case Direction.DOWN:
+                                xAcc = RXRandom.Bool() ? moveSpeed : -moveSpeed;
+                                yAcc = 0;
+                                break;
+                            case Direction.LEFT:
+                                changeDirAfterAttack = true;
+                                xAcc = 0;
+                                yAcc = RXRandom.Bool() ? moveSpeed : -moveSpeed;
+                                break;
+                        }
+                        State = KnightState.MOVING;
+                    }
+                    changeDirAfterAttack = false;
                     resetMax();
                 }
                 this.xVel *= .9f;
                 this.yVel *= .9f;
+                switch (CurrentDirection)
+                {
+                    case Direction.UP:
+                        if (hitUp)
+                            changeDirAfterAttack = true;
+                            
+                        break;
+                    case Direction.RIGHT:
+                        if (hitRight)
+                            changeDirAfterAttack = true;
+                           
+                        break;
+                    case Direction.DOWN:
+                        if (hitDown)
+                            changeDirAfterAttack = true;
+                          
+                        break;
+                    case Direction.LEFT:
+                        if (hitLeft)
+                       
+                            changeDirAfterAttack = true;
+                       
+                        break;
+                }
                 break;
             case KnightState.INVULNERABLE:
 
