@@ -82,27 +82,27 @@ public class ArrowTurret : FutileFourDirectionBaseObject
         {
             case Direction.DOWN:
                 hitBox.x = 0;
-                hitBox.y = -4;
+                hitBox.y = 0;
                 hitBox.width = 12;
-                hitBox.height = 8;
+                hitBox.height = 12;
                 break;
             case Direction.UP:
                 hitBox.x = 0;
-                hitBox.y = 4;
+                hitBox.y = 0;
                 hitBox.width = 12;
-                hitBox.height = 8;
+                hitBox.height = 12;
                 break;
             case Direction.LEFT:
-                hitBox.x = -4;
+                hitBox.x = 0;
                 hitBox.y = 0;
-                hitBox.width = 8;
+                hitBox.width = 12;
                 hitBox.height = 12;
                 scaleX = 1;
                 break;
             case Direction.RIGHT:
-                hitBox.x = 4;
+                hitBox.x = 0;
                 hitBox.y = 0;
-                hitBox.width = 8;
+                hitBox.width = 12;
                 hitBox.height = 12;
                 scaleX = -1;
                 break;

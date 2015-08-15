@@ -112,17 +112,37 @@
   <object type="villager" gid="94" x="352" y="96"/>
   <object gid="95" x="352" y="144"/>
   <object type="pushblock" gid="95" x="304" y="176"/>
+  <object type="pushblock" gid="95" x="336" y="176"/>
   <object type="pushblock" gid="95" x="304" y="208"/>
+  <object type="pushblock" gid="95" x="336" y="208"/>
   <object type="pushblock" gid="95" x="272" y="96"/>
   <object type="enemy" gid="93" x="224" y="176"/>
   <object type="enemy" gid="93" x="224" y="192"/>
   <object type="enemy" gid="93" x="240" y="192"/>
   <object type="enemy" gid="93" x="240" y="160"/>
   <object type="enemy" gid="93" x="224" y="144"/>
+  <object type="arrowturret" gid="96" x="320" y="208">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="interval" value="1"/>
+   </properties>
+  </object>
+  <object type="arrowturret" gid="96" x="320" y="176">
+   <properties>
+    <property name="direction" value="up"/>
+    <property name="interval" value="1"/>
+   </properties>
+  </object>
   <object type="arrowturret" gid="96" x="304" y="192">
    <properties>
     <property name="direction" value="left"/>
     <property name="initdelay" value="0"/>
+    <property name="interval" value="1"/>
+   </properties>
+  </object>
+  <object type="arrowturret" gid="96" x="336" y="192">
+   <properties>
+    <property name="direction" value="right"/>
     <property name="interval" value="1"/>
    </properties>
   </object>
