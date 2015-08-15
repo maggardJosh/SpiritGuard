@@ -35,5 +35,7 @@ public class FutileFourDirectionBaseObject : FutilePlatformerBaseObject
         else if (xAcc < 0)
             _direction = Direction.LEFT;
         base.OnFixedUpdate();
+        if (_direction == Direction.UP || _direction == Direction.DOWN)
+            scaleX = 1;
     }
 }

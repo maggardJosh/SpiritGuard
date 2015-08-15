@@ -141,6 +141,18 @@ public class FutilePlatformerBaseObject : FContainer
         hitDown = false;
         hitUp = false;
 
+        if (xAcc > 0)
+        {
+            if (scaleX != -1 && collisionDebugSprite != null)
+                collisionDebugSprite.x *= -1;
+            scaleX = -1;
+        }
+        else if (xAcc < 0)
+        {
+            if (scaleX != 1 && collisionDebugSprite != null)
+                collisionDebugSprite.x *= -1;
+            scaleX = 1;
+        }
         if (applyGravity)
             this.yVel += world.gravity;
         this.xVel += xAcc;
@@ -165,16 +177,12 @@ public class FutilePlatformerBaseObject : FContainer
 
         if (xVel > 0)
         {
-            if (scaleX != -1 && collisionDebugSprite != null)
-                collisionDebugSprite.x *= -1;
-            scaleX = -1;
+
             hitRight = !TryMoveRight(xVel);
         }
         else if (xVel < 0)
         {
-            if (scaleX != 1 && collisionDebugSprite != null)
-                collisionDebugSprite.x *= -1;
-            scaleX = 1;
+            
             hitLeft = !TryMoveLeft(xVel);
         }
     }

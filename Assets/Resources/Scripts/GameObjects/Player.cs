@@ -15,6 +15,13 @@ public class Player : FutileFourDirectionBaseObject
     public FutilePlatformerBaseObject swordCollision;
     public float invulnCount = 0;
     float invulnerableStunTime = 1.4f;
+    SecondaryItem selectedItem = SecondaryItem.BOW;
+
+    public enum SecondaryItem
+    {
+        SWORD,
+        BOW
+    }
     public enum PlayerState
     {
         IDLE,
@@ -22,6 +29,8 @@ public class Player : FutileFourDirectionBaseObject
         JUMP,
         SWORD,
         SWORD_TWO,
+        BOW_DRAWN,
+        BOW_SHOOTING,
         INVULNERABLE
     }
 
@@ -85,6 +94,15 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.UP.ToString(), new int[] { 26, 27 }, attackSpeed, false));
         player.addAnimation(new FAnimation(PlayerState.SWORD_TWO.ToString() + Direction.DOWN.ToString(), new int[] { 22, 23 }, attackSpeed, false));
 
+        player.addAnimation(new FAnimation(PlayerState.BOW_DRAWN.ToString() + Direction.DOWN.ToString(), new int[] { 32, 33 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.BOW_DRAWN.ToString() + Direction.UP.ToString(), new int[] { 35, 36 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.BOW_DRAWN.ToString() + Direction.RIGHT.ToString(), new int[] { 38, 39 }, 150, true));
+        player.addAnimation(new FAnimation(PlayerState.BOW_DRAWN.ToString() + Direction.LEFT.ToString(), new int[] { 38, 39 }, 150, true));
+
+        player.addAnimation(new FAnimation(PlayerState.BOW_SHOOTING.ToString() + Direction.DOWN.ToString(), new int[] { 34 }, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.BOW_SHOOTING.ToString() + Direction.UP.ToString(), new int[] { 37 }, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.BOW_SHOOTING.ToString() + Direction.RIGHT.ToString(), new int[] { 40 }, 150, false));
+        player.addAnimation(new FAnimation(PlayerState.BOW_SHOOTING.ToString() + Direction.LEFT.ToString(), new int[] { 40 }, 150, false));
 
         PlayAnim(true);
         this.AddChild(player);
@@ -101,8 +119,8 @@ public class Player : FutileFourDirectionBaseObject
         this.health--;
         State = PlayerState.INVULNERABLE;
         invulnCount = 3.0f;
-      
-        
+
+
         Vector2 dist = (this.GetPosition() - pos).normalized * 4;
         if (dist == Vector2.zero)
             dist = RXRandom.Vector2Normalized() * 4;
@@ -116,7 +134,7 @@ public class Player : FutileFourDirectionBaseObject
 
     }
 
-    
+
 
     bool hasSpawnedSpiritParticles = false;
     float maxJumpDist = 16 * 2.3f;
@@ -217,47 +235,55 @@ public class Player : FutileFourDirectionBaseObject
                 if (C.getKey(C.ACTION_KEY) && !lastActionPress)
                 {
                     hasSpawnedSpiritParticles = false;
-                    State = PlayerState.SWORD;
-                    if (C.getKey(C.RIGHT_KEY))
-                        _direction = Direction.RIGHT;
-                    else if (C.getKey(C.DOWN_KEY))
-                        _direction = Direction.DOWN;
-                    else if (C.getKey(C.LEFT_KEY))
-                        _direction = Direction.LEFT;
-                    else if (C.getKey(C.UP_KEY))
-                        _direction = Direction.UP;
-
-                    SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length));
-
-                    Go.killAllTweensWithTarget(this);
-                    float newX = this.x;
-                    float newY = this.y;
-                    switch (_direction)
+                    switch (selectedItem)
                     {
-                        case Direction.UP: newY += attackDist; while (newY > this.y && (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null)) { newY -= 1f; } break;
-                        case Direction.RIGHT: newX += attackDist; while (newX > this.x && (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null)) { newX -= 1f; } break;
-                        case Direction.DOWN: newY -= attackDist; while (newY < this.y && (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null)) { newY += 1f; } break;
-                        case Direction.LEFT: newX -= attackDist; while (newX < this.x && (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null)) { newX += 1f; } break;
-                    }
-                    xVel = 0;
-                    yVel = 0;
-                    if (newX == this.x)
-                    {
-                        Go.to(this, attackTime / 2f, new TweenConfig().floatProp("x", -attackDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
-                        Go.to(this, attackTime, new TweenConfig().floatProp("y", newY).setEaseType(EaseType.BackInOut).onComplete(() => { }));
+                        case SecondaryItem.SWORD:
+                            State = PlayerState.SWORD;
+                            if (C.getKey(C.RIGHT_KEY))
+                                _direction = Direction.RIGHT;
+                            else if (C.getKey(C.DOWN_KEY))
+                                _direction = Direction.DOWN;
+                            else if (C.getKey(C.LEFT_KEY))
+                                _direction = Direction.LEFT;
+                            else if (C.getKey(C.UP_KEY))
+                                _direction = Direction.UP;
 
-                    }
-                    else
-                    {
-                        Go.to(this, attackTime / 2f, new TweenConfig().floatProp("y", attackDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
-                        Go.to(this, attackTime, new TweenConfig().floatProp("x", newX).setEaseType(EaseType.BackInOut).onComplete(() => { }));
+                            SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length));
 
+                            Go.killAllTweensWithTarget(this);
+                            float newX = this.x;
+                            float newY = this.y;
+                            switch (_direction)
+                            {
+                                case Direction.UP: newY += attackDist; while (newY > this.y && (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null)) { newY -= 1f; } break;
+                                case Direction.RIGHT: newX += attackDist; while (newX > this.x && (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null)) { newX -= 1f; } break;
+                                case Direction.DOWN: newY -= attackDist; while (newY < this.y && (!world.isPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null)) { newY += 1f; } break;
+                                case Direction.LEFT: newX -= attackDist; while (newX < this.x && (!world.isPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null)) { newX += 1f; } break;
+                            }
+                            xVel = 0;
+                            yVel = 0;
+                            if (newX == this.x)
+                            {
+                                Go.to(this, attackTime / 2f, new TweenConfig().floatProp("x", -attackDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
+                                Go.to(this, attackTime, new TweenConfig().floatProp("y", newY).setEaseType(EaseType.BackInOut).onComplete(() => { }));
+
+                            }
+                            else
+                            {
+                                Go.to(this, attackTime / 2f, new TweenConfig().floatProp("y", attackDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
+                                Go.to(this, attackTime, new TweenConfig().floatProp("x", newX).setEaseType(EaseType.BackInOut).onComplete(() => { }));
+
+                            }
+                            if (_direction == Direction.RIGHT)
+                                scaleX = -1;
+                            else if (_direction == Direction.LEFT)
+                                scaleX = 1;
+                            return;
+                        case SecondaryItem.BOW:
+                            SpawnDeathParticles(Direction.UP, 20);
+                            State = PlayerState.BOW_DRAWN;
+                            return;
                     }
-                    if (_direction == Direction.RIGHT)
-                        scaleX = -1;
-                    else if (_direction == Direction.LEFT)
-                        scaleX = 1;
-                    return;
                 }
                 if (C.getKey(C.LEFT_KEY))
                 {
@@ -310,6 +336,36 @@ public class Player : FutileFourDirectionBaseObject
                     yVel *= .7f;
 
 
+                break;
+            case PlayerState.BOW_DRAWN:
+                if (!C.getKey(C.ACTION_KEY))
+                {
+                    State = PlayerState.BOW_SHOOTING;
+
+                    return;
+                }
+                float strafeSpeed = 5f;
+                if (C.getKey(C.LEFT_KEY))
+                    xVel = -strafeSpeed;
+                else if (C.getKey(C.RIGHT_KEY))
+                    xVel = strafeSpeed;
+                else xVel *= .8f;
+
+                if (C.getKey(C.UP_KEY))
+                    yVel = strafeSpeed;
+                else if (C.getKey(C.DOWN_KEY))
+                    yVel = -strafeSpeed;
+                else yVel *= .8f;
+
+                break;
+            case PlayerState.BOW_SHOOTING:
+                xVel *= .8f;
+                yVel *= .8f;
+                if (stateCount > .5f)
+                {
+                    State = PlayerState.IDLE;
+                    SpawnDeathParticles(Direction.UP, 20);
+                }
                 break;
             case PlayerState.SWORD:
                 shouldDamage = stateCount > .2f && stateCount < .4f;
@@ -390,7 +446,7 @@ public class Player : FutileFourDirectionBaseObject
                     }
                 break;
             case PlayerState.INVULNERABLE:
-                 if (RXRandom.Float() < .2f) 
+                if (RXRandom.Float() < .2f)
                     SpawnParticles(Direction.UP, 1);
                 this.isVisible = stateCount * 100 % 10 < 5;
                 if (stateCount > invulnerableStunTime)
