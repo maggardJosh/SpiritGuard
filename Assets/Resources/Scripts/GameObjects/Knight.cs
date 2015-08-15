@@ -246,7 +246,12 @@ public class Knight : FutileFourDirectionBaseObject
                 if (stateCount > attackDelay)
                 {
                     State = KnightState.ATTACKING;
-                    Go.to(this, attackTime, new TweenConfig().floatProp("x", attackTarget.x).floatProp("y", attackTarget.y).setEaseType(EaseType.BackIn));
+                    Vector2 diff = (attackTarget.GetPosition() - this.GetPosition()).normalized;
+                    maxXVel = 100;
+                    maxYVel = 100;
+                    minYVel = -100;
+                    xVel = diff.x * 6;
+                    yVel = diff.y * 6;
                 }
                 break;
             case KnightState.ATTACKING:
@@ -255,6 +260,8 @@ public class Knight : FutileFourDirectionBaseObject
                     State = KnightState.IDLE;
                     resetMax();
                 }
+                this.xVel *= .9f;
+                this.yVel *= .9f;
                 break;
             case KnightState.INVULNERABLE:
 
