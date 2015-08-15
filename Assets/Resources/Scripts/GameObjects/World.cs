@@ -7,6 +7,7 @@ using UnityEngine;
 public class World : FContainer
 {
     FTmxMap map;
+    FTilemap wallCollisionTilemap;
     FTilemap collisionTilemap;
     FTilemap backgroundTilemap;
     FSprite loadingBG;
@@ -114,9 +115,11 @@ public class World : FContainer
         }));
 
         collisionTilemap = (FTilemap)this.map.getLayerNamed("collision");
+        wallCollisionTilemap = (FTilemap)this.map.getLayerNamed("walls");
         backgroundTilemap = (FTilemap)this.map.getLayerNamed("background");
         background.AddChild(backgroundTilemap);
         background.AddChild(collisionTilemap);
+        background.AddChild(wallCollisionTilemap);
 
         if (player == null)
         {
@@ -127,11 +130,16 @@ public class World : FContainer
         playerLayer.AddChild(player);
         C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height, collisionTilemap.width, collisionTilemap.height));
         collisionTilemap.clipNode = C.getCameraInstance();
+        wallCollisionTilemap.clipNode = C.getCameraInstance();
         backgroundTilemap.clipNode = C.getCameraInstance();
 
         MapLoader.loadObjects(this, map.objects);
     }
 
+    public bool isWallPassable(float x, float y)
+    {
+        return wallCollisionTilemap.IsPassable(x, y);
+    }
     public bool isPassable(float x, float y)
     {
         bool result = collisionTilemap.IsPassable(x, y);
@@ -161,8 +169,8 @@ public class World : FContainer
 
     public void addObject(FNode objectToAdd)
     {
-        if (objectToAdd is Knight)
-            damageObjects.Add((Knight)objectToAdd);
+        if (objectToAdd is Knight || objectToAdd is Arrow)
+            damageObjects.Add((FutilePlatformerBaseObject)objectToAdd);
         else
             if (objectToAdd is FutilePlatformerBaseObject)
                 collisionObjects.Add((FutilePlatformerBaseObject)objectToAdd);
@@ -178,8 +186,10 @@ public class World : FContainer
     public void removeObject(FNode objectToRemove)
     {
 
-        if (objectToRemove is Knight)
-            damageObjects.Remove((Knight)objectToRemove);
+        if (objectToRemove is Knight || objectToRemove is Arrow)
+        {
+            damageObjects.Remove((FutilePlatformerBaseObject)objectToRemove);
+        }
         else
             if (objectToRemove is FutilePlatformerBaseObject)
                 collisionObjects.Remove((FutilePlatformerBaseObject)objectToRemove);
@@ -195,6 +205,8 @@ public class World : FContainer
         foreach (FutilePlatformerBaseObject o in collisionObjects)
         {
             if ((self is Knight && o is Player))
+                continue;
+            if (self is Arrow && ((Arrow)self).owner == o)
                 continue;
             if (o == self)
                 continue;
@@ -212,10 +224,39 @@ public class World : FContainer
         return null;
     }
 
+    public FutilePlatformerBaseObject CheckDamageObjectCollisionGetRect(FutilePlatformerBaseObject self, float x, float y)
+    {
+        foreach (FutilePlatformerBaseObject o in damageObjects)
+        {
+            if (o == self)
+                continue;
+            worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
+            worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
+            worldPos.width = o.hitBox.width;
+            worldPos.height = o.hitBox.height;
+            if (worldPos.Contains(x, y))
+            {
+                return o;
+            }
+        }
+        
+        return null;
+
+    }
     public void CheckDamageObjectCollision()
     {
         foreach (FutilePlatformerBaseObject o in damageObjects)
             CheckDamageObjectCollision(o);
+    }
+    public void CheckDamageObjectCollision(FutilePlatformerBaseObject o)
+    {
+        if (o is Knight)
+        {
+            Knight k = (Knight)o;
+            k.CheckDamage(player);
+
+        }
+
     }
     public bool CheckDamageObjectCollision(FutilePlatformerBaseObject self, float x, float y)
     {
@@ -232,11 +273,6 @@ public class World : FContainer
         }
         return false;
 
-    }
-    public void CheckDamageObjectCollision(FutilePlatformerBaseObject o)
-    {
-        if (o is Knight)
-            ((Knight)o).CheckDamage(player);
     }
 
     public void Update()

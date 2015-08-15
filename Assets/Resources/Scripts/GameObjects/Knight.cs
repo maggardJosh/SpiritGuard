@@ -94,20 +94,7 @@ public class Knight : FutileFourDirectionBaseObject
         {
             if (isColliding(p.swordCollision))
             {
-                Go.killAllTweensWithTarget(this);
-                this.health--;
-                if (health > 0)
-                    State = KnightState.INVULNERABLE;
-                else
-                    State = KnightState.DYING;
-                Vector2 dist = (this.GetPosition() - p.GetPosition()).normalized * 4;
-                maxXVel = 50f;
-                maxYVel = 50f;
-                minYVel = -50f;
-                xVel = dist.x;
-                yVel = dist.y;
-                xAcc = 0;
-                yAcc = 0;
+                TakeDamage(p.GetPosition());
             }
         }
         else
@@ -162,6 +149,24 @@ public class Knight : FutileFourDirectionBaseObject
                 break;
         }
 
+    }
+
+    public void TakeDamage(Vector2 pos)
+    {
+        Go.killAllTweensWithTarget(this);
+        this.health--;
+        if (health > 0)
+            State = KnightState.INVULNERABLE;
+        else
+            State = KnightState.DYING;
+        Vector2 dist = (this.GetPosition() - pos).normalized * 4;
+        maxXVel = 50f;
+        maxYVel = 50f;
+        minYVel = -50f;
+        xVel = dist.x;
+        yVel = dist.y;
+        xAcc = 0;
+        yAcc = 0;
     }
     FNode attackTarget = null;
     float invulnerableCount = 1.3f;

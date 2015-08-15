@@ -56,6 +56,7 @@ public class PushBlock : FutilePlatformerBaseObject
 
     private void SpawnParticles(FutileFourDirectionBaseObject.Direction dir, int numParticles = 10)
     {
+        RXDebug.Log(dir);
         for (int i = 0; i < numParticles; i++)
         {
             Particle.ParticleOne p = Particle.ParticleOne.getParticle();
@@ -104,6 +105,8 @@ public class PushBlock : FutilePlatformerBaseObject
 
     public void HandlePlayerCollision(Player p)
     {
+        if (isMoving)
+            return;
         isBeingPushed = true;
         if (Mathf.Round(p.x + p.hitBox.x + p.hitBox.width/2f) > this.x - 8 && Mathf.Round( p.x + p.hitBox.x - p.hitBox.width/2f) < this.x  + 8)
         {

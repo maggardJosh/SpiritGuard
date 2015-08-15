@@ -26,7 +26,7 @@
 },
 "Arrow Turret/turret_arrow_04":
 {
-	"frame": {"x":499,"y":177,"w":10,"h":12},
+	"frame": {"x":499,"y":185,"w":10,"h":12},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":3,"y":4,"w":10,"h":12},
@@ -50,7 +50,7 @@
 },
 "Arrow/object_arrow_01":
 {
-	"frame": {"x":501,"y":145,"w":8,"h":16},
+	"frame": {"x":501,"y":165,"w":8,"h":16},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":0,"w":8,"h":16},
@@ -62,6 +62,14 @@
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":4,"w":16,"h":8},
+	"sourceSize": {"w":16,"h":16}
+},
+"Arrow/object_arrow_03":
+{
+	"frame": {"x":501,"y":145,"w":8,"h":16},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":0,"w":8,"h":16},
 	"sourceSize": {"w":16,"h":16}
 },
 "Button/button_01":
@@ -82,7 +90,7 @@
 },
 "Magic Orb/magic_orb_01":
 {
-	"frame": {"x":499,"y":216,"w":8,"h":8},
+	"frame": {"x":498,"y":236,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":4,"w":8,"h":8},
@@ -90,7 +98,7 @@
 },
 "Magic Orb/magic_orb_02":
 {
-	"frame": {"x":501,"y":165,"w":8,"h":8},
+	"frame": {"x":499,"y":224,"w":8,"h":8},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":4,"w":8,"h":8},
@@ -450,7 +458,7 @@
 },
 "player_09":
 {
-	"frame": {"x":499,"y":193,"w":9,"h":19},
+	"frame": {"x":499,"y":201,"w":9,"h":19},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":7,"y":3,"w":9,"h":19},
@@ -466,7 +474,7 @@
 },
 "player_11":
 {
-	"frame": {"x":499,"y":193,"w":9,"h":19},
+	"frame": {"x":499,"y":201,"w":9,"h":19},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":7,"y":3,"w":9,"h":19},
@@ -1242,7 +1250,7 @@
 },
 "tilemap_65":
 {
-	"frame": {"x":478,"y":230,"w":16,"h":16},
+	"frame": {"x":333,"y":171,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -1250,7 +1258,7 @@
 },
 "tilemap_66":
 {
-	"frame": {"x":333,"y":171,"w":16,"h":16},
+	"frame": {"x":333,"y":151,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -1258,7 +1266,7 @@
 },
 "tilemap_67":
 {
-	"frame": {"x":333,"y":151,"w":16,"h":16},
+	"frame": {"x":478,"y":230,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -1575,6 +1583,6 @@
 	"format": "RGBA8888",
 	"size": {"w":512,"h":512},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:f40d6c52e0e04d55747a070d395bc808:17c08447e699cfff51f023fa3a2f5934:472867876a4db3e566643cd3fb500437$"
+	"smartupdate": "$TexturePacker:SmartUpdate:2859765f79b1f3701142416ad75714e3:c8b6322101bc7a8bb953d92227af0684:472867876a4db3e566643cd3fb500437$"
 }
 }

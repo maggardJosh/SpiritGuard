@@ -341,7 +341,18 @@ public class Player : FutileFourDirectionBaseObject
                 if (!C.getKey(C.ACTION_KEY))
                 {
                     State = PlayerState.BOW_SHOOTING;
-
+                    Arrow arrow = new Arrow(this, world);
+                    arrow.SetDirection(CurrentDirection);
+                    arrow.PlayAnim();
+                    arrow.SetPosition(this.GetPosition());
+                    switch(CurrentDirection)
+                    {
+                        case Direction.UP: arrow.yVel = 2; break;
+                        case Direction.RIGHT: arrow.xVel = 2; break;
+                        case Direction.DOWN: arrow.yVel = -2; break;
+                        case Direction.LEFT: arrow.xVel = -2; break;
+                    }
+                    world.addObject(arrow);
                     return;
                 }
                 float strafeSpeed = 5f;

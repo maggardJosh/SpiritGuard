@@ -14,13 +14,16 @@ public class FutilePlatformerBaseObject : FContainer
     protected float maxXVel = 2.5f;
     protected float maxYVel = 2.5f;
     protected float minYVel = -2.5f;
+    protected bool collidesWithWalls = true;
+    protected bool collidesWithWater = true;
+    protected bool handleDamageObjectCollision = false;
     float tileSize;
     protected World world;
     protected bool clearAcc = true;
 
     protected bool handleStateCount = false;
     protected float stateCount = 0;
-    public float StateCount { get { return stateCount; } } 
+    public float StateCount { get { return stateCount; } }
     bool applyGravity = false;
     protected bool grounded = false;
     protected float groundedMargin = 16f;       //Amount off the ground that the player is considered to be grounded (Gives the player some leeway)
@@ -33,6 +36,8 @@ public class FutilePlatformerBaseObject : FContainer
     protected bool hitDown = false;
     protected bool hitUp = false;
     FSprite collisionDebugSprite;
+
+    public bool HitSomething { get { return hitLeft || hitRight || hitDown || hitUp; } }
 
     public FutilePlatformerBaseObject(RXRect hitBox, World world)
     {
@@ -165,7 +170,7 @@ public class FutilePlatformerBaseObject : FContainer
 
         this.yVel = Mathf.Clamp(this.yVel, minYVel, maxYVel);
         this.xVel = Mathf.Clamp(this.xVel, -maxXVel, maxXVel);
-   
+
         if (this is Player)
             world.CheckDamageObjectCollision();
         else if (this is Knight)
@@ -177,16 +182,20 @@ public class FutilePlatformerBaseObject : FContainer
 
         if (xVel > 0)
         {
-
             hitRight = !TryMoveRight(xVel);
         }
         else if (xVel < 0)
         {
-            
+
             hitLeft = !TryMoveLeft(xVel);
         }
     }
 
+    
+    protected virtual bool HandleDamageObjectCollision(FutilePlatformerBaseObject damageObject)
+    {
+        return false;
+    }
 
     private bool TryMoveRight(float amount)
     {
@@ -197,11 +206,22 @@ public class FutilePlatformerBaseObject : FContainer
             x += Mathf.Min(tileSize / 2, newX - x);
             foreach (float yCheck in horizontalYChecks)
             {
-                if (!world.isPassable(x + hitBox.x + hitBox.width / 2, this.y + hitBox.y + yCheck))
+                if ((collidesWithWater && !world.isPassable(x + hitBox.x + hitBox.width / 2, this.y + hitBox.y + yCheck)) || (collidesWithWalls && !world.isWallPassable(x + hitBox.x + hitBox.width / 2, this.y + hitBox.y + yCheck)))
                 {
                     this.x = Mathf.FloorToInt((this.x + hitBox.x + hitBox.width / 2) / tileSize) * tileSize - hitBox.x - hitBox.width / 2;
                     xVel *= -bounceiness;
                     return false;
+                }
+
+                if (this.handleDamageObjectCollision)
+                {
+                    FutilePlatformerBaseObject damageObject = world.CheckDamageObjectCollisionGetRect(this, this.x + hitBox.x + hitBox.width / 2, y + hitBox.y + yCheck);
+                    if (damageObject != null)
+                    {
+
+                        if (HandleDamageObjectCollision(damageObject))
+                            return false;
+                    }
                 }
 
                 RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x + hitBox.width / 2, y + hitBox.y + yCheck);
@@ -226,11 +246,22 @@ public class FutilePlatformerBaseObject : FContainer
             x += Mathf.Max(-tileSize / 2, newX - x);
             foreach (float yCheck in horizontalYChecks)
             {
-                if (!world.isPassable(x + hitBox.x - hitBox.width / 2, this.y + hitBox.y + yCheck))
+                if ((collidesWithWater && !world.isPassable(x + hitBox.x - hitBox.width / 2, this.y + hitBox.y + yCheck)) || (collidesWithWalls && !world.isWallPassable(x + hitBox.x - hitBox.width / 2, this.y + hitBox.y + yCheck)))
                 {
                     this.x = Mathf.CeilToInt((this.x + hitBox.x - hitBox.width / 2) / tileSize) * tileSize - hitBox.x + hitBox.width / 2;
                     xVel *= -bounceiness;
                     return false;
+                }
+
+                if (this.handleDamageObjectCollision)
+                {
+                    FutilePlatformerBaseObject damageObject = world.CheckDamageObjectCollisionGetRect(this, this.x + hitBox.x - hitBox.width / 2, y + hitBox.y + yCheck);
+                    if (damageObject != null)
+                    {
+
+                        if (HandleDamageObjectCollision(damageObject))
+                            return false;
+                    }
                 }
 
                 RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x - hitBox.width / 2, y + hitBox.y + yCheck);
@@ -255,13 +286,26 @@ public class FutilePlatformerBaseObject : FContainer
             y += Mathf.Max(-tileSize / 2, targetY - y);
             foreach (float xCheck in verticalXChecks)
             {
-                if (!world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2))
+                if ((collidesWithWater && !world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2)) || (collidesWithWalls && !world.isWallPassable(this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2)))
                 {
                     grounded = true;
                     yVel *= -bounceiness;
                     this.y = Mathf.CeilToInt((this.y + hitBox.y - hitBox.height / 2f) / tileSize) * tileSize - hitBox.y + hitBox.height / 2;
                     return false;
                 }
+
+
+                if (this.handleDamageObjectCollision)
+                {
+                    FutilePlatformerBaseObject damageObject = world.CheckDamageObjectCollisionGetRect(this, this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2);
+                    if (damageObject != null)
+                    {
+
+                        if (HandleDamageObjectCollision(damageObject))
+                            return false;
+                    }
+                }
+
                 RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x + xCheck, y + hitBox.y - hitBox.height / 2);
                 if (objectCollision != null)
                 {
@@ -286,7 +330,7 @@ public class FutilePlatformerBaseObject : FContainer
             y += Mathf.Min(tileSize / 2, newY - y);
             foreach (float xCheck in verticalXChecks)
             {
-                if (!world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2))
+                if ((collidesWithWater && !world.isPassable(this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2)) || (collidesWithWalls && !world.isWallPassable(this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2)))
                 {
                     this.y = Mathf.FloorToInt((this.y + hitBox.y + hitBox.height / 2f) / tileSize) * tileSize - hitBox.y - hitBox.height / 2;
                     if (bounceiness != 0)
@@ -294,6 +338,18 @@ public class FutilePlatformerBaseObject : FContainer
 
                     return false;
                 }
+
+                if (this.handleDamageObjectCollision)
+                {
+                    FutilePlatformerBaseObject damageObject = world.CheckDamageObjectCollisionGetRect(this, this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2);
+                    if (damageObject != null)
+                    {
+
+                        if (HandleDamageObjectCollision(damageObject))
+                            return false;
+                    }
+                }
+
                 RXRect objectCollision = world.CheckObjectCollision(this, this.x + hitBox.x + xCheck, y + hitBox.y + hitBox.height / 2);
                 if (objectCollision != null)
                 {

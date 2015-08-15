@@ -188,6 +188,7 @@
             <filename>Objects</filename>
             <filename>Particles</filename>
             <filename>Villager</filename>
+            <filename>Knight</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
