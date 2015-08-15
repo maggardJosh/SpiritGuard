@@ -41,6 +41,7 @@ public class Knight : FutileFourDirectionBaseObject
         maxYVel = .5f;
         minYVel = -.5f;
         handleStateCount = true;
+        handleDamageObjectCollision = true;
         bounceiness = 0f;
         clearAcc = false;
 
@@ -78,6 +79,16 @@ public class Knight : FutileFourDirectionBaseObject
 
         PlayAnim();
         this.AddChild(sprite);
+    
+}
+
+    protected override bool HandleDamageObjectCollision(FutilePlatformerBaseObject damageObject)
+    {
+        if (damageObject is Arrow)
+            return false;   //Handle this in the arrow class
+        if (damageObject is Knight)
+            return true;
+        return base.HandleDamageObjectCollision(damageObject);
     }
 
     float attackDist = 60f;

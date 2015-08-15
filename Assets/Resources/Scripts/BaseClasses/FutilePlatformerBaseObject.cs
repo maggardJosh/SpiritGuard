@@ -218,9 +218,13 @@ public class FutilePlatformerBaseObject : FContainer
                     FutilePlatformerBaseObject damageObject = world.CheckDamageObjectCollisionGetRect(this, this.x + hitBox.x + hitBox.width / 2, y + hitBox.y + yCheck);
                     if (damageObject != null)
                     {
-
                         if (HandleDamageObjectCollision(damageObject))
+                        {
+                            xVel *= -bounceiness;
+                            this.x = damageObject.x + damageObject.hitBox.x - damageObject.hitBox.width/2f - hitBox.x - hitBox.width / 2f;
                             return false;
+                            
+                        }
                     }
                 }
 
@@ -260,7 +264,12 @@ public class FutilePlatformerBaseObject : FContainer
                     {
 
                         if (HandleDamageObjectCollision(damageObject))
+                        {
+                            xVel *= -bounceiness;
+                            this.x = damageObject.x + damageObject.hitBox.x + damageObject.hitBox.width/2f - hitBox.x + hitBox.width / 2;
                             return false;
+
+                        }
                     }
                 }
 
@@ -302,7 +311,12 @@ public class FutilePlatformerBaseObject : FContainer
                     {
 
                         if (HandleDamageObjectCollision(damageObject))
+                        {
+                            yVel *= -bounceiness;
+                            this.y = damageObject.y + damageObject.hitBox.y + damageObject.hitBox.height / 2f - hitBox.y + hitBox.height / 2f;
                             return false;
+
+                        }
                     }
                 }
 
@@ -346,7 +360,11 @@ public class FutilePlatformerBaseObject : FContainer
                     {
 
                         if (HandleDamageObjectCollision(damageObject))
+                        {
+                            yVel *= -bounceiness;
+                            this.y = damageObject.y + damageObject.hitBox.y - damageObject.hitBox.height / 2f - hitBox.y - hitBox.height / 2f;
                             return false;
+                        }
                     }
                 }
 
