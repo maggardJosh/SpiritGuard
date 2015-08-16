@@ -64,7 +64,9 @@ public class TitleScreen : FContainer
             world.ShowLoading(() =>
             {
                 C.getCameraInstance().AddChild(world.ui);
+                world.loadingBG.MoveToFront();
                 Futile.stage.AddChild(world);
+
                 C.getCameraInstance().MoveToFront();
                 world.LoadMap("1_1"); world.SpawnPlayer("spawnpoint");
                 FLabel test = new FLabel(C.smallFontName, C.versionNumber);

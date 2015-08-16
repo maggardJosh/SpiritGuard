@@ -137,16 +137,17 @@ public class World : FContainer
 
         MapLoader.loadObjects(this, map.objects);
     }
-
+    public bool isAllPassable(float x, float y)
+    {
+        return isWallPassable(x, y) && isPassable(x, y);
+    }
     public bool isWallPassable(float x, float y)
     {
         return wallCollisionTilemap.IsPassable(x, y);
     }
     public bool isPassable(float x, float y)
     {
-        bool result = collisionTilemap.IsPassable(x, y);
-
-        return result;
+        return collisionTilemap.IsPassable(x, y);
     }
 
     public void SpawnPlayer(string spawnName)

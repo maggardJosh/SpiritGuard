@@ -35,17 +35,28 @@ public class UI : FContainer
         slotA.x = slotB.x + slotB.width / 2f + slotA.width / 2f + 3;
         slotASelected.SetPosition(slotA.GetPosition());
         slotBSelected.SetPosition(slotB.GetPosition());
+        slotASelected.x += 1;
+        slotBSelected.x += 1;
         hearts.y = background.y;
         hearts.x = Futile.screen.halfWidth - hearts.width / 2f - 20;
     }
 
     internal void UpdateSelectedItem(Player.SecondaryItem selectedItem)
     {
-        switch (selectedItem)
+        Go.killAllTweensWithTarget(slotBSelected);
+        Go.to(slotBSelected, .3f, new TweenConfig().floatProp("y", Futile.screen.halfHeight + slotBSelected.height).setEaseType(EaseType.QuadOut).onComplete(() =>
         {
-            case Player.SecondaryItem.SWORD: slotBSelected.SetElementByName("sword_soul"); break;
-            case Player.SecondaryItem.BOW: slotBSelected.SetElementByName("bow_soul"); break;
-        }
+            switch (selectedItem)
+            {
+                case Player.SecondaryItem.SWORD:
+                    slotBSelected.SetElementByName("sword_soul");
+                    break;
+                case Player.SecondaryItem.BOW:
+                    slotBSelected.SetElementByName("bow_soul");
+                    break;
+            }
+            Go.to(slotBSelected, .5f, new TweenConfig().floatProp("y", Futile.screen.halfHeight - slotBSelected.height / 2f).setEaseType(EaseType.QuadOut));
+        }));
     }
 
     int health = 3;
@@ -64,8 +75,8 @@ public class UI : FContainer
             this.AddChild(heart);
             Go.to(heart, .7f, new TweenConfig().floatProp("y", -15, true).setEaseType(EaseType.BackOut).onComplete(() => { heart.RemoveFromContainer(); }));
         }
-            this.health = health;
-            setHealthSprite(health);
+        this.health = health;
+        setHealthSprite(health);
 
     }
 
@@ -80,7 +91,7 @@ public class UI : FContainer
             switch (i)
             {
                 case 0: targetPos.x -= 10; break;
-                case 1: break;  
+                case 1: break;
                 case 2: targetPos.x += 10; break;
             }
 
