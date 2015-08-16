@@ -141,11 +141,18 @@ public class Player : FutileFourDirectionBaseObject
         this.Health--;
 
         if (this.Health == 0)
+        {
             State = PlayerState.DYING;
+            hasSpawnedSpiritParticles = false;
+            C.getCameraInstance().shake(1.0f, invulnerableStunTime * 3);
+        }
         else
-            State = PlayerState.INVULNERABLE;
+        {
 
+            State = PlayerState.INVULNERABLE;
+        }
         invulnCount = 3.0f;
+
 
 
         Vector2 dist = (this.GetPosition() - pos).normalized * 4;
@@ -510,15 +517,28 @@ public class Player : FutileFourDirectionBaseObject
 
                 break;
             case PlayerState.DYING:
-                if (RXRandom.Float() < .4f + .4f * stateCount)
-                    SpawnDeathParticles(Direction.UP, 1 + (int)stateCount);
-                this.isVisible = stateCount * 100 % 10 < 5;
-                if (stateCount > invulnerableStunTime * 3)
+                if (!hasSpawnedSpiritParticles)
                 {
 
-                    SpawnParticles(Direction.UP, 25);
-                    world.removeObject(this);
+                    if (RXRandom.Float() < .4f + .4f * stateCount)
+                        SpawnDeathParticles(Direction.UP, 1 + (int)stateCount);
+                    if (stateCount > invulnerableStunTime * 3)
+                    {
 
+                        SpawnDeathParticles(Direction.UP, 20);
+                        this.isVisible = false;
+                        hasSpawnedSpiritParticles = true;
+                    }
+                    else
+                        this.isVisible = stateCount * 100 % 10 < 5;
+                }
+                if (stateCount > invulnerableStunTime * 5)
+                {
+                    world.Respawn();
+
+                    maxXVel = 1;
+                    maxYVel = 1;
+                    minYVel = -1;
                 }
                 this.xVel *= .9f;
                 this.yVel *= .9f;
@@ -560,6 +580,12 @@ public class Player : FutileFourDirectionBaseObject
 
     protected override void OnUpdate()
     {
+        switch (State)
+        {
+            case PlayerState.DYING:
+                base.OnUpdate();
+                return;
+        }
         if (invulnCount > 0)
         {
             this.isVisible = invulnCount * 50 % 10 < 5;

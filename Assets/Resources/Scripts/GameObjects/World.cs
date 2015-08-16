@@ -96,6 +96,7 @@ public class World : FContainer
 
     public void LoadMap(string mapName)
     {
+        lastMap = mapName;
         spawnPoints.Clear();
         signs.Clear();
         collisionObjects.Clear();
@@ -155,6 +156,8 @@ public class World : FContainer
         foreach (SpawnPoint s in spawnPoints)
             if (s.name.ToLower() == spawnName.ToLower())
             {
+                player.State = Player.PlayerState.IDLE;
+                lastWarpPoint = spawnName;
                 s.SpawnPlayer(player);
                 return;
             }
@@ -184,6 +187,17 @@ public class World : FContainer
             background.AddChild(objectToAdd);
         else
             playerLayer.AddChild(objectToAdd);
+    }
+
+    public void Respawn()
+    {
+        ShowLoading(() => {
+            LoadMap(lastMap);
+            SpawnPlayer(lastWarpPoint);
+            player.invulnCount = 2;
+            player.Health = 3;
+            this.isVisible = true;
+        });
     }
 
     public void removeObject(FNode objectToRemove)
