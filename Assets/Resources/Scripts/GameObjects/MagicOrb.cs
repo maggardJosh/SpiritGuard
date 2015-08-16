@@ -53,7 +53,17 @@ public class MagicOrb : FutilePlatformerBaseObject
         }
         base.OnFixedUpdate();
     }
-
+    public void HandlePlayerCollision(Player p)
+    {
+        if (p.invulnCount > 0)
+            return;
+        if (p.isColliding(this))
+        {
+            p.TakeDamage(p.GetPosition() - new Vector2(xVel, yVel));
+            SpawnParticles(30, true);
+            world.removeObject(this);
+        }
+    }
     private void SpawnParticles(int numParticles = 10, bool explosion = false)
     {
         for (int i = 0; i < numParticles; i++)

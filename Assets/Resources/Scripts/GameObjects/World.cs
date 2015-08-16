@@ -228,7 +228,9 @@ public class World : FContainer
             if (self is MagicOrb && ((MagicOrb)self).owner == o)
                 continue;
             if (self is Arrow && o is Player)
-            continue;
+                continue;
+            if (self is MagicOrb && o is Player)
+                continue;
             if (o == self)
                 continue;
             worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
@@ -285,6 +287,11 @@ public class World : FContainer
         {
             Heart h = (Heart)o;
             h.HandlePlayerCollision(player);
+        }
+        else if (o is MagicOrb)
+        {
+            MagicOrb orb = (MagicOrb)o;
+            orb.HandlePlayerCollision(player);
         }
 
     }
