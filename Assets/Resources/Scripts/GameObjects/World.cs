@@ -278,6 +278,8 @@ public class World : FContainer
         {
             if (o == self)
                 continue;
+            if (self is PushBlock && o is Arrow)
+                continue;
             worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
             worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
             worldPos.width = o.hitBox.width;

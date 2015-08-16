@@ -7,7 +7,7 @@ using UnityEngine;
 	public class Heart : FutilePlatformerBaseObject
 	{
         FSprite sprite;
-        public Heart(World world, Vector2 pos): base(new RXRect(0,0,4,4), world)
+        public Heart(World world, Vector2 pos): base(new RXRect(0,0,10,10), world)
         {
             this.SetPosition(pos);
             sprite = new FSprite("heart");
