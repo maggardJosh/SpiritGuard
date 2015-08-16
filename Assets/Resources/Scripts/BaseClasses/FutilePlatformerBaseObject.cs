@@ -11,6 +11,8 @@ public class FutilePlatformerBaseObject : FContainer
     public float yAcc;
     public float xVel;
     public float yVel;
+    protected float maxVel = 0;
+    protected bool useActualMaxVel = false;
     protected float maxXVel = 2.5f;
     protected float maxYVel = 2.5f;
     protected float minYVel = -2.5f;
@@ -168,8 +170,17 @@ public class FutilePlatformerBaseObject : FContainer
             yAcc = 0;
         }
 
-        this.yVel = Mathf.Clamp(this.yVel, minYVel, maxYVel);
-        this.xVel = Mathf.Clamp(this.xVel, -maxXVel, maxXVel);
+        if (useActualMaxVel && this.xVel * this.xVel + this.yVel * this.yVel > this.maxVel * this.maxVel)
+        {
+            Vector2 dist = new Vector2(xVel, yVel).normalized * this.maxVel;
+            this.xVel = dist.x;
+            this.yVel = dist.y;
+        }
+        else
+        {
+            this.yVel = Mathf.Clamp(this.yVel, minYVel, maxYVel);
+            this.xVel = Mathf.Clamp(this.xVel, -maxXVel, maxXVel);
+        }
 
         if (this is Player)
             world.CheckDamageObjectCollision();
@@ -191,7 +202,7 @@ public class FutilePlatformerBaseObject : FContainer
         }
     }
 
-    
+
     protected virtual bool HandleDamageObjectCollision(FutilePlatformerBaseObject damageObject)
     {
         return false;
@@ -221,9 +232,9 @@ public class FutilePlatformerBaseObject : FContainer
                         if (HandleDamageObjectCollision(damageObject))
                         {
                             xVel *= -bounceiness;
-                            this.x = damageObject.x + damageObject.hitBox.x - damageObject.hitBox.width/2f - hitBox.x - hitBox.width / 2f;
+                            this.x = damageObject.x + damageObject.hitBox.x - damageObject.hitBox.width / 2f - hitBox.x - hitBox.width / 2f;
                             return false;
-                            
+
                         }
                     }
                 }
@@ -266,7 +277,7 @@ public class FutilePlatformerBaseObject : FContainer
                         if (HandleDamageObjectCollision(damageObject))
                         {
                             xVel *= -bounceiness;
-                            this.x = damageObject.x + damageObject.hitBox.x + damageObject.hitBox.width/2f - hitBox.x + hitBox.width / 2;
+                            this.x = damageObject.x + damageObject.hitBox.x + damageObject.hitBox.width / 2f - hitBox.x + hitBox.width / 2;
                             return false;
 
                         }

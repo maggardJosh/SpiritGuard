@@ -8,7 +8,7 @@
   <image source="gfx/tilemap.png" width="160" height="144"/>
  </tileset>
  <tileset firstgid="91" name="objects" tilewidth="16" tileheight="16">
-  <image source="gfx/objects.png" width="96" height="16"/>
+  <image source="gfx/objects.png" width="112" height="16"/>
  </tileset>
  <layer name="background" width="30" height="20" opacity="0.51">
   <data encoding="csv">
@@ -124,5 +124,6 @@
     <property name="interval" value="1"/>
    </properties>
   </object>
+  <object type="magicturret" gid="97" x="192" y="128"/>
  </objectgroup>
 </map>

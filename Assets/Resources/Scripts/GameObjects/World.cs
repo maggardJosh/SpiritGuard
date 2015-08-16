@@ -12,7 +12,7 @@ public class World : FContainer
     FTilemap backgroundTilemap;
     public FSprite loadingBG;
     public UI ui;
-    Player player;
+    public Player player;
 
     FContainer background = new FContainer();
     FContainer playerLayer = new FContainer();
@@ -172,7 +172,7 @@ public class World : FContainer
 
     public void addObject(FNode objectToAdd)
     {
-        if (objectToAdd is Knight || objectToAdd is Arrow || objectToAdd is Heart)
+        if (objectToAdd is Knight || objectToAdd is Arrow || objectToAdd is Heart || objectToAdd is MagicOrb)
             damageObjects.Add((FutilePlatformerBaseObject)objectToAdd);
         else
             if (objectToAdd is FutilePlatformerBaseObject)
@@ -189,7 +189,7 @@ public class World : FContainer
     public void removeObject(FNode objectToRemove)
     {
 
-        if (objectToRemove is Knight || objectToRemove is Arrow || objectToRemove is Heart)
+        if (objectToRemove is Knight || objectToRemove is Arrow || objectToRemove is Heart || objectToRemove is MagicOrb)
         {
             damageObjects.Remove((FutilePlatformerBaseObject)objectToRemove);
         }
@@ -210,6 +210,8 @@ public class World : FContainer
             if ((self is Knight && o is Player))
                 continue;
             if (self is Arrow && ((Arrow)self).owner == o)
+                continue;
+            if (self is MagicOrb && ((MagicOrb)self).owner == o)
                 continue;
             if (self is Arrow && o is Player)
             continue;

@@ -32,6 +32,9 @@ public class MapLoader
                 case "arrowturret":
                     world.addObject(parseArrowTurret(node, world));
                     break;
+                case "magicturret":
+                    world.addObject(parseMagicTurret(node, world));
+                    break;
             }
         }
     }
@@ -161,6 +164,34 @@ public class MapLoader
          ArrowTurret result = new ArrowTurret(interval, initdelay, world);
          result.SetDirection(turretDirection);
          result.PlayAnim();
+         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+
+         return result;
+     }
+
+     private static MagicTurret parseMagicTurret(XMLNode node, World world)
+     {
+         float interval = 1;
+         float initdelay = 0;
+         
+         if (node.children.Count > 0)
+         {
+
+             foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+             {
+                 switch (property.attributes["name"].ToLower())
+                 {
+                     case "interval":
+                         float.TryParse(property.attributes["value"], out interval);
+                         break;
+                    
+                     case "initdelay":
+                         float.TryParse(property.attributes["value"], out initdelay);
+                         break;
+                 }
+             }
+         }
+         MagicTurret result = new MagicTurret(interval, initdelay, world);
          result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
          return result;
