@@ -159,6 +159,10 @@ public class Knight : FutileFourDirectionBaseObject
                         break;
                 }
                 break;
+            case KnightState.ATTACKING:
+                if (RXRandom.Float() < .3f)
+                    SpawnParticles(_direction, 1);
+                break;
         }
 
     }
@@ -310,23 +314,23 @@ public class Knight : FutileFourDirectionBaseObject
                     case Direction.UP:
                         if (hitUp)
                             changeDirAfterAttack = true;
-                            
+
                         break;
                     case Direction.RIGHT:
                         if (hitRight)
                             changeDirAfterAttack = true;
-                           
+
                         break;
                     case Direction.DOWN:
                         if (hitDown)
                             changeDirAfterAttack = true;
-                          
+
                         break;
                     case Direction.LEFT:
                         if (hitLeft)
-                       
+
                             changeDirAfterAttack = true;
-                       
+
                         break;
                 }
                 break;
@@ -351,7 +355,7 @@ public class Knight : FutileFourDirectionBaseObject
                 this.isVisible = stateCount * 100 % 10 < 5;
                 if (stateCount > invulnerableCount)
                 {
-                    if(RXRandom.Float() < Knight.HEART_DROP_CHANCE)
+                    if (RXRandom.Float() < Knight.HEART_DROP_CHANCE)
                         world.addObject(new Heart(world, this.GetPosition()));
                     SpawnParticles(Direction.UP, 25);
                     world.removeObject(this);
@@ -408,6 +412,45 @@ public class Knight : FutileFourDirectionBaseObject
                     break;
             }
             p.activate(this.GetPosition() + new Vector2(RXRandom.Float() * 16 - 8, RXRandom.Float() * 16 - 8), vel, acc, RXRandom.Bool() ? 180.0f : 0);
+            this.container.AddChild(p);
+        }
+    }
+    private void SpawnTrailParticles(Direction dir, int numParticles = 10)
+    {
+        for (int i = 0; i < numParticles; i++)
+        {
+            Particle.ParticleOne p = Particle.ParticleOne.getParticle();
+            Vector2 vel = new Vector2(RXRandom.Float() * 20 - 10, RXRandom.Float() * 20);
+            Vector2 acc = new Vector2(-vel.x * (RXRandom.Float() * .5f), -vel.y * -1.0f);
+            switch (dir)
+            {
+                case Direction.DOWN:
+                    vel.y *= -1;
+                    acc.y *= -1;
+                    break;
+                case Direction.RIGHT:
+                    float tempX = vel.x;
+                    vel.x = vel.y;
+                    vel.y = tempX;
+                    tempX = acc.x;
+                    acc.x = acc.y;
+                    acc.y = tempX;
+                    break;
+                case Direction.UP:
+
+                    break;
+                case Direction.LEFT:
+                    tempX = vel.x;
+                    vel.x = vel.y;
+                    vel.y = tempX;
+                    tempX = acc.x;
+                    acc.x = acc.y;
+                    acc.y = tempX;
+                    vel.x *= -1;
+                    acc.x *= -1;
+                    break;
+            }
+            p.activate(this.GetPosition() + new Vector2(RXRandom.Float() * 4-2, RXRandom.Float() * 4 -2), vel, acc, RXRandom.Bool() ? 180.0f : 0);
             this.container.AddChild(p);
         }
     }
