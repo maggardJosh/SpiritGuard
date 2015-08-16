@@ -35,6 +35,9 @@ public class MapLoader
                 case "magicturret":
                     world.addObject(parseMagicTurret(node, world));
                     break;
+                case "ghost":
+                    world.addObject(parseGhost(node, world));
+                    break;
             }
         }
     }
@@ -114,6 +117,16 @@ public class MapLoader
 
          return result;
      }
+
+     private static Ghost parseGhost(XMLNode node, World world)
+     {
+
+         Ghost result = new Ghost(world);
+         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+
+         return result;
+     }
+
      private static Villager parseVillager(XMLNode node, World world)
      {
 

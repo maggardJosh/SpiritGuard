@@ -161,7 +161,7 @@ public class Knight : FutileFourDirectionBaseObject
                 break;
             case KnightState.ATTACKING:
                 if (RXRandom.Float() < .3f)
-                    SpawnParticles(_direction, 1);
+                    SpawnTrailParticles(_direction, 1);
                 break;
         }
 

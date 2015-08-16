@@ -176,7 +176,7 @@ public class World : FContainer
 
     public void addObject(FNode objectToAdd)
     {
-        if (objectToAdd is Knight || objectToAdd is Arrow || objectToAdd is Heart || objectToAdd is MagicOrb)
+        if (objectToAdd is Knight || objectToAdd is Arrow || objectToAdd is Heart || objectToAdd is MagicOrb || objectToAdd is Ghost)
             damageObjects.Add((FutilePlatformerBaseObject)objectToAdd);
         else
             if (objectToAdd is FutilePlatformerBaseObject)
@@ -204,7 +204,7 @@ public class World : FContainer
     public void removeObject(FNode objectToRemove)
     {
 
-        if (objectToRemove is Knight || objectToRemove is Arrow || objectToRemove is Heart || objectToRemove is MagicOrb)
+        if (objectToRemove is Knight || objectToRemove is Arrow || objectToRemove is Heart || objectToRemove is MagicOrb || objectToRemove is Ghost)
         {
             damageObjects.Remove((FutilePlatformerBaseObject)objectToRemove);
         }
@@ -223,6 +223,8 @@ public class World : FContainer
         foreach (FutilePlatformerBaseObject o in collisionObjects)
         {
             if ((self is Knight && o is Player))
+                continue;
+            if ((self is Ghost && o is Player))
                 continue;
             if (self is Arrow && ((Arrow)self).owner == o)
                 continue;
@@ -293,6 +295,11 @@ public class World : FContainer
         {
             MagicOrb orb = (MagicOrb)o;
             orb.HandlePlayerCollision(player);
+        }
+        else if (o is Ghost)
+        {
+            Ghost g = (Ghost)o;
+            g.HandlePlayerCollision(player);
         }
 
     }

@@ -190,6 +190,7 @@
             <filename>Villager</filename>
             <filename>Knight</filename>
             <filename>UI</filename>
+            <filename>Ghost</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

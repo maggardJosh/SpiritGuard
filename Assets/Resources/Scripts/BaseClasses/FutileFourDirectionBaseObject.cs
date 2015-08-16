@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public class FutileFourDirectionBaseObject : FutilePlatformerBaseObject
 {
@@ -26,10 +27,14 @@ public class FutileFourDirectionBaseObject : FutilePlatformerBaseObject
 
     public override void OnFixedUpdate()
     {
+        if(Mathf.Abs(yAcc) > Mathf.Abs(xAcc))
+        {
+        
         if (yAcc > 0)
             _direction = Direction.UP;
         else if (yAcc < 0)
             _direction = Direction.DOWN;
+        }
         else if (xAcc > 0)
             _direction = Direction.RIGHT;
         else if (xAcc < 0)
