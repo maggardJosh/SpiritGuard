@@ -52,7 +52,7 @@ using UnityEngine;
             
             switch(exitDirection)
             {
-                case FutileFourDirectionBaseObject.Direction.UP: newPos.y += 16; break;
+                case FutileFourDirectionBaseObject.Direction.UP: newPos.y += 20; break;
                 case FutileFourDirectionBaseObject.Direction.RIGHT: newPos.x += 16; break;
                 case FutileFourDirectionBaseObject.Direction.DOWN: newPos.y -= 16; break;
                 case FutileFourDirectionBaseObject.Direction.LEFT: newPos.x -= 16; break;

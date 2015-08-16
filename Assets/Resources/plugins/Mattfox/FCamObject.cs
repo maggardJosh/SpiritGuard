@@ -127,15 +127,14 @@ public class FCamObject : FContainer {
 		if (_shakeDuration > 0) {
 			_shakeDuration -= UnityEngine.Time.deltaTime;
 			
-			_shakeOffset.x = Mathf.RoundToInt(Random.value * _shakeIntensity * Futile.resourceScale);
-			_shakeOffset.y = Mathf.RoundToInt(Random.value * _shakeIntensity * Futile.resourceScale);
+			_shakeOffset.x = Mathf.RoundToInt(Random.value * (_shakeIntensity * Futile.resourceScale)) - (_shakeIntensity * Futile.resourceScale)/2f;
+            _shakeOffset.y = Mathf.RoundToInt(Random.value * (_shakeIntensity * Futile.resourceScale)) - (_shakeIntensity * Futile.resourceScale)/2f;
 		}
 
         Futile.stage.x = -Mathf.FloorToInt(x + _shakeOffset.x);
         Futile.stage.y = -Mathf.FloorToInt(y + _shakeOffset.y);
 		
 		if (!_shakeIncludeHUD) {
-            RXDebug.Log(_shakeOffset);
             x += _shakeOffset.x;
             y += _shakeOffset.y;
 		} else {

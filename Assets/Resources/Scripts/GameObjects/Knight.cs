@@ -10,6 +10,7 @@ public class Knight : FutileFourDirectionBaseObject
     private float moveSpeed = .5f;
     private KnightState _state = KnightState.IDLE;
     private int health = 2;
+    public const float HEART_DROP_CHANCE = .4f;
     public KnightState State
     {
         get
@@ -350,7 +351,8 @@ public class Knight : FutileFourDirectionBaseObject
                 this.isVisible = stateCount * 100 % 10 < 5;
                 if (stateCount > invulnerableCount)
                 {
-
+                    if(RXRandom.Float() < Knight.HEART_DROP_CHANCE)
+                        world.addObject(new Heart(world, this.GetPosition()));
                     SpawnParticles(Direction.UP, 25);
                     world.removeObject(this);
 

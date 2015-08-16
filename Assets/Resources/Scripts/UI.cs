@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public class UI : FContainer
 {
@@ -48,39 +49,62 @@ public class UI : FContainer
     }
 
     int health = 3;
-    public void UpdateHealth(int health)
+    public void TakeDamage(int health)
     {
-        if (this.health > health)
+        for (int i = this.health; i > health; i--)
         {
-            for (int i = this.health; i > health; i--)
+            FSprite heart = new FSprite("heart");
+            heart.SetPosition(hearts.GetPosition());
+            switch (i)
             {
-                FSprite heart = new FSprite("heart");
-                heart.SetPosition(hearts.GetPosition());
-                switch(i)
-                {
-                    case 1: heart.x -= 10; break;
-                    case 2: break;
-                    case 3: heart.x += 10; break;
-                }
-                this.AddChild(heart);
-                Go.to(heart, .7f, new TweenConfig().floatProp("y", -15, true).setEaseType(EaseType.BackOut).onComplete(() => { heart.RemoveFromContainer(); }));
+                case 1: heart.x -= 10; break;
+                case 2: break;
+                case 3: heart.x += 10; break;
             }
-            this.health = health;
+            this.AddChild(heart);
+            Go.to(heart, .7f, new TweenConfig().floatProp("y", -15, true).setEaseType(EaseType.BackOut).onComplete(() => { heart.RemoveFromContainer(); }));
         }
+            this.health = health;
+            setHealthSprite(health);
+
+    }
+
+    public void AddHealth(int health, Vector2 pos)
+    {
+        for (int i = this.health; i < health; i++)
+        {
+            FSprite heart = new FSprite("heart");
+
+            heart.SetPosition(pos);
+            Vector2 targetPos = hearts.GetPosition();
+            switch (i)
+            {
+                case 0: targetPos.x -= 10; break;
+                case 1: break;  
+                case 2: targetPos.x += 10; break;
+            }
+
+            this.AddChild(heart);
+            Go.to(heart, .7f, new TweenConfig().floatProp("x", targetPos.x).floatProp("y", targetPos.y).setEaseType(EaseType.QuadOut).onComplete(() => { setHealthSprite(this.health); heart.RemoveFromContainer(); }));
+        }
+        this.health = health;
+    }
+
+    private void setHealthSprite(int health)
+    {
         switch (health)
         {
             case 0:
                 hearts.SetElementByName("heart_container");
-                
                 break;
-            case 1: 
+            case 1:
                 hearts.SetElementByName("heart_container1");
                 break;
-            case 2: 
+            case 2:
                 hearts.SetElementByName("heart_container2");
                 break;
-            case 3: 
-                hearts.SetElementByName("heart_full"); 
+            case 3:
+                hearts.SetElementByName("heart_full");
                 break;
         }
     }

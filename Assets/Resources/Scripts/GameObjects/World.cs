@@ -171,7 +171,7 @@ public class World : FContainer
 
     public void addObject(FNode objectToAdd)
     {
-        if (objectToAdd is Knight || objectToAdd is Arrow)
+        if (objectToAdd is Knight || objectToAdd is Arrow || objectToAdd is Heart)
             damageObjects.Add((FutilePlatformerBaseObject)objectToAdd);
         else
             if (objectToAdd is FutilePlatformerBaseObject)
@@ -188,7 +188,7 @@ public class World : FContainer
     public void removeObject(FNode objectToRemove)
     {
 
-        if (objectToRemove is Knight || objectToRemove is Arrow)
+        if (objectToRemove is Knight || objectToRemove is Arrow || objectToRemove is Heart)
         {
             damageObjects.Remove((FutilePlatformerBaseObject)objectToRemove);
         }
@@ -263,6 +263,11 @@ public class World : FContainer
         {
             Arrow a = (Arrow)o;
             a.HandlePlayerCollision(player);
+        }
+        else if (o is Heart)
+        {
+            Heart h = (Heart)o;
+            h.HandlePlayerCollision(player);
         }
 
     }

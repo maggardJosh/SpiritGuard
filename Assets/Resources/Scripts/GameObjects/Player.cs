@@ -12,7 +12,20 @@ public class Player : FutileFourDirectionBaseObject
     bool lastSelectPress = false;
     bool lastJumpPress = false;
     public bool shouldDamage = false;
-    int health = 3;
+    private int _health = 3;
+    public int Health
+    {
+        get { return _health; }
+        set
+        {
+            int oldHealth = _health;
+            _health = Mathf.Clamp(value, 0, 3);
+            if (oldHealth < _health)
+                world.ui.AddHealth(_health, Vector2.zero);
+            else if (oldHealth > _health)
+                world.ui.TakeDamage(_health);
+        }
+    }
     public FutilePlatformerBaseObject swordCollision;
     public float invulnCount = 0;
     float invulnerableStunTime = .6f;
@@ -124,9 +137,9 @@ public class Player : FutileFourDirectionBaseObject
     public void TakeDamage(Vector2 pos)
     {
         Go.killAllTweensWithTarget(this);
-        this.health--;
-        world.ui.UpdateHealth(this.health);
-        if (this.health == 0)
+        this.Health--;
+
+        if (this.Health == 0)
             State = PlayerState.DYING;
         else
             State = PlayerState.INVULNERABLE;
@@ -192,6 +205,7 @@ public class Player : FutileFourDirectionBaseObject
         {
             case PlayerState.IDLE:
             case PlayerState.MOVE:
+
                 if (State == PlayerState.MOVE)
                     if (RXRandom.Float() < .04f)
                         SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
@@ -498,7 +512,7 @@ public class Player : FutileFourDirectionBaseObject
                 if (RXRandom.Float() < .4f + .4f * stateCount)
                     SpawnDeathParticles(Direction.UP, 1 + (int)stateCount);
                 this.isVisible = stateCount * 100 % 10 < 5;
-                if (stateCount > invulnerableStunTime*3)
+                if (stateCount > invulnerableStunTime * 3)
                 {
 
                     SpawnParticles(Direction.UP, 25);
