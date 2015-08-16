@@ -136,6 +136,7 @@ public class Player : FutileFourDirectionBaseObject
 
     public void TakeDamage(Vector2 pos)
     {
+        C.getCameraInstance().shake(.7f, .5f);
         Go.killAllTweensWithTarget(this);
         this.Health--;
 
