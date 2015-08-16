@@ -124,6 +124,10 @@
     <property name="interval" value="1"/>
    </properties>
   </object>
-  <object type="magicturret" gid="97" x="192" y="128"/>
+  <object type="magicturret" gid="97" x="192" y="128">
+   <properties>
+    <property name="distance" value="5"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

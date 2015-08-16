@@ -131,7 +131,8 @@ public class World : FContainer
         }
         collisionObjects.Add(player);
         playerLayer.AddChild(player);
-        C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height, collisionTilemap.width, collisionTilemap.height));
+        this.y = -16;
+        C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height-16, collisionTilemap.width, collisionTilemap.height+16));
         collisionTilemap.clipNode = C.getCameraInstance();
         wallCollisionTilemap.clipNode = C.getCameraInstance();
         backgroundTilemap.clipNode = C.getCameraInstance();

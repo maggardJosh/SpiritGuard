@@ -79,14 +79,14 @@ public class FCamObject : FContainer {
 				x = _followObject.x;
 			}
 			if (_bounds.height > 0) {
-				if (_followObject.y > y + _bounds.yMax) {
+				if (_followObject.y-8 > y + _bounds.yMax) {
 					//Debug.Log(_followObject.y + " > " + (y + _bounds.yMax));
-					y = _followObject.y - _bounds.height / 2;
+                    y = _followObject.y - 8 - _bounds.height / 2;
                 }
-                else if (_followObject.y < y + _bounds.yMin)
+                else if (_followObject.y - 8 < y + _bounds.yMin)
                 {
                     //Debug.Log(_followObject.y + " < " + (y + _bounds.yMin));
-                    y = _followObject.y + _bounds.height / 2;
+                    y = _followObject.y - 8 + _bounds.height / 2;
                 }
                 else
                 {
@@ -94,7 +94,7 @@ public class FCamObject : FContainer {
                 }
 			} else {
 				// follow directly
-				y = _followObject.y;
+                y = _followObject.y - 8;
 			}
 		}
 

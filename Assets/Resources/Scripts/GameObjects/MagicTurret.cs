@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public class MagicTurret : FutilePlatformerBaseObject
 {
@@ -9,9 +10,11 @@ public class MagicTurret : FutilePlatformerBaseObject
     private bool loaded = true;
     private float interval;
     private float initDelay = 0;
-    public MagicTurret(float interval, float initDelay, World world)
+    private int distance = 4;
+    public MagicTurret(float interval, float initDelay, int distance, World world)
         : base(new RXRect(0, -4, 12, 8), world)
     {
+        this.distance = distance;
         this.interval = interval;
         handleStateCount = true;
         this.initDelay = initDelay;
@@ -34,6 +37,9 @@ public class MagicTurret : FutilePlatformerBaseObject
         }
         if (loaded)
         {
+            if (!(Mathf.Abs(this.x - world.player.x) < distance*16 &&
+                Mathf.Abs(this.y - world.player.y) < distance*16))
+                stateCount = 0;
             if (stateCount > .5f)
             {
                 MagicOrb a = new MagicOrb(this, world);

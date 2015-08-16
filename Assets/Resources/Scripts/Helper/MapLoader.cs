@@ -173,6 +173,7 @@ public class MapLoader
      {
          float interval = 1;
          float initdelay = 0;
+         int distance = 4;
          
          if (node.children.Count > 0)
          {
@@ -188,10 +189,13 @@ public class MapLoader
                      case "initdelay":
                          float.TryParse(property.attributes["value"], out initdelay);
                          break;
+                     case "distance":
+                         int.TryParse(property.attributes["value"], out distance);
+                         break;
                  }
              }
          }
-         MagicTurret result = new MagicTurret(interval, initdelay, world);
+         MagicTurret result = new MagicTurret(interval, initdelay, distance, world);
          result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
          return result;
