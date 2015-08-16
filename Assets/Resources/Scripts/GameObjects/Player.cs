@@ -32,7 +32,8 @@ public class Player : FutileFourDirectionBaseObject
         SWORD_TWO,
         BOW_DRAWN,
         BOW_SHOOTING,
-        INVULNERABLE
+        INVULNERABLE,
+        DYING
     }
 
     private PlayerState _state = PlayerState.IDLE;
@@ -73,6 +74,11 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.INVULNERABLE.ToString() + Direction.LEFT.ToString(), new int[] { 9 }, 100, true));
         player.addAnimation(new FAnimation(PlayerState.INVULNERABLE.ToString() + Direction.UP.ToString(), new int[] { 5 }, 100, true));
         player.addAnimation(new FAnimation(PlayerState.INVULNERABLE.ToString() + Direction.DOWN.ToString(), new int[] { 1 }, 100, true));
+
+        player.addAnimation(new FAnimation(PlayerState.DYING.ToString() + Direction.RIGHT.ToString(), new int[] { 9 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.DYING.ToString() + Direction.LEFT.ToString(), new int[] { 9 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.DYING.ToString() + Direction.UP.ToString(), new int[] { 5 }, 100, true));
+        player.addAnimation(new FAnimation(PlayerState.DYING.ToString() + Direction.DOWN.ToString(), new int[] { 1 }, 100, true));
 
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.RIGHT.ToString(), new int[] { 9, 10, 9, 12 }, 150, true));
         player.addAnimation(new FAnimation(PlayerState.MOVE.ToString() + Direction.LEFT.ToString(), new int[] { 9, 10, 9, 12 }, 150, true));
@@ -120,7 +126,11 @@ public class Player : FutileFourDirectionBaseObject
         Go.killAllTweensWithTarget(this);
         this.health--;
         world.ui.UpdateHealth(this.health);
-        State = PlayerState.INVULNERABLE;
+        if (this.health == 0)
+            State = PlayerState.DYING;
+        else
+            State = PlayerState.INVULNERABLE;
+
         invulnCount = 3.0f;
 
 
@@ -356,7 +366,7 @@ public class Player : FutileFourDirectionBaseObject
                     arrow.SetDirection(CurrentDirection);
                     arrow.PlayAnim();
                     arrow.SetPosition(this.GetPosition());
-                    switch(CurrentDirection)
+                    switch (CurrentDirection)
                     {
                         case Direction.UP: arrow.yVel = 2; break;
                         case Direction.RIGHT: arrow.xVel = 2; break;
@@ -483,6 +493,20 @@ public class Player : FutileFourDirectionBaseObject
                 this.xVel *= .9f;
                 this.yVel *= .9f;
 
+                break;
+            case PlayerState.DYING:
+                if (RXRandom.Float() < .4f + .4f * stateCount)
+                    SpawnDeathParticles(Direction.UP, 1 + (int)stateCount);
+                this.isVisible = stateCount * 100 % 10 < 5;
+                if (stateCount > invulnerableStunTime*3)
+                {
+
+                    SpawnParticles(Direction.UP, 25);
+                    world.removeObject(this);
+
+                }
+                this.xVel *= .9f;
+                this.yVel *= .9f;
                 break;
 
 

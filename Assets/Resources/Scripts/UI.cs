@@ -47,14 +47,41 @@ public class UI : FContainer
         }
     }
 
+    int health = 3;
     public void UpdateHealth(int health)
     {
+        if (this.health > health)
+        {
+            for (int i = this.health; i > health; i--)
+            {
+                FSprite heart = new FSprite("heart");
+                heart.SetPosition(hearts.GetPosition());
+                switch(i)
+                {
+                    case 1: heart.x -= 10; break;
+                    case 2: break;
+                    case 3: heart.x += 10; break;
+                }
+                this.AddChild(heart);
+                Go.to(heart, .7f, new TweenConfig().floatProp("y", -15, true).setEaseType(EaseType.BackOut).onComplete(() => { heart.RemoveFromContainer(); }));
+            }
+            this.health = health;
+        }
         switch (health)
         {
-            case 0: hearts.SetElementByName("heart_container"); break;
-            case 1: hearts.SetElementByName("heart_container1"); break;
-            case 2: hearts.SetElementByName("heart_container2"); break;
-            case 3: hearts.SetElementByName("heart_full"); break;
+            case 0:
+                hearts.SetElementByName("heart_container");
+                
+                break;
+            case 1: 
+                hearts.SetElementByName("heart_container1");
+                break;
+            case 2: 
+                hearts.SetElementByName("heart_container2");
+                break;
+            case 3: 
+                hearts.SetElementByName("heart_full"); 
+                break;
         }
     }
 }
