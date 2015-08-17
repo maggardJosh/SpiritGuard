@@ -24,7 +24,12 @@ public class SoulPickup : FutilePlatformerBaseObject
         sprite = new FSprite(type.ToString().ToLower() + "Soul");
         this.AddChild(sprite);
     }
-
+    public override void OnFixedUpdate()
+    {
+        if (RXRandom.Float() < .15f)
+            SpawnParticles();
+        base.OnFixedUpdate();
+    }
     public void HandlePlayerCollision(Player p)
     {
         if (p.isColliding(this))
@@ -54,19 +59,40 @@ public class SoulPickup : FutilePlatformerBaseObject
                 Go.to(this, 2.0f, new TweenConfig().floatProp("x", 0).floatProp("y", 15).setEaseType(EaseType.QuadOut));
                 Go.to(label, 1.5f, new TweenConfig().floatProp("x", 0).setEaseType(EaseType.BackOut).setDelay(1.5f).onComplete(() =>
                 {
-                    Go.to(label, 1.5f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth - label.textRect.width / 2f - 10).setEaseType(EaseType.BackIn).setDelay(2.0f).onComplete(() =>
+                    Go.to(this, .01f, new TweenConfig().floatProp("x", 1, true).onComplete(() =>
                     {
-                        label.RemoveFromContainer();
-                        Go.to(playerPickup, 1.0f, new TweenConfig().floatProp("x", playerRelativePosition.x).floatProp("y", playerRelativePosition.y).setEaseType(EaseType.QuadInOut).onComplete(() =>
+                        Go.to(this, .01f, new TweenConfig().floatProp("x", -2, true).setIterations(100, LoopType.PingPong).onComplete(() =>
                         {
-
-                            FSoundManager.TweenVolume(1.0f);
-                            world.HideLoading(() => { p.isVisible = true; playerPickup.RemoveFromContainer(); });
+                            SpawnParticles(30);
+                            this.x -= 1;
+                            sprite.SetElementByName(type.ToString().ToLower() + "_soul");
+                            Go.to(label, 1.5f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth - label.textRect.width / 2f - 10).setEaseType(EaseType.BackIn).setDelay(2.0f).onComplete(() =>
+                            {
+                                label.RemoveFromContainer();
+                                Go.to(playerPickup, 1.0f, new TweenConfig().floatProp("x", playerRelativePosition.x).floatProp("y", playerRelativePosition.y).setEaseType(EaseType.QuadInOut).onComplete(() =>
+                                {
+                                    FSoundManager.TweenVolume(1.0f);
+                                    world.HideLoading(() => { p.isVisible = true; playerPickup.RemoveFromContainer(); });
+                                }));
+                                Go.to(this, 1.0f, new TweenConfig().floatProp("y", 100, true).setEaseType(EaseType.QuadIn).onComplete(() => { this.RemoveFromContainer(); }));
+                            }));
                         }));
-                        Go.to(this, 1.0f, new TweenConfig().floatProp("y", 100, true).setEaseType(EaseType.QuadIn).onComplete(() => { this.RemoveFromContainer(); }));
                     }));
                 }));
             });
+        }
+    }
+
+    private void SpawnParticles(int numParticles = 1)
+    {
+        for (int i = 0; i < numParticles; i++)
+        {
+            Particle.ParticleOne p = Particle.ParticleOne.getParticle();
+            Vector2 vel = new Vector2(RXRandom.Float() * 30 - 15f, RXRandom.Float() * 20);
+            Vector2 acc = new Vector2(RXRandom.Float() * 5, RXRandom.Float() * 10);
+
+            p.activate(this.GetPosition() + new Vector2(RXRandom.Float() * 16 -8f, RXRandom.Float() * 13 - 10), vel, acc, RXRandom.Bool() ? 180.0f : 0);
+            this.container.AddChild(p);
         }
     }
 }
