@@ -136,6 +136,7 @@ public class Player : FutileFourDirectionBaseObject
 
     public void TakeDamage(Vector2 pos)
     {
+        FSoundManager.PlaySound("hurt");
         C.getCameraInstance().shake(.7f, .5f);
         Go.killAllTweensWithTarget(this);
         this.Health--;
@@ -144,7 +145,6 @@ public class Player : FutileFourDirectionBaseObject
         {
             State = PlayerState.DYING;
             hasSpawnedSpiritParticles = false;
-            C.getCameraInstance().shake(1.0f, invulnerableStunTime * 3);
         }
         else
         {
@@ -220,6 +220,7 @@ public class Player : FutileFourDirectionBaseObject
                 shouldDamage = false;
                 if (C.getKey(C.JUMP_KEY))
                 {
+                    FSoundManager.PlaySound("jump");
                     State = PlayerState.JUMP;
                     if (C.getKey(C.RIGHT_KEY))
                         _direction = Direction.RIGHT;
@@ -281,6 +282,7 @@ public class Player : FutileFourDirectionBaseObject
                     switch (selectedItem)
                     {
                         case SecondaryItem.SWORD:
+                            FSoundManager.PlaySound("swordOne");
                             State = PlayerState.SWORD;
                             if (C.getKey(C.RIGHT_KEY))
                                 _direction = Direction.RIGHT;
@@ -433,7 +435,8 @@ public class Player : FutileFourDirectionBaseObject
                         float attack2Time = .25f;
                         float attack2Dist = 20;
                         float attack2Disp = 5f;
-                        State = PlayerState.SWORD_TWO;
+                        State = PlayerState.SWORD_TWO; 
+                        FSoundManager.PlaySound("swordTwo");
                         hasSpawnedSpiritParticles = false;
                         if (C.getKey(C.RIGHT_KEY))
                             _direction = Direction.RIGHT;
@@ -524,7 +527,8 @@ public class Player : FutileFourDirectionBaseObject
                         SpawnDeathParticles(Direction.UP, 1 + (int)stateCount);
                     if (stateCount > invulnerableStunTime * 3)
                     {
-
+                        FSoundManager.PlaySound("die");
+                        C.getCameraInstance().shake(1.0f, .5f);
                         SpawnDeathParticles(Direction.UP, 20);
                         this.isVisible = false;
                         hasSpawnedSpiritParticles = true;

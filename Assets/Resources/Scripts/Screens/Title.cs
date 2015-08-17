@@ -15,6 +15,7 @@ public class TitleScreen : FContainer
 
     public TitleScreen()
     {
+        FSoundManager.PlayMusic("SpiritGuardMenu");
         title = new FSprite("title_kanji");
         english = new FSprite("title_english");
         play = new FSprite("button_start");
@@ -31,8 +32,10 @@ public class TitleScreen : FContainer
         this.AddChild(credits);
     }
 
+    public float volume { get { return FSoundManager.volume; } set { FSoundManager.volume = value; } }
     public override void HandleAddedToStage()
     {
+        
         title.y = Futile.screen.halfHeight + title.height / 2f;
         english.x = Futile.screen.halfWidth + english.width / 2f;
         play.x = Futile.screen.halfWidth + play.width / 2f;
@@ -61,6 +64,8 @@ public class TitleScreen : FContainer
         if (C.getKeyDown(C.JUMP_KEY))
         {
             World world = new World();
+
+            FSoundManager.PlayMusic("SpiritGuardField");
             world.ShowLoading(() =>
             {
                 C.getCameraInstance().AddChild(world.ui);

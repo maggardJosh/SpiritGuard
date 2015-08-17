@@ -15,6 +15,7 @@ public class Arrow : FutileFourDirectionBaseObject
     public Arrow(FNode owner, World world)
         : base(new RXRect(0, -5, 12, 5), world)
     {
+        FSoundManager.PlaySound("arrowShoot");
         this.owner = owner;
         handleStateCount = true;
         this.collidesWithWater = false;

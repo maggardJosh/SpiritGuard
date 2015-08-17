@@ -78,7 +78,7 @@ public class World : FContainer
             midStartPos = Futile.screen.halfWidth - loadingBG.width / 2;
             finalPos = -Futile.screen.halfWidth - loadingBG.width;
         }
-
+        FSoundManager.PlaySound("slideOn");
         loadingBG.isVisible = true;
         C.isTransitioning = true;
         Go.to(loadingBG, .7f, new TweenConfig().floatProp("x", midPos).setDelay(.1f).setEaseType(EaseType.QuadOut).onComplete(() =>
@@ -86,6 +86,7 @@ public class World : FContainer
             loadAction.Invoke();
             loadingBG.rotation += 180.0f;
             loadingBG.x = midStartPos;
+            FSoundManager.PlaySound("slideOff");
             Go.to(loadingBG, 1.2f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
             {
                 C.isTransitioning = false;
