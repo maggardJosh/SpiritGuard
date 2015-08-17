@@ -33,6 +33,8 @@ public class ArrowTurret : FutileFourDirectionBaseObject
     private float arrowSpeed = 2f;
     public override void OnFixedUpdate()
     {
+        if (C.isTransitioning)
+            return;
         if (initDelay > 0)
         {
             if (stateCount > initDelay)

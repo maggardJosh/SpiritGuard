@@ -26,6 +26,8 @@ public class MagicTurret : FutilePlatformerBaseObject
 
     public override void OnFixedUpdate()
     {
+        if (C.isTransitioning)
+            return;
         if (initDelay > 0)
         {
             if (stateCount > initDelay)

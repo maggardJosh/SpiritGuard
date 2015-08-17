@@ -195,6 +195,8 @@ public class Knight : FutileFourDirectionBaseObject
     bool changeDirAfterAttack = false;
     public override void OnFixedUpdate()
     {
+        if (C.isTransitioning)
+            return;
         switch (State)
         {
             case KnightState.IDLE:

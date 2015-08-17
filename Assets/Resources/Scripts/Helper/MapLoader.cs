@@ -38,6 +38,9 @@ public class MapLoader
                 case "ghost":
                     world.addObject(parseGhost(node, world));
                     break;
+                case "soul":
+                    world.addObject(parseSoul(node, world));
+                    break;
             }
         }
     }
@@ -212,6 +215,30 @@ public class MapLoader
          result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
          return result;
+     }
+
+     private static SoulPickup parseSoul(XMLNode node, World world)
+     {
+         SoulPickup.SoulType type = SoulPickup.SoulType.JUMP;
+         if (node.children[0] != null)
+         {
+
+             foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+             {
+                 switch (property.attributes["name"].ToLower())
+                 {
+                     case "type":
+                         switch (property.attributes["value"].ToLower())
+                         {
+                             case "jump": type = SoulPickup.SoulType.JUMP; break;
+                             case "sword": type = SoulPickup.SoulType.SWORD; break;
+                             case "bow": type = SoulPickup.SoulType.BOW; break;
+                         }
+                         break;
+                 }
+             }
+         }
+         return new SoulPickup(type, world, (float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
      }
 
 }

@@ -191,6 +191,7 @@
             <filename>Knight</filename>
             <filename>UI</filename>
             <filename>Ghost</filename>
+            <filename>Souls</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

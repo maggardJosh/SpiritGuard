@@ -51,6 +51,8 @@ public class Ghost : FutileFourDirectionBaseObject
     float moveSpeed = .01f;
     public override void OnFixedUpdate()
     {
+        if (C.isTransitioning)
+            return;
         if (State == GhostState.MOVING)
         {
 

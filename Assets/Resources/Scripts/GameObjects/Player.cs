@@ -13,6 +13,9 @@ public class Player : FutileFourDirectionBaseObject
     bool lastJumpPress = false;
     public bool shouldDamage = false;
     private int _health = 3;
+    private bool canJump = false;
+    private bool canSword = false;
+    private bool canBow = false;
     public int Health
     {
         get { return _health; }
@@ -124,6 +127,7 @@ public class Player : FutileFourDirectionBaseObject
         player.addAnimation(new FAnimation(PlayerState.BOW_SHOOTING.ToString() + Direction.RIGHT.ToString(), new int[] { 40 }, 150, false));
         player.addAnimation(new FAnimation(PlayerState.BOW_SHOOTING.ToString() + Direction.LEFT.ToString(), new int[] { 40 }, 150, false));
 
+
         PlayAnim(true);
         this.AddChild(player);
     }
@@ -132,6 +136,11 @@ public class Player : FutileFourDirectionBaseObject
     {
         container.AddChild(swordCollision);
         base.HandleAddedToContainer(container);
+    }
+
+    public void PickupSoul(SoulPickup soul)
+    {
+
     }
 
     public void TakeDamage(Vector2 pos)
@@ -213,7 +222,9 @@ public class Player : FutileFourDirectionBaseObject
         {
             case PlayerState.IDLE:
             case PlayerState.MOVE:
-
+                maxXVel = 1f;
+                maxYVel = 1;
+                minYVel = -1f;
                 if (State == PlayerState.MOVE)
                     if (RXRandom.Float() < .04f)
                         SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
@@ -585,6 +596,8 @@ public class Player : FutileFourDirectionBaseObject
 
     protected override void OnUpdate()
     {
+        if (C.isTransitioning)
+            return;
         switch (State)
         {
             case PlayerState.DYING:

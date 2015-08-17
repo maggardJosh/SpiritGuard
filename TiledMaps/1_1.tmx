@@ -8,7 +8,7 @@
   <image source="gfx/tilemap.png" width="160" height="144"/>
  </tileset>
  <tileset firstgid="91" name="objects" tilewidth="16" tileheight="16">
-  <image source="gfx/objects.png" width="128" height="16"/>
+  <image source="gfx/objects.png" width="144" height="16"/>
  </tileset>
  <layer name="background" width="30" height="20" opacity="0.51">
   <data encoding="csv">
@@ -136,5 +136,10 @@
   <object type="enemy" gid="93" x="208" y="224"/>
   <object type="enemy" gid="93" x="224" y="240"/>
   <object type="enemy" gid="93" x="208" y="256"/>
+  <object type="soul" gid="99" x="112" y="240">
+   <properties>
+    <property name="type" value="sword"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

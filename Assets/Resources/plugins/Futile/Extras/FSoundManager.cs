@@ -38,6 +38,12 @@ public class FSoundManager
         resourcePrefix = prefix;
     }
 
+    static public void TweenVolume(float newVolume)
+    {
+        Go.killAllTweensWithTarget(musicSource);
+        Go.to(musicSource, 1.0f, new TweenConfig().floatProp("volume", newVolume));
+    }
+
     static public void PreloadSound(String resourceName)
     {
         string fullPath = resourcePrefix + resourceName;

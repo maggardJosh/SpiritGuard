@@ -56,27 +56,23 @@ public class World : FContainer
         ui = new UI();
 
     }
-
+    public bool forceWaitLoad = false;
     public void ShowLoading(Action loadAction, bool fromRight = true)
     {
         float midPos;
-        float midStartPos;
-        float finalPos;
         if (fromRight)
         {
             loadingBG.x = Futile.screen.halfWidth + loadingBG.width / 2f;
             loadingBG.rotation = 180f;
             midPos = Futile.screen.halfWidth - loadingBG.width / 2f;
-            midStartPos = -Futile.screen.halfWidth + loadingBG.width / 2f;
-            finalPos = -Futile.screen.halfWidth - loadingBG.width;
+         
         }
         else
         {
             loadingBG.x = -Futile.screen.halfWidth - loadingBG.width / 2;
             loadingBG.rotation = 0;
             midPos = -Futile.screen.halfWidth + loadingBG.width / 2;
-            midStartPos = Futile.screen.halfWidth - loadingBG.width / 2;
-            finalPos = -Futile.screen.halfWidth - loadingBG.width;
+           
         }
         FSoundManager.PlaySound("slideOn");
         loadingBG.isVisible = true;
@@ -84,17 +80,37 @@ public class World : FContainer
         Go.to(loadingBG, .7f, new TweenConfig().floatProp("x", midPos).setDelay(.1f).setEaseType(EaseType.QuadOut).onComplete(() =>
         {
             loadAction.Invoke();
-            loadingBG.rotation += 180.0f;
-            loadingBG.x = midStartPos;
-            FSoundManager.PlaySound("slideOff");
-            Go.to(loadingBG, 1.2f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
-            {
-                C.isTransitioning = false;
-                loadingBG.isVisible = false;
-            }));
+            if (!forceWaitLoad)
+                HideLoading(null, fromRight);
+            
         }));
     }
-
+    public void HideLoading(Action doneAction, bool fromRight = true)
+    {
+        forceWaitLoad = false;
+        float midStartPos;
+        float finalPos;
+        if (fromRight)
+        {
+            midStartPos = -Futile.screen.halfWidth + loadingBG.width / 2f;
+            finalPos = -Futile.screen.halfWidth - loadingBG.width;
+        }
+        else
+        {
+            midStartPos = Futile.screen.halfWidth - loadingBG.width / 2;
+            finalPos = -Futile.screen.halfWidth - loadingBG.width;
+        }
+        loadingBG.rotation += 180.0f;
+        loadingBG.x = midStartPos;
+        FSoundManager.PlaySound("slideOff");
+        Go.to(loadingBG, 1.2f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
+        {
+            if (doneAction != null)
+                doneAction.Invoke();
+            C.isTransitioning = false;
+            loadingBG.isVisible = false;
+        }));
+    }
     public void LoadMap(string mapName)
     {
         lastMap = mapName;
@@ -177,7 +193,7 @@ public class World : FContainer
 
     public void addObject(FNode objectToAdd)
     {
-        if (objectToAdd is Knight || objectToAdd is Arrow || objectToAdd is Heart || objectToAdd is MagicOrb || objectToAdd is Ghost)
+        if (objectToAdd is Knight || objectToAdd is Arrow || objectToAdd is Heart || objectToAdd is MagicOrb || objectToAdd is Ghost || objectToAdd is SoulPickup)
             damageObjects.Add((FutilePlatformerBaseObject)objectToAdd);
         else
             if (objectToAdd is FutilePlatformerBaseObject)
@@ -205,7 +221,7 @@ public class World : FContainer
     public void removeObject(FNode objectToRemove)
     {
 
-        if (objectToRemove is Knight || objectToRemove is Arrow || objectToRemove is Heart || objectToRemove is MagicOrb || objectToRemove is Ghost)
+        if (objectToRemove is Knight || objectToRemove is Arrow || objectToRemove is Heart || objectToRemove is MagicOrb || objectToRemove is Ghost || objectToRemove is SoulPickup)
         {
             damageObjects.Remove((FutilePlatformerBaseObject)objectToRemove);
         }
@@ -301,6 +317,11 @@ public class World : FContainer
         {
             Ghost g = (Ghost)o;
             g.HandlePlayerCollision(player);
+        }
+        else if (o is SoulPickup)
+        {
+            SoulPickup s = (SoulPickup)o;
+            s.HandlePlayerCollision(player);
         }
 
     }
