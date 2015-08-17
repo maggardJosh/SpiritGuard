@@ -130,12 +130,14 @@ public class Knight : FutileFourDirectionBaseObject
                         if (this.y - attackSideDist < p.y && this.y + attackSideDist > p.y)
                             if (_direction == Direction.LEFT && this.x > p.x && this.x - attackDist < p.x)
                             {
+                                FSoundManager.PlaySound("knightAttack");
                                 State = KnightState.ATTACK_START;
                                 PlayAnim(true);
                                 attackTarget = p;
                             }
                             else if (_direction == Direction.RIGHT && this.x < p.x && this.x + attackDist > p.x)
                             {
+                                FSoundManager.PlaySound("knightAttack");
                                 State = KnightState.ATTACK_START;
                                 PlayAnim(true);
                                 attackTarget = p;
@@ -146,12 +148,14 @@ public class Knight : FutileFourDirectionBaseObject
                         if (this.x - attackSideDist < p.x && this.x + attackSideDist > p.x)
                             if (_direction == Direction.DOWN && this.y > p.y && this.y - attackDist < p.y)
                             {
+                                FSoundManager.PlaySound("knightAttack");
                                 State = KnightState.ATTACK_START;
                                 PlayAnim(true);
                                 attackTarget = p;
                             }
                             else if (_direction == Direction.UP && this.y < p.y && this.y + attackDist > p.y)
                             {
+                                FSoundManager.PlaySound("knightAttack");
                                 State = KnightState.ATTACK_START;
                                 PlayAnim(true);
                                 attackTarget = p;
@@ -169,6 +173,7 @@ public class Knight : FutileFourDirectionBaseObject
 
     public void TakeDamage(Vector2 pos)
     {
+        FSoundManager.PlaySound("enemyHurt");
         Go.killAllTweensWithTarget(this);
         this.health--;
         if (health > 0)
@@ -355,6 +360,7 @@ public class Knight : FutileFourDirectionBaseObject
                 this.isVisible = stateCount * 100 % 10 < 5;
                 if (stateCount > invulnerableCount)
                 {
+                    FSoundManager.PlaySound("enemyDie");
                     if (RXRandom.Float() < Knight.HEART_DROP_CHANCE)
                         world.addObject(new Heart(world, this.GetPosition()));
                     SpawnParticles(Direction.UP, 25);

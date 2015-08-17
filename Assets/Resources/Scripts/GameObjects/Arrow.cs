@@ -37,6 +37,7 @@ public class Arrow : FutileFourDirectionBaseObject
 
             if (HitSomething)
             {
+                FSoundManager.PlaySound("arrowDie");
                 stateCount = 0;
                 firstHit = true;
             }

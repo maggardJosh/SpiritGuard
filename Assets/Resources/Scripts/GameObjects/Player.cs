@@ -274,6 +274,7 @@ public class Player : FutileFourDirectionBaseObject
                         selectedItem = SecondaryItem.BOW;
                     else
                         selectedItem = SecondaryItem.SWORD;
+                    FSoundManager.PlaySound("swap");
                     world.ui.UpdateSelectedItem(selectedItem);
                 }
                 if (C.getKey(C.ACTION_KEY) && !lastActionPress)

@@ -117,7 +117,7 @@
     <property name="interval" value="1"/>
    </properties>
   </object>
-  <object type="arrowturret" gid="96" x="304" y="224">
+  <object type="arrowturret" gid="96" x="176" y="160">
    <properties>
     <property name="direction" value="left"/>
     <property name="initdelay" value=".4"/>
@@ -129,9 +129,12 @@
     <property name="distance" value="5"/>
    </properties>
   </object>
-  <object type="ghost" gid="98" x="48" y="240"/>
-  <object type="ghost" gid="98" x="64" y="240"/>
-  <object type="ghost" gid="98" x="80" y="240"/>
-  <object type="ghost" gid="98" x="96" y="240"/>
+  <object type="ghost" gid="98" x="0" y="160"/>
+  <object type="ghost" gid="98" x="16" y="160"/>
+  <object type="ghost" gid="98" x="32" y="160"/>
+  <object type="ghost" gid="98" x="48" y="160"/>
+  <object type="enemy" gid="93" x="208" y="224"/>
+  <object type="enemy" gid="93" x="224" y="240"/>
+  <object type="enemy" gid="93" x="208" y="256"/>
  </objectgroup>
 </map>

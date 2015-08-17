@@ -24,6 +24,7 @@ public class MagicOrb : FutilePlatformerBaseObject
         this.AddChild(sprite);
         this.xVel = RXRandom.Float() * .5f - .25f;
         this.yVel = RXRandom.Float() * .5f - .25f;
+        FSoundManager.PlaySound("orbShoot");
     }
 
     public void SetTarget(FutilePlatformerBaseObject node)
@@ -48,6 +49,7 @@ public class MagicOrb : FutilePlatformerBaseObject
         }
         if (stateCount > 3.0f)
         {
+            FSoundManager.PlaySound("orbExplosion");
             SpawnParticles(30, true);
             world.removeObject(this);
         }
@@ -59,6 +61,7 @@ public class MagicOrb : FutilePlatformerBaseObject
             return;
         if (p.isColliding(this))
         {
+            FSoundManager.PlaySound("orbExplosion");
             p.TakeDamage(p.GetPosition() - new Vector2(xVel, yVel));
             SpawnParticles(30, true);
             world.removeObject(this);
