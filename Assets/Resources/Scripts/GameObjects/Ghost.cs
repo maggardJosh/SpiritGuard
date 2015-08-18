@@ -7,6 +7,8 @@ public class Ghost : FutileFourDirectionBaseObject
 {
     FAnimatedSprite sprite;
     GhostState _state = GhostState.IDLE;
+    private int health = 2;
+    public string name;
     public GhostState State
     {
         get { return _state; }
@@ -22,11 +24,14 @@ public class Ghost : FutileFourDirectionBaseObject
     public enum GhostState
     {
         IDLE,
-        MOVING
+        MOVING,
+        INVULNERABLE,
+        DYING
     }
-    public Ghost(World world)
+    public Ghost(World world, string name)
         : base(new RXRect(1, -2, 10, 10), world)
     {
+        this.name = name;
         handleStateCount = true;
         collidesWithWater = false;
         clearAcc = false;
@@ -47,6 +52,7 @@ public class Ghost : FutileFourDirectionBaseObject
         PlayAnim();
 
     }
+    float invulnerableCount = 1f;
     float minState = .8f;
     float moveSpeed = .01f;
     public override void OnFixedUpdate()
@@ -115,9 +121,48 @@ public class Ghost : FutileFourDirectionBaseObject
                 if (yAcc == 0)
                     yVel *= .8f;
                 break;
+            case GhostState.INVULNERABLE:
+
+                if (RXRandom.Float() < .2f)
+                    SpawnParticles(1);
+                this.isVisible = stateCount * 100 % 10 < 5;
+                if (stateCount > invulnerableCount)
+                {
+                    State = GhostState.IDLE;
+
+                    resetMax();
+                    this.isVisible = true;
+                }
+                this.xVel *= .9f;
+                this.yVel *= .9f;
+                break;
+            case GhostState.DYING:
+                if (RXRandom.Float() < .4f + .4f * stateCount)
+                    SpawnParticles(1 + (int)stateCount);
+                this.isVisible = stateCount * 100 % 10 < 5;
+                if (stateCount > invulnerableCount)
+                {
+                    if (!String.IsNullOrEmpty(name))
+                        C.Save.requiredEnemyKills.Add(this.name);
+                    FSoundManager.PlaySound("enemyDie");
+                    if (RXRandom.Float() < Knight.HEART_DROP_CHANCE)
+                        world.addObject(new Heart(world, this.GetPosition()));
+                    SpawnParticles(25);
+                    world.removeObject(this);
+
+                }
+                this.xVel *= .9f;
+                this.yVel *= .9f;
+                break;
         }
         base.OnFixedUpdate();
         PlayAnim();
+    }
+
+    private void resetMax()
+    {
+
+        maxVel = .5f;
     }
 
 
@@ -136,12 +181,36 @@ public class Ghost : FutileFourDirectionBaseObject
 
     public void HandlePlayerCollision(Player p)
     {
+        if (p.shouldDamage)
+            if (this.isColliding(p.swordCollision))
+            {
+                this.TakeDamage(p.GetPosition());
+                return;
+            }
         if (p.invulnCount > 0)
             return;
+        
         if(p.isColliding(this))
         {
             p.TakeDamage(this.GetPosition());
         }
+    }
+
+    public void TakeDamage(Vector2 pos)
+    {
+        FSoundManager.PlaySound("enemyHurt");
+        Go.killAllTweensWithTarget(this);
+        this.health--;
+        if (health > 0)
+            State = GhostState.INVULNERABLE;
+        else
+            State = GhostState.DYING;
+        Vector2 dist = (this.GetPosition() - pos).normalized * 4;
+        maxVel = 50;
+        xVel = dist.x;
+        yVel = dist.y;
+        xAcc = 0;
+        yAcc = 0;
     }
 
     public void PlayAnim(bool forced = false)

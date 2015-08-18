@@ -152,6 +152,7 @@ public class World : FContainer
         {
             player = new Player(this);
             C.getCameraInstance().follow(player);
+            player.LoadLastSave();
         }
         collisionObjects.Add(player);
         playerLayer.AddChild(player);

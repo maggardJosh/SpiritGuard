@@ -8,19 +8,21 @@ public class Player : FutileFourDirectionBaseObject
 {
     public class SaveState
     {
-        public bool canJump = false;
-        public bool canSword = false;
+        public bool canJump = true;
+        public bool canSword = true;
         public bool canBow = false;
         public List<string> switchesActivated = new List<string>();
+        public List<string> requiredEnemyKills = new List<string>();
         public string lastMap = "";
         public string lastDoor = "";
-        
+
         public void copy(SaveState save)
         {
             canJump = save.canJump;
             canSword = save.canSword;
             canBow = save.canBow;
             switchesActivated = new List<string>(save.switchesActivated);
+            requiredEnemyKills = new List<string>(save.requiredEnemyKills);
             lastMap = save.lastMap;
             lastDoor = save.lastDoor;
         }
@@ -33,7 +35,7 @@ public class Player : FutileFourDirectionBaseObject
     bool lastJumpPress = false;
     public bool shouldDamage = false;
     private int _health = 3;
-    
+
     public bool hasDamageObject = false;
     public bool CanJump { get { return C.Save.canJump; } set { world.ui.UpdateHasJump(value); C.Save.canJump = value; } }
     public int Health
@@ -94,7 +96,7 @@ public class Player : FutileFourDirectionBaseObject
         : base(new RXRect(0, -8, 8, 6), world)
     {
         swordCollision = new FutilePlatformerBaseObject(new RXRect(6, -8, 15, 10), world);
-        
+
         maxXVel = 1;
         maxYVel = 1;
         minYVel = -1;
@@ -164,8 +166,8 @@ public class Player : FutileFourDirectionBaseObject
         switch (soul.Type)
         {
             case SoulPickup.SoulType.JUMP: C.Save.canJump = true; world.ui.UpdateHasJump(true); break;
-            case SoulPickup.SoulType.SWORD:  C.Save.canSword = true; selectedItem = SecondaryItem.SWORD; world.ui.UpdateSelectedItem(selectedItem); break;
-            case SoulPickup.SoulType.BOW:  C.Save.canBow = true; selectedItem = SecondaryItem.BOW; world.ui.UpdateSelectedItem(selectedItem); break;
+            case SoulPickup.SoulType.SWORD: C.Save.canSword = true; selectedItem = SecondaryItem.SWORD; world.ui.UpdateSelectedItem(selectedItem); break;
+            case SoulPickup.SoulType.BOW: C.Save.canBow = true; selectedItem = SecondaryItem.BOW; world.ui.UpdateSelectedItem(selectedItem); break;
         }
     }
 
@@ -210,10 +212,10 @@ public class Player : FutileFourDirectionBaseObject
             selectedItem = SecondaryItem.BOW;
         else if (C.Save.canSword)
             selectedItem = SecondaryItem.SWORD;
-        else if (C.Save.canJump)
-            selectedItem = SecondaryItem.NONE;
         else
-            world.ui.UpdateHasJump(false);
+            selectedItem = SecondaryItem.NONE;
+
+        world.ui.UpdateHasJump(C.Save.canJump);
         world.ui.UpdateSelectedItem(selectedItem);
     }
 
@@ -269,7 +271,7 @@ public class Player : FutileFourDirectionBaseObject
                 shouldDamage = false;
                 if (C.getKey(C.JUMP_KEY) && CanJump && !world.checkForInteractObject(this))
                 {
-                        
+
                     FSoundManager.PlaySound("jump");
                     State = PlayerState.JUMP;
                     if (C.getKey(C.RIGHT_KEY))

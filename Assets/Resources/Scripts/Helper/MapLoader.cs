@@ -21,7 +21,9 @@ public class MapLoader
                     world.addObject(parseSign(node, world));
                     break;
                 case "enemy":
-                    world.addObject(parseEnemy(node, world));
+                    Knight k = parseEnemy(node, world);
+                    if (k != null)
+                        world.addObject(k);
                     break;
                 case "villager":
                     world.addObject(parseVillager(node, world));
@@ -36,7 +38,10 @@ public class MapLoader
                     world.addObject(parseMagicTurret(node, world));
                     break;
                 case "ghost":
-                    world.addObject(parseGhost(node, world));
+
+                    Ghost g = parseGhost(node, world);
+                    if (g != null)
+                        world.addObject(g);
                     break;
                 case "soul":
                     SoulPickup s = parseSoul(node, world);
@@ -125,8 +130,12 @@ public class MapLoader
 
     private static Knight parseEnemy(XMLNode node, World world)
     {
-
-        Knight result = new Knight(world);
+        string name = "";
+        if (node.attributes.ContainsKey("name"))
+            name = node.attributes["name"];
+        if (C.Save.requiredEnemyKills.Contains(name))
+            return null;
+        Knight result = new Knight(world, name);
         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
         return result;
@@ -134,8 +143,12 @@ public class MapLoader
 
     private static Ghost parseGhost(XMLNode node, World world)
     {
-
-        Ghost result = new Ghost(world);
+        string name = "";
+        if (node.attributes.ContainsKey("name"))
+            name = node.attributes["name"];
+        if (C.Save.requiredEnemyKills.Contains(name))
+            return null;
+        Ghost result = new Ghost(world, name);
         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
         return result;
@@ -294,7 +307,10 @@ public class MapLoader
                 }
             }
         }
-        Switch result = new Switch(doorName, world);
+        string switchName = "";
+        if (node.attributes.ContainsKey("name"))
+            switchName = node.attributes["name"];
+        Switch result = new Switch(doorName, switchName, world);
         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
         return result;
     }
@@ -314,7 +330,10 @@ public class MapLoader
                 }
             }
         }
-        HitSwitch result = new HitSwitch(doorName, world);
+        string switchName = "";
+        if (node.attributes.ContainsKey("name"))
+            switchName = node.attributes["name"];
+        HitSwitch result = new HitSwitch(doorName, switchName, world);
         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
         return result;
     }

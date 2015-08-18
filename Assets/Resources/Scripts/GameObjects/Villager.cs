@@ -164,7 +164,7 @@ public class Villager : FutileFourDirectionBaseObject
         }
         else
         {
-            if (C.getKey(C.JUMP_KEY))
+            if (C.getKeyDown(C.JUMP_KEY))
             {
                 world.ui.dialogue.ShowMessage(new List<string>(dialogue));
             }

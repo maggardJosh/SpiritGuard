@@ -11,6 +11,7 @@ public class Knight : FutileFourDirectionBaseObject
     private KnightState _state = KnightState.IDLE;
     private int health = 2;
     public const float HEART_DROP_CHANCE = .4f;
+    private string name;
     public KnightState State
     {
         get
@@ -35,9 +36,11 @@ public class Knight : FutileFourDirectionBaseObject
         INVULNERABLE,
         DYING
     }
-    public Knight(World world)
+    public Knight(World world, string name)
         : base(new RXRect(0, -6, 10, 8), world)
     {
+        this.name = name;
+
         maxXVel = .5f;
         maxYVel = .5f;
         minYVel = -.5f;
@@ -362,6 +365,8 @@ public class Knight : FutileFourDirectionBaseObject
                 this.isVisible = stateCount * 100 % 10 < 5;
                 if (stateCount > invulnerableCount)
                 {
+                    if (!String.IsNullOrEmpty(name))
+                        C.Save.requiredEnemyKills.Add(this.name);
                     FSoundManager.PlaySound("enemyDie");
                     if (RXRandom.Float() < Knight.HEART_DROP_CHANCE)
                         world.addObject(new Heart(world, this.GetPosition()));

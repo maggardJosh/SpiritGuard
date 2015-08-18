@@ -10,6 +10,7 @@ public class Door : FutilePlatformerBaseObject
     {
         CLOSED,
         OPENING,
+        OPENED
     }
     public string name;
     public State currentState = State.CLOSED;
@@ -22,13 +23,20 @@ public class Door : FutilePlatformerBaseObject
         sprite.addAnimation(new FAnimation(State.CLOSED.ToString(), new int[] { 1 }, 150, false));
         sprite.ignoreTransitioning = true;
         sprite.addAnimation(new FAnimation(State.OPENING.ToString(), new int[] { 2,3,4,5,6,7 }, 150, false));
+        sprite.addAnimation(new FAnimation(State.OPENED.ToString(), new int[] {  7 }, 150, false));
 
+        if (C.Save.switchesActivated.Contains(name))
+        {
+            this.blocksOtherObjects = false;
+            currentState = State.OPENED;
+        }
         this.AddChild(sprite);
         PlayAnim();
     }
 
     public void Open()
     {
+        C.Save.switchesActivated.Add(this.name);
         FSoundManager.PlaySound("door");
         currentState = State.OPENING;
         blocksOtherObjects = false;

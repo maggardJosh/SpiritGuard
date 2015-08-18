@@ -160,7 +160,7 @@
   </object>
   <object type="ghost" gid="208" x="0" y="160"/>
   <object type="ghost" gid="208" x="16" y="160"/>
-  <object type="ghost" gid="208" x="32" y="160"/>
+  <object name="ghostOne" type="ghost" gid="208" x="112" y="256"/>
   <object type="ghost" gid="208" x="48" y="160"/>
   <object type="enemy" gid="203" x="208" y="224"/>
   <object type="enemy" gid="203" x="224" y="240"/>
@@ -172,11 +172,11 @@
   </object>
   <object type="soul" gid="209" x="144" y="240">
    <properties>
-    <property name="type" value="bow"/>
+    <property name="type" value="sword"/>
    </properties>
   </object>
   <object name="DoorOne" type="door" gid="210" x="80" y="224"/>
-  <object type="switch" gid="211" x="80" y="240">
+  <object name="switchOne" type="switch" gid="211" x="80" y="240">
    <properties>
     <property name="door" value="DoorOne"/>
    </properties>
