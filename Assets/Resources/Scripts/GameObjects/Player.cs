@@ -16,6 +16,7 @@ public class Player : FutileFourDirectionBaseObject
     private bool canJump = false;
     private bool canSword = false;
     private bool canBow = false;
+    public bool CanJump { get { return canJump; } set { world.ui.UpdateHasJump(value); canJump = value; } }
     public int Health
     {
         get { return _health; }
@@ -32,10 +33,11 @@ public class Player : FutileFourDirectionBaseObject
     public FutilePlatformerBaseObject swordCollision;
     public float invulnCount = 0;
     float invulnerableStunTime = .6f;
-    SecondaryItem selectedItem = SecondaryItem.SWORD;
+    SecondaryItem selectedItem = SecondaryItem.NONE;
 
     public enum SecondaryItem
     {
+        NONE,
         SWORD,
         BOW
     }
@@ -140,7 +142,12 @@ public class Player : FutileFourDirectionBaseObject
 
     public void PickupSoul(SoulPickup soul)
     {
-
+        switch (soul.Type)
+        {
+            case SoulPickup.SoulType.JUMP: CanJump = true; break;
+            case SoulPickup.SoulType.SWORD: canSword = true; selectedItem = SecondaryItem.SWORD; world.ui.UpdateSelectedItem(selectedItem); break;
+            case SoulPickup.SoulType.BOW: canBow = true; selectedItem = SecondaryItem.BOW; world.ui.UpdateSelectedItem(selectedItem);  break;
+        }
     }
 
     public void TakeDamage(Vector2 pos)
@@ -176,7 +183,6 @@ public class Player : FutileFourDirectionBaseObject
         yAcc = 0;
 
     }
-
 
 
     bool hasSpawnedSpiritParticles = false;
@@ -229,7 +235,7 @@ public class Player : FutileFourDirectionBaseObject
                     if (RXRandom.Float() < .04f)
                         SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
                 shouldDamage = false;
-                if (C.getKey(C.JUMP_KEY))
+                if (C.getKey(C.JUMP_KEY) && CanJump)
                 {
                     FSoundManager.PlaySound("jump");
                     State = PlayerState.JUMP;
@@ -281,12 +287,18 @@ public class Player : FutileFourDirectionBaseObject
                 float attackDisp = 3f;
                 if (C.getKey(C.SELECT_KEY) && !lastSelectPress)
                 {
-                    if (selectedItem == SecondaryItem.SWORD)
+                    if (selectedItem == SecondaryItem.SWORD && canBow)
+                    {
+                        FSoundManager.PlaySound("swap");
                         selectedItem = SecondaryItem.BOW;
-                    else
+                        world.ui.UpdateSelectedItem(selectedItem);
+                    }
+                    else if (selectedItem == SecondaryItem.BOW && canSword)
+                    {
+                        FSoundManager.PlaySound("swap");
                         selectedItem = SecondaryItem.SWORD;
-                    FSoundManager.PlaySound("swap");
-                    world.ui.UpdateSelectedItem(selectedItem);
+                        world.ui.UpdateSelectedItem(selectedItem);
+                    }
                 }
                 if (C.getKey(C.ACTION_KEY) && !lastActionPress)
                 {
@@ -447,7 +459,7 @@ public class Player : FutileFourDirectionBaseObject
                         float attack2Time = .25f;
                         float attack2Dist = 20;
                         float attack2Disp = 5f;
-                        State = PlayerState.SWORD_TWO; 
+                        State = PlayerState.SWORD_TWO;
                         FSoundManager.PlaySound("swordTwo");
                         hasSpawnedSpiritParticles = false;
                         if (C.getKey(C.RIGHT_KEY))

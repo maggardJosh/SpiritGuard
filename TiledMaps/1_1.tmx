@@ -136,9 +136,14 @@
   <object type="enemy" gid="93" x="208" y="224"/>
   <object type="enemy" gid="93" x="224" y="240"/>
   <object type="enemy" gid="93" x="208" y="256"/>
-  <object type="soul" gid="99" x="112" y="240">
+  <object type="soul" gid="99" x="64" y="256">
    <properties>
-    <property name="type" value="sword"/>
+    <property name="type" value="jump"/>
+   </properties>
+  </object>
+  <object type="soul" gid="99" x="112" y="256">
+   <properties>
+    <property name="type" value="bow"/>
    </properties>
   </object>
  </objectgroup>

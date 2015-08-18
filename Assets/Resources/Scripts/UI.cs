@@ -13,6 +13,9 @@ public class UI : FContainer
     FSprite slotBSelected;
     FSprite hearts;
 
+    public Vector2 slotAPos { get { return slotASelected.GetPosition(); } }
+    public Vector2 slotBPos { get { return slotBSelected.GetPosition(); } }
+
     FSprite selectedSoul;
     public UI()
     {
@@ -28,6 +31,8 @@ public class UI : FContainer
         this.AddChild(slotASelected);
         this.AddChild(slotBSelected);
         this.AddChild(hearts);
+        slotASelected.isVisible = false;
+        slotBSelected.isVisible = false;
         background.y = Futile.screen.halfHeight - background.height / 2f;
         slotB.y = background.y;
         slotA.y = background.y;
@@ -39,6 +44,12 @@ public class UI : FContainer
         slotBSelected.x += 1;
         hearts.y = background.y;
         hearts.x = Futile.screen.halfWidth - hearts.width / 2f - 20;
+
+    }
+
+    public void UpdateHasJump(bool hasJump)
+    {
+        slotASelected.isVisible = hasJump;
     }
 
     internal void UpdateSelectedItem(Player.SecondaryItem selectedItem)
@@ -48,11 +59,16 @@ public class UI : FContainer
         {
             switch (selectedItem)
             {
+                case Player.SecondaryItem.NONE:
+                    slotBSelected.isVisible = false;
+                    break;
                 case Player.SecondaryItem.SWORD:
                     slotBSelected.SetElementByName("sword_soul");
+                    slotBSelected.isVisible = true;
                     break;
                 case Player.SecondaryItem.BOW:
                     slotBSelected.SetElementByName("bow_soul");
+                    slotBSelected.isVisible = true;
                     break;
             }
             Go.to(slotBSelected, .5f, new TweenConfig().floatProp("y", Futile.screen.halfHeight - slotBSelected.height / 2f).setEaseType(EaseType.QuadOut));

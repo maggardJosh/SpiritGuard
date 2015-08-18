@@ -71,10 +71,21 @@ public class SoulPickup : FutilePlatformerBaseObject
                                 label.RemoveFromContainer();
                                 Go.to(playerPickup, 1.0f, new TweenConfig().floatProp("x", playerRelativePosition.x).floatProp("y", playerRelativePosition.y).setEaseType(EaseType.QuadInOut).onComplete(() =>
                                 {
-                                    FSoundManager.TweenVolume(1.0f);
-                                    world.HideLoading(() => { p.isVisible = true; playerPickup.RemoveFromContainer(); });
+                                    FSoundManager.TweenVolume(1.0f); 
+                                    p.PickupSoul(this);
+                                    world.HideLoading(() => { p.isVisible = true; playerPickup.RemoveFromContainer(); this.RemoveFromContainer(); });
                                 }));
-                                Go.to(this, 1.0f, new TweenConfig().floatProp("y", 100, true).setEaseType(EaseType.QuadIn).onComplete(() => { this.RemoveFromContainer(); }));
+                                Vector2 powerupPos;
+                                switch(type)
+                                {
+                                    case SoulType.JUMP:
+                                        powerupPos = world.ui.slotAPos;
+                                        break;
+                                    default:
+                                        powerupPos = world.ui.slotBPos;
+                                        break;
+                                }
+                                Go.to(this, 1.0f, new TweenConfig().floatProp("x", powerupPos.x).floatProp("y", powerupPos.y).setEaseType(EaseType.QuadInOut));
                             }));
                         }));
                     }));
@@ -91,7 +102,7 @@ public class SoulPickup : FutilePlatformerBaseObject
             Vector2 vel = new Vector2(RXRandom.Float() * 30 - 15f, RXRandom.Float() * 20);
             Vector2 acc = new Vector2(RXRandom.Float() * 5, RXRandom.Float() * 10);
 
-            p.activate(this.GetPosition() + new Vector2(RXRandom.Float() * 16 -8f, RXRandom.Float() * 13 - 10), vel, acc, RXRandom.Bool() ? 180.0f : 0);
+            p.activate(this.GetPosition() + new Vector2(RXRandom.Float() * 16 - 8f, RXRandom.Float() * 13 - 10), vel, acc, RXRandom.Bool() ? 180.0f : 0);
             this.container.AddChild(p);
         }
     }
