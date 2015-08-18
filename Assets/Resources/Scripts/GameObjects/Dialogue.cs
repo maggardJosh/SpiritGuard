@@ -17,12 +17,17 @@ public class Dialogue : FContainer
     }
     State currentState = State.TRANS_IN;
     List<string> messages;
+    InteractInd indicator;
     public Dialogue()
     {
         dialogueBG = new FSprite("dialogueBG");
         dialogueBG.isVisible = false;
         this.y = -Futile.screen.halfHeight - dialogueBG.height / 2;
         this.AddChild(dialogueBG);
+
+        indicator = new InteractInd(Futile.screen.halfWidth - 12, -7);
+        indicator.ignoreTransitioning = true;
+        this.AddChild(indicator);
 
         message = new FLabel(C.smallFontName, "");
         message.alignment = FLabelAlignment.Center;
@@ -39,6 +44,7 @@ public class Dialogue : FContainer
         C.isTransitioning = true;
         Go.to(this, TWEEN_IN_TIME, new TweenConfig().floatProp("y", -Futile.screen.halfHeight + dialogueBG.height / 2f).setEaseType(EaseType.BackOut).onComplete(() =>
         {
+            indicator.Show();
             stateCount = 0;
             currentState = State.TYPEWRITER;
             message.isVisible = true;
@@ -83,6 +89,7 @@ public class Dialogue : FContainer
                         message.isVisible = false;
                         currentState = State.TRANS_OUT;
                         Futile.instance.SignalUpdate -= Update;
+                        indicator.Hide();
                         Go.to(this, TWEEN_OUT_TIME, new TweenConfig().floatProp("y", -Futile.screen.halfHeight - dialogueBG.height / 2f).setEaseType(EaseType.BackIn).onComplete(() => { currentState = State.TRANS_IN; C.isTransitioning = false; }));
                     }
                 }

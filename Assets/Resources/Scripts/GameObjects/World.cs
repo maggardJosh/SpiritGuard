@@ -10,6 +10,7 @@ public class World : FContainer
     FTilemap wallCollisionTilemap;
     FTilemap collisionTilemap;
     FTilemap backgroundTilemap;
+    FTilemap foregroundTilemap;
     public FSprite loadingBG;
     public UI ui;
     public Player player;
@@ -140,9 +141,11 @@ public class World : FContainer
         collisionTilemap = (FTilemap)this.map.getLayerNamed("collision");
         wallCollisionTilemap = (FTilemap)this.map.getLayerNamed("walls");
         backgroundTilemap = (FTilemap)this.map.getLayerNamed("background");
+        foregroundTilemap = (FTilemap)this.map.getLayerNamed("foreground");
         background.AddChild(backgroundTilemap);
         background.AddChild(collisionTilemap);
         background.AddChild(wallCollisionTilemap);
+        foreground.AddChild(foregroundTilemap);
 
         if (player == null)
         {
@@ -153,6 +156,7 @@ public class World : FContainer
         playerLayer.AddChild(player);
         this.y = -16;
         C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height-16, collisionTilemap.width, collisionTilemap.height+16));
+        foregroundTilemap.clipNode = C.getCameraInstance();
         collisionTilemap.clipNode = C.getCameraInstance();
         wallCollisionTilemap.clipNode = C.getCameraInstance();
         backgroundTilemap.clipNode = C.getCameraInstance();

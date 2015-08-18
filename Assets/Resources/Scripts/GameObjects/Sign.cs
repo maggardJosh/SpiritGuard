@@ -7,7 +7,7 @@ using UnityEngine;
 public class Sign : FutilePlatformerBaseObject
 {
     FSprite sign;
-    FLabel message;
+    InteractInd interactIndicator;
     private float _mScale = 1;
 
     public Sign(World world, string message)
@@ -16,9 +16,9 @@ public class Sign : FutilePlatformerBaseObject
         this.shouldSortByZ = false;
         sign = new FSprite("object_sign_01");
         this.AddChild(sign);
-        this.message = new FLabel(C.smallFontName, "Watch Out!");// new FLabel(C.smallFontName, message.Replace("\\n", "\n"));
-        this.AddChild(this.message);
-        this.message.isVisible = false;
+        interactIndicator = new InteractInd(0, 7);
+        this.AddChild(interactIndicator);
+        
     }
     bool inFrontOf = false;
     public void CheckCollision(Player p)
@@ -30,13 +30,8 @@ public class Sign : FutilePlatformerBaseObject
 
             if (!inFrontOf)
             {
-
-                message.y = 0;
+                interactIndicator.Show();
                 inFrontOf = true;
-                message.isVisible = true;
-                Go.killAllTweensWithTarget(message);
-                Go.to(message, 2.0f, new TweenConfig().floatProp("y", message.textRect.height / 2 + 5).setEaseType(EaseType.BackOut));
-
             }
             else
             {
@@ -49,9 +44,8 @@ public class Sign : FutilePlatformerBaseObject
         {
             if (inFrontOf)
             {
+                interactIndicator.Hide();
                 inFrontOf = false;
-                Go.killAllTweensWithTarget(message);
-                Go.to(message, .3f, new TweenConfig().floatProp("y", 0).setEaseType(EaseType.QuadIn).onComplete(() => { message.isVisible = false; }));
             }
         }
     }

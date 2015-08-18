@@ -56,7 +56,6 @@ public class Particle : FAnimatedSprite
         const int MAX_PARTICLES = 100;
         public static ParticleOne getParticle(int animBaseSpeed = 100)
         {
-            RXDebug.Log(animBaseSpeed);
             if (particleList == null)
                 particleList = new ParticleOne[MAX_PARTICLES];
             ParticleOne result = particleList[RXRandom.Int(MAX_PARTICLES)];
