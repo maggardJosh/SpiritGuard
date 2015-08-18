@@ -39,7 +39,9 @@ public class MapLoader
                     world.addObject(parseGhost(node, world));
                     break;
                 case "soul":
-                    world.addObject(parseSoul(node, world));
+                    SoulPickup s = parseSoul(node, world);
+                    if (s != null)
+                        world.addObject(s);
                     break;
                 case "door":
                     world.addObject(parseDoor(node, world));
@@ -257,9 +259,9 @@ public class MapLoader
                     case "type":
                         switch (property.attributes["value"].ToLower())
                         {
-                            case "jump": type = SoulPickup.SoulType.JUMP; break;
-                            case "sword": type = SoulPickup.SoulType.SWORD; break;
-                            case "bow": type = SoulPickup.SoulType.BOW; break;
+                            case "jump": if (C.Save.canJump) return null; type = SoulPickup.SoulType.JUMP; break;
+                            case "sword": if (C.Save.canSword) return null; type = SoulPickup.SoulType.SWORD; break;
+                            case "bow": if (C.Save.canBow) return null; type = SoulPickup.SoulType.BOW; break;
                         }
                         break;
                 }
