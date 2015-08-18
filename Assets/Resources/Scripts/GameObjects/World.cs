@@ -24,6 +24,7 @@ public class World : FContainer
     List<FutilePlatformerBaseObject> damageObjects = new List<FutilePlatformerBaseObject>();
     List<Sign> signs = new List<Sign>();
     List<Villager> villagers = new List<Villager>();
+    List<HitSwitch> hitSwitches = new List<HitSwitch>();
 
     string lastMap = "";
     string lastWarpPoint = "";
@@ -121,6 +122,7 @@ public class World : FContainer
         spawnPoints.Clear();
         signs.Clear();
         villagers.Clear();
+        hitSwitches.Clear();
         collisionObjects.Clear();
         damageObjects.Clear();
 
@@ -212,6 +214,8 @@ public class World : FContainer
             signs.Add((Sign)objectToAdd);
         if (objectToAdd is Villager)
             villagers.Add((Villager)objectToAdd);
+        if (objectToAdd is HitSwitch)
+            hitSwitches.Add((HitSwitch)objectToAdd);
         if (objectToAdd is PushBlock || objectToAdd is Switch)
             background.AddChild(objectToAdd);
         else
@@ -244,6 +248,8 @@ public class World : FContainer
             signs.Remove((Sign)objectToRemove);
         if (objectToRemove is Villager)
             villagers.Remove((Villager)objectToRemove);
+        if (objectToRemove is HitSwitch)
+            hitSwitches.Remove((HitSwitch)objectToRemove);
         objectToRemove.RemoveFromContainer();
     }
 
@@ -278,11 +284,15 @@ public class World : FContainer
             {
                 if (self is Player && o is PushBlock)
                     ((PushBlock)o).HandlePlayerCollision((Player)self);
-                if (o is Switch)
+                if (self is Player && o is Switch)
                 {
-                    ((Switch)o).HandlePlayerCollision(player);
+                    ((Switch)o).HandlePlayerCollision((Player)self);
                     continue;
                 }
+                else if (o is Switch)
+                    continue;
+                if (self is Arrow && o is HitSwitch)
+                    ((HitSwitch)o).Activate();
                 return worldPos;
             }
         }
@@ -433,5 +443,7 @@ public class World : FContainer
             s.CheckCollision(player);
         foreach (Villager v in villagers)
             v.HandlePlayerCollision(player);
+        foreach (HitSwitch s in hitSwitches)
+            s.HandlePlayerCollision(player);
     }
 }

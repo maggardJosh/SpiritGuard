@@ -77,7 +77,13 @@ public class Player : FutileFourDirectionBaseObject
         : base(new RXRect(0, -8, 8, 6), world)
     {
         swordCollision = new FutilePlatformerBaseObject(new RXRect(6, -8, 15, 10), world);
+        
         CanJump = true;
+        canBow = true;
+        canSword = true;
+        selectedItem = SecondaryItem.BOW;
+        world.ui.UpdateSelectedItem(selectedItem);
+
         maxXVel = 1;
         maxYVel = 1;
         minYVel = -1;

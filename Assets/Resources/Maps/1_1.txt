@@ -9,7 +9,7 @@
   <image source="gfx/tilemap.png" width="160" height="320"/>
  </tileset>
  <tileset firstgid="201" name="objects" tilewidth="16" tileheight="16">
-  <image source="gfx/objects.png" width="176" height="16"/>
+  <image source="gfx/objects.png" width="192" height="16"/>
  </tileset>
  <layer name="background" width="30" height="20" opacity="0.51">
   <data encoding="csv">
@@ -181,5 +181,11 @@
     <property name="door" value="DoorOne"/>
    </properties>
   </object>
+  <object type="hitswitch" gid="212" x="64" y="208">
+   <properties>
+    <property name="door" value="DoorTwo"/>
+   </properties>
+  </object>
+  <object name="DoorTwo" type="door" gid="210" x="80" y="208"/>
  </objectgroup>
 </map>

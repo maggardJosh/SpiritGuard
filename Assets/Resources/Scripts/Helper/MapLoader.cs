@@ -47,6 +47,9 @@ public class MapLoader
                 case "switch":
                     world.addObject(parseSwitch(node, world));
                     break;
+                case "hitswitch":
+                    world.addObject(parseHitSwitch(node, world));
+                    break;
             }
         }
     }
@@ -294,4 +297,23 @@ public class MapLoader
         return result;
     }
 
+    private static HitSwitch parseHitSwitch(XMLNode node, World world)
+    {
+        string doorName = "";
+        if (node.children.Count > 0)
+        {
+            foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+            {
+                switch (property.attributes["name"].ToLower())
+                {
+                    case "door":
+                        doorName = property.attributes["value"];
+                        break;
+                }
+            }
+        }
+        HitSwitch result = new HitSwitch(doorName, world);
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+        return result;
+    }
 }
