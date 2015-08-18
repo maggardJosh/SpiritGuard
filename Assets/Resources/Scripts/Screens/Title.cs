@@ -30,6 +30,14 @@ public class TitleScreen : FContainer
         this.AddChild(play);
         this.AddChild(exit);
         this.AddChild(credits);
+
+        FLabel test = new FLabel(C.smallFontName, C.versionNumber);
+        test.y = -Futile.screen.halfHeight - 30;
+        test.x -= 1;
+        
+        Go.to(test, 3, new TweenConfig().floatProp("y", -Futile.screen.halfHeight + test.textRect.height/2f + 13).setDelay(4.0f).setEaseType(EaseType.BackOut));
+        this.AddChild(test);
+
     }
 
     public float volume { get { return FSoundManager.volume; } set { FSoundManager.volume = value; } }
@@ -73,10 +81,7 @@ public class TitleScreen : FContainer
 
                 C.getCameraInstance().MoveToFront();
                 world.LoadMap("1_1"); world.SpawnPlayer("spawnpoint");
-                FLabel test = new FLabel(C.smallFontName, C.versionNumber);
-                test.y = -Futile.screen.halfHeight - 30;
-                Go.to(test, 5, new TweenConfig().floatProp("y", -Futile.screen.halfHeight + test.textRect.height / 2f).setEaseType(EaseType.BackOut));
-                C.getCameraInstance().AddChild(test);
+                
                 this.RemoveFromContainer();
             });
             Futile.instance.SignalUpdate -= Update;
