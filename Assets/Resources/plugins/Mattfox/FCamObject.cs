@@ -26,7 +26,7 @@ public class FCamObject : FContainer {
 		this.ListenForResize(HandleResize);
 		
 
-		_bounds = new Rect(-10,-10,20,20);
+		_bounds = new Rect(-5,-5,10,10);
 		
 		_worldBounds = new Rect(0,0,0,0);
 		

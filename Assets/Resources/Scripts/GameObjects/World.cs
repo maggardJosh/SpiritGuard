@@ -275,7 +275,6 @@ public class World : FContainer
             if (self is MagicOrb && o is Player)
                 continue;
 
-
             if (o == self)
                 continue;
             worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;

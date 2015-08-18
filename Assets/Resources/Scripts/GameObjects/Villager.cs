@@ -151,7 +151,6 @@ public class Villager : FutileFourDirectionBaseObject
             {
                 this._direction = (Direction)((int)(p.CurrentDirection + 2) % Enum.GetValues(typeof(Direction)).Length);
                 this.State = VillagerState.IDLE;
-                RXDebug.Log(this._direction);
                 PlayAnim(true);
                 xAcc = 0;
                 yAcc = 0;
