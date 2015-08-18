@@ -34,10 +34,11 @@ public class FLabel : FFacetElementNode
 	
 	protected FTextParams _textParams;
 
-	protected bool _shouldSnapToPixels = false;
+	protected bool _shouldSnapToPixels = true;
 	
 	public FLabel (string fontName, string text) : this(fontName, text, new FTextParams())
 	{
+
 	}
 	
 	public FLabel (string fontName, string text, FTextParams textParams) : base()
@@ -121,6 +122,9 @@ public class FLabel : FFacetElementNode
 		_textRect.y = minY+offsetY;
 		_textRect.width = maxX-minX;
 		_textRect.height = maxY-minY;
+
+        offsetWidth = _textRect.width % 2 == 1;
+        offsetHeight = _textRect.height % 2 == 1;
 
 		_isMeshDirty = true; 
 	}

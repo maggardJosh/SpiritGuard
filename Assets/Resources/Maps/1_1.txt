@@ -97,7 +97,7 @@
     <property name="targetSpawn" value="holeEntrance"/>
    </properties>
   </object>
-  <object type="sign" gid="92" x="240" y="128">
+  <object type="sign" gid="92" x="80" y="256">
    <properties>
     <property name="message" value="WATCH  OUT\nFOR HOLE!"/>
    </properties>

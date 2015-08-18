@@ -12,6 +12,7 @@ public class UI : FContainer
     FSprite slotASelected;
     FSprite slotBSelected;
     FSprite hearts;
+    public Dialogue dialogue;
 
     public Vector2 slotAPos { get { return slotASelected.GetPosition(); } }
     public Vector2 slotBPos { get { return slotBSelected.GetPosition(); } }
@@ -19,6 +20,8 @@ public class UI : FContainer
     FSprite selectedSoul;
     public UI()
     {
+        dialogue = new Dialogue();
+        this.AddChild(dialogue);
         background = new FSprite("bg");
         slotA = new FSprite("slot_a");
         slotB = new FSprite("slot_b");

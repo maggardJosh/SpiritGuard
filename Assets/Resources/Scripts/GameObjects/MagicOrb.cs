@@ -34,6 +34,8 @@ public class MagicOrb : FutilePlatformerBaseObject
 
     public override void OnFixedUpdate()
     {
+        if (C.isTransitioning)
+            return;
         if (RXRandom.Float() < .3f)
             SpawnParticles(2);
         if (target != null)

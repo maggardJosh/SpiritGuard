@@ -137,6 +137,7 @@ public class FutilePlatformerBaseObject : FContainer
     }
     protected virtual void OnUpdate()
     {
+        if(!C.isTransitioning)
         stateCount += Time.deltaTime;
     }
     public virtual void OnFixedUpdate()
@@ -183,7 +184,10 @@ public class FutilePlatformerBaseObject : FContainer
         }
 
         if (this is Player)
+        {
+            ((Player)this).hasInteractObject = false;
             world.CheckDamageObjectCollision();
+        }
         else if (this is Knight)
             world.CheckDamageObjectCollision(this);
         if (yVel > 0)

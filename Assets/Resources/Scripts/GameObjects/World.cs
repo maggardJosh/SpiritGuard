@@ -52,10 +52,12 @@ public class World : FContainer
         loadingBG = new FSprite("loadingBG");
         loadingBG.isVisible = false;
         loadingBG.x = -Futile.screen.halfWidth - loadingBG.width / 2;
+       
         C.getCameraInstance().AddChild(loadingBG);
         ui = new UI();
 
     }
+
     public bool forceWaitLoad = false;
     public void ShowLoading(Action loadAction, bool fromRight = true)
     {

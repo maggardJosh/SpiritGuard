@@ -13,6 +13,8 @@ public class Player : FutileFourDirectionBaseObject
     bool lastJumpPress = false;
     public bool shouldDamage = false;
     private int _health = 3;
+    public bool hasInteractObject = false;
+    public bool hasDamageObject = false;
     private bool canJump = false;
     private bool canSword = false;
     private bool canBow = false;
@@ -235,7 +237,7 @@ public class Player : FutileFourDirectionBaseObject
                     if (RXRandom.Float() < .04f)
                         SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
                 shouldDamage = false;
-                if (C.getKey(C.JUMP_KEY) && CanJump)
+                if (C.getKey(C.JUMP_KEY) && CanJump && !hasInteractObject)
                 {
                     FSoundManager.PlaySound("jump");
                     State = PlayerState.JUMP;

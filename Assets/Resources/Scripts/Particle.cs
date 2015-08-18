@@ -10,6 +10,7 @@ public class Particle : FAnimatedSprite
     float rot;
     Vector2 accel;
     public bool isActive = false;
+    public bool ignoreTransitioning = false;
     int animRandom = 180;
     int animBaseSpeed = 100;
     private Particle(string elementName)
@@ -20,6 +21,7 @@ public class Particle : FAnimatedSprite
 
     public void activate(Vector2 pos, Vector2 vel, Vector2 accel, float rot)
     {
+        this.ignoreTransitioning = false;
         this.isVisible = true;
         this.isActive = true;
         this.vel = vel;
@@ -32,6 +34,8 @@ public class Particle : FAnimatedSprite
 
     public override void Update()
     {
+        if (!ignoreTransitioning && C.isTransitioning)
+            return;
         this.x += vel.x * Time.deltaTime;
         this.y += vel.y * Time.deltaTime;
         vel += accel * Time.deltaTime;

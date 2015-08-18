@@ -14,6 +14,7 @@ public class SoulPickup : FutilePlatformerBaseObject
         BOW
     }
     SoulType type;
+    bool isBeingPickedUp = false;
     public SoulType Type { get { return type; } }
     public SoulPickup(SoulType type, World world, float x, float y)
         : base(new RXRect(0, -7, 7, 12), world)
@@ -26,6 +27,8 @@ public class SoulPickup : FutilePlatformerBaseObject
     }
     public override void OnFixedUpdate()
     {
+        if (C.isTransitioning && !isBeingPickedUp)
+            return;
         if (RXRandom.Float() < .15f)
             SpawnParticles();
         base.OnFixedUpdate();
@@ -34,6 +37,7 @@ public class SoulPickup : FutilePlatformerBaseObject
     {
         if (p.isColliding(this))
         {
+            isBeingPickedUp = true;
             FSoundManager.TweenVolume(.3f);
             p.isVisible = false;
             p.xVel = 0;
@@ -103,6 +107,7 @@ public class SoulPickup : FutilePlatformerBaseObject
             Vector2 acc = new Vector2(RXRandom.Float() * 5, RXRandom.Float() * 10);
 
             p.activate(this.GetPosition() + new Vector2(RXRandom.Float() * 16 - 8f, RXRandom.Float() * 13 - 10), vel, acc, RXRandom.Bool() ? 180.0f : 0);
+            p.ignoreTransitioning = isBeingPickedUp;
             this.container.AddChild(p);
         }
     }
