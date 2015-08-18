@@ -77,7 +77,7 @@ public class Player : FutileFourDirectionBaseObject
         : base(new RXRect(0, -8, 8, 6), world)
     {
         swordCollision = new FutilePlatformerBaseObject(new RXRect(6, -8, 15, 10), world);
-
+        CanJump = true;
         maxXVel = 1;
         maxYVel = 1;
         minYVel = -1;
@@ -148,7 +148,7 @@ public class Player : FutileFourDirectionBaseObject
         {
             case SoulPickup.SoulType.JUMP: CanJump = true; break;
             case SoulPickup.SoulType.SWORD: canSword = true; selectedItem = SecondaryItem.SWORD; world.ui.UpdateSelectedItem(selectedItem); break;
-            case SoulPickup.SoulType.BOW: canBow = true; selectedItem = SecondaryItem.BOW; world.ui.UpdateSelectedItem(selectedItem);  break;
+            case SoulPickup.SoulType.BOW: canBow = true; selectedItem = SecondaryItem.BOW; world.ui.UpdateSelectedItem(selectedItem); break;
         }
     }
 
@@ -255,18 +255,36 @@ public class Player : FutileFourDirectionBaseObject
 
                     float newX = this.x;
                     float newY = this.y;
+                    float targetY;
+                    float targetX;
                     switch (_direction)
                     {
-                        case Direction.UP: newY += maxJumpDist; while (newY > this.y && (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null)) { newY -= 1f; } break;
-                        case Direction.RIGHT: newX += maxJumpDist; while (newX > this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null)) { newX -= 1f; } break;
-                        case Direction.DOWN: newY -= maxJumpDist; while (newY < this.y && (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null)) { newY += 1f; } break;
-                        case Direction.LEFT: newX -= maxJumpDist; while (newX < this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null)) { newX += 1f; } break;
+                        case Direction.UP:
+                            targetY = this.y + maxJumpDist;
+                            while (newY < targetY && !(world.CheckForJumpObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null || world.CheckForJumpObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null))
+                                newY += 1;
+                            while (newY > this.y && (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null)) { newY -= 1f; } break;
+                        case Direction.RIGHT:
+                            targetX = this.x + maxJumpDist;
+                            while (newX < targetX && !(world.CheckForJumpObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckForJumpObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null))
+                                newX += 1;
+                            while (newX > this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null)) { newX -= 1f; } break;
+                        case Direction.DOWN:
+                            targetY = this.y - maxJumpDist;
+                            while (newY > targetY && !(world.CheckForJumpObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null || world.CheckForJumpObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null))
+                                newY -= 1;
+                            while (newY < this.y && (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null)) { newY += 1f; } break;
+                        case Direction.LEFT:
+                            targetX = this.x - maxJumpDist;
+                            while (newX > targetX && !(world.CheckForJumpObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckForJumpObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null))
+                                newX -= 1;
+                            while (newX < this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null)) { newX += 1f; } break;
                     }
                     xVel = 0;
                     yVel = 0;
                     float jumpTime = .5f;
                     float jumpDisp = 10f;
-                    if (newX == this.x)
+                    if (_direction == Direction.UP || _direction == Direction.DOWN)
                     {
                         Go.to(this, jumpTime / 2f, new TweenConfig().floatProp("x", -jumpDisp, true).setEaseType(EaseType.QuadOut).setIterations(2, LoopType.PingPong));
                         Go.to(this, jumpTime, new TweenConfig().floatProp("y", newY).setEaseType(EaseType.QuadOut).onComplete(() => { State = PlayerState.IDLE; }));
@@ -302,12 +320,14 @@ public class Player : FutileFourDirectionBaseObject
                         world.ui.UpdateSelectedItem(selectedItem);
                     }
                 }
-                if (C.getKey(C.ACTION_KEY) && !lastActionPress)
+                if (C.getKey(C.ACTION_KEY))
                 {
                     hasSpawnedSpiritParticles = false;
                     switch (selectedItem)
                     {
                         case SecondaryItem.SWORD:
+                            if (lastActionPress)
+                                break;
                             FSoundManager.PlaySound("swordOne");
                             State = PlayerState.SWORD;
                             if (C.getKey(C.RIGHT_KEY))
@@ -553,7 +573,7 @@ public class Player : FutileFourDirectionBaseObject
                         SpawnDeathParticles(Direction.UP, 1 + (int)stateCount);
                     if (stateCount > invulnerableStunTime * 3)
                     {
-                        FSoundManager.PlaySound("die");
+                        FSoundManager.PlaySound("death");
                         C.getCameraInstance().shake(1.0f, .5f);
                         SpawnDeathParticles(Direction.UP, 20);
                         this.isVisible = false;

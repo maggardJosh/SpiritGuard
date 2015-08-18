@@ -9,7 +9,7 @@
   <image source="gfx/tilemap.png" width="160" height="144"/>
  </tileset>
  <tileset firstgid="91" name="objects" tilewidth="16" tileheight="16">
-  <image source="gfx/objects.png" width="144" height="16"/>
+  <image source="gfx/objects.png" width="176" height="16"/>
  </tileset>
  <layer name="background" width="30" height="20" opacity="0.51">
   <data encoding="csv">
@@ -111,11 +111,11 @@
   <object type="pushblock" gid="95" x="304" y="208"/>
   <object type="pushblock" gid="95" x="336" y="208"/>
   <object type="pushblock" gid="95" x="96" y="144"/>
-  <object type="arrowturret" gid="96" x="80" y="208">
+  <object type="arrowturret" gid="96" x="80" y="64">
    <properties>
-    <property name="direction" value="up"/>
+    <property name="direction" value="down"/>
     <property name="initdelay" value="0"/>
-    <property name="interval" value="1"/>
+    <property name="interval" value=".4"/>
    </properties>
   </object>
   <object type="arrowturret" gid="96" x="176" y="160">
@@ -145,6 +145,12 @@
   <object type="soul" gid="99" x="112" y="256">
    <properties>
     <property name="type" value="bow"/>
+   </properties>
+  </object>
+  <object name="DoorOne" type="door" gid="100" x="80" y="144"/>
+  <object type="switch" gid="101" x="80" y="272">
+   <properties>
+    <property name="door" value="DoorOne"/>
    </properties>
   </object>
  </objectgroup>

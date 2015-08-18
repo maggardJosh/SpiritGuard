@@ -30,12 +30,14 @@ public class Dialogue : FContainer
         message.isVisible = false;
     }
 
+    const float TWEEN_IN_TIME = .5f;
+    const float TWEEN_OUT_TIME = .6f;
     public void ShowMessage(List<string> messages)
     {
         this.dialogueBG.isVisible = true;
         this.messages = messages;
         C.isTransitioning = true;
-        Go.to(this, 1.0f, new TweenConfig().floatProp("y", -Futile.screen.halfHeight + dialogueBG.height / 2f).setEaseType(EaseType.BackOut).onComplete(() =>
+        Go.to(this, TWEEN_IN_TIME, new TweenConfig().floatProp("y", -Futile.screen.halfHeight + dialogueBG.height / 2f).setEaseType(EaseType.BackOut).onComplete(() =>
         {
             stateCount = 0;
             currentState = State.TYPEWRITER;
@@ -81,7 +83,7 @@ public class Dialogue : FContainer
                         message.isVisible = false;
                         currentState = State.TRANS_OUT;
                         Futile.instance.SignalUpdate -= Update;
-                        Go.to(this, 1.0f, new TweenConfig().floatProp("y", -Futile.screen.halfHeight - dialogueBG.height / 2f).setEaseType(EaseType.BackIn).onComplete(() => { currentState = State.TRANS_IN; C.isTransitioning = false; }));
+                        Go.to(this, TWEEN_OUT_TIME, new TweenConfig().floatProp("y", -Futile.screen.halfHeight - dialogueBG.height / 2f).setEaseType(EaseType.BackIn).onComplete(() => { currentState = State.TRANS_IN; C.isTransitioning = false; }));
                     }
                 }
                 break;

@@ -22,6 +22,8 @@ public class FutilePlatformerBaseObject : FContainer
     float tileSize;
     protected World world;
     protected bool clearAcc = true;
+    public bool blocksOtherObjects = true;
+    public bool blocksJump = false;
 
     protected bool handleStateCount = false;
     protected float stateCount = 0;

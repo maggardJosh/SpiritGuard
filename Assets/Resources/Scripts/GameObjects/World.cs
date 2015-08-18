@@ -204,7 +204,7 @@ public class World : FContainer
 
         if (objectToAdd is Sign)
             signs.Add((Sign)objectToAdd);
-        if (objectToAdd is PushBlock)
+        if (objectToAdd is PushBlock || objectToAdd is Switch)
             background.AddChild(objectToAdd);
         else
             playerLayer.AddChild(objectToAdd);
@@ -242,6 +242,8 @@ public class World : FContainer
     {
         foreach (FutilePlatformerBaseObject o in collisionObjects)
         {
+            if (!o.blocksOtherObjects && !(o is Switch))
+                continue;
             if ((self is Knight && o is Player))
                 continue;
             if ((self is Ghost && o is Player))
@@ -264,6 +266,56 @@ public class World : FContainer
             {
                 if (self is Player && o is PushBlock)
                     ((PushBlock)o).HandlePlayerCollision((Player)self);
+                if (o is Switch)
+                {
+                    ((Switch)o).HandlePlayerCollision(player);
+                    continue;
+                }
+                return worldPos;
+            }
+        }
+        return null;
+    }
+
+    public void OpenDoor(string doorName)
+    {
+        foreach (FutilePlatformerBaseObject o in collisionObjects)
+        {
+            if (!(o is Door))
+                continue;
+            Door d = (Door)o;
+            if (d.name.ToLower() == doorName.ToLower())
+            {
+                C.isTransitioning = true;
+                FNode tempFollowNode = new FNode();
+                tempFollowNode.SetPosition(player.GetPosition());
+                C.getCameraInstance().follow(tempFollowNode);
+                Go.to(tempFollowNode, 2.0f, new TweenConfig().floatProp("x", d.x).floatProp("y", d.y).setEaseType(EaseType.QuadInOut).onComplete(() =>
+                {
+                    C.getCameraInstance().shake(.6f, .5f);
+                    d.Open();
+                    Go.to(tempFollowNode, 1.5f, new TweenConfig().floatProp("x", player.x).floatProp("y", player.y).setEaseType(EaseType.QuadInOut).setDelay(2.0f).onComplete(() => 
+                    {
+                        C.getCameraInstance().follow(player);
+                        C.isTransitioning = false;
+                    }));
+                }));
+            }
+        }
+    }
+
+    public RXRect CheckForJumpObjectCollision(Player self, float x, float y)
+    {
+        foreach (FutilePlatformerBaseObject o in collisionObjects)
+        {
+            if (!o.blocksJump || !o.blocksOtherObjects)
+                continue;
+            worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
+            worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
+            worldPos.width = o.hitBox.width;
+            worldPos.height = o.hitBox.height;
+            if (worldPos.Contains(x, y))
+            {
                 return worldPos;
             }
         }

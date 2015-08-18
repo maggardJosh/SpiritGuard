@@ -37,6 +37,7 @@ public class SoulPickup : FutilePlatformerBaseObject
     {
         if (p.isColliding(this))
         {
+            //FSoundManager.PlaySound("powerup");
             isBeingPickedUp = true;
             FSoundManager.TweenVolume(.3f);
             p.isVisible = false;
@@ -69,10 +70,12 @@ public class SoulPickup : FutilePlatformerBaseObject
                     {
                         Go.to(this, .01f, new TweenConfig().floatProp("x", -2, true).setIterations(100, LoopType.PingPong).onComplete(() =>
                         {
+                            FSoundManager.PlaySound("orbExplosion");
+                            FSoundManager.PlaySound("powerup");
                             SpawnParticles(30);
                             this.x -= 1;
                             sprite.SetElementByName(type.ToString().ToLower() + "_soul");
-                            Go.to(label, 1.5f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth - label.textRect.width / 2f - 10).setEaseType(EaseType.BackIn).setDelay(2.0f).onComplete(() =>
+                            Go.to(label, 1.5f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth - label.textRect.width / 2f - 10).setEaseType(EaseType.BackIn).setDelay(2.0f).onStart((AbstractTween t) => { }).onComplete(() =>
                             {
                                 label.RemoveFromContainer();
                                 Go.to(playerPickup, 1.0f, new TweenConfig().floatProp("x", playerRelativePosition.x).floatProp("y", playerRelativePosition.y).setEaseType(EaseType.QuadInOut).onComplete(() =>

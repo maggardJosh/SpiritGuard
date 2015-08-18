@@ -41,6 +41,12 @@ public class MapLoader
                 case "soul":
                     world.addObject(parseSoul(node, world));
                     break;
+                case "door":
+                    world.addObject(parseDoor(node, world));
+                    break;
+                case "switch":
+                    world.addObject(parseSwitch(node, world));
+                    break;
             }
         }
     }
@@ -86,11 +92,11 @@ public class MapLoader
             }
         }
 
-        result = new SpawnPoint((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"])-  8f), name, targetMap, targetSpawn, exitDirection);
+        result = new SpawnPoint((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f), name, targetMap, targetSpawn, exitDirection);
         return result;
     }
 
-     private static Sign parseSign(XMLNode node, World world)
+    private static Sign parseSign(XMLNode node, World world)
     {
         string message = "Default";
         if (node.children[0] != null)
@@ -106,139 +112,187 @@ public class MapLoader
                 }
             }
         }
-        Sign result= new Sign(world, message);
-        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"])-  8f));
+        Sign result = new Sign(world, message);
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
         return result;
     }
 
-     private static Knight parseEnemy(XMLNode node, World world)
-     {
+    private static Knight parseEnemy(XMLNode node, World world)
+    {
 
-         Knight result = new Knight(world);
-         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+        Knight result = new Knight(world);
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
-         return result;
-     }
+        return result;
+    }
 
-     private static Ghost parseGhost(XMLNode node, World world)
-     {
+    private static Ghost parseGhost(XMLNode node, World world)
+    {
 
-         Ghost result = new Ghost(world);
-         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+        Ghost result = new Ghost(world);
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
-         return result;
-     }
+        return result;
+    }
 
-     private static Villager parseVillager(XMLNode node, World world)
-     {
+    private static Villager parseVillager(XMLNode node, World world)
+    {
 
-         Villager result = new Villager(world);
-         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+        Villager result = new Villager(world);
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
-         return result;
-     }
-     private static PushBlock parsePushBlock(XMLNode node, World world)
-     {
+        return result;
+    }
+    private static PushBlock parsePushBlock(XMLNode node, World world)
+    {
 
-         PushBlock result = new PushBlock(world);
-         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+        PushBlock result = new PushBlock(world);
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
-         return result;
-     }
+        return result;
+    }
 
-     private static ArrowTurret parseArrowTurret(XMLNode node, World world)
-     {
-         float interval = 1;
-         float initdelay = 0;
-         FutileFourDirectionBaseObject.Direction turretDirection = FutileFourDirectionBaseObject.Direction.DOWN;
-         if (node.children[0] != null)
-         {
+    private static ArrowTurret parseArrowTurret(XMLNode node, World world)
+    {
+        float interval = 1;
+        float initdelay = 0;
+        FutileFourDirectionBaseObject.Direction turretDirection = FutileFourDirectionBaseObject.Direction.DOWN;
+        if (node.children[0] != null)
+        {
 
-             foreach (XMLNode property in ((XMLNode)node.children[0]).children)
-             {
-                 switch (property.attributes["name"].ToLower())
-                 {
-                     case "interval":
-                         float.TryParse(property.attributes["value"], out interval);
-                         break;
-                     case "direction":
-                         switch (property.attributes["value"].ToUpper())
-                         {
-                             case "UP": turretDirection = FutileFourDirectionBaseObject.Direction.UP; break;
-                             case "RIGHT": turretDirection = FutileFourDirectionBaseObject.Direction.RIGHT; break;
-                             case "DOWN": turretDirection = FutileFourDirectionBaseObject.Direction.DOWN; break;
-                             case "LEFT": turretDirection = FutileFourDirectionBaseObject.Direction.LEFT; break;
-                         }
-                         break;
-                     case "initdelay":
-                         float.TryParse(property.attributes["value"], out initdelay);
-                         break;
-                 }
-             }
-         }
-         ArrowTurret result = new ArrowTurret(interval, initdelay, world);
-         result.SetDirection(turretDirection);
-         result.PlayAnim();
-         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+            foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+            {
+                switch (property.attributes["name"].ToLower())
+                {
+                    case "interval":
+                        float.TryParse(property.attributes["value"], out interval);
+                        break;
+                    case "direction":
+                        switch (property.attributes["value"].ToUpper())
+                        {
+                            case "UP": turretDirection = FutileFourDirectionBaseObject.Direction.UP; break;
+                            case "RIGHT": turretDirection = FutileFourDirectionBaseObject.Direction.RIGHT; break;
+                            case "DOWN": turretDirection = FutileFourDirectionBaseObject.Direction.DOWN; break;
+                            case "LEFT": turretDirection = FutileFourDirectionBaseObject.Direction.LEFT; break;
+                        }
+                        break;
+                    case "initdelay":
+                        float.TryParse(property.attributes["value"], out initdelay);
+                        break;
+                }
+            }
+        }
+        ArrowTurret result = new ArrowTurret(interval, initdelay, world);
+        result.SetDirection(turretDirection);
+        result.PlayAnim();
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
-         return result;
-     }
+        return result;
+    }
 
-     private static MagicTurret parseMagicTurret(XMLNode node, World world)
-     {
-         float interval = 1;
-         float initdelay = 0;
-         int distance = 4;
-         
-         if (node.children.Count > 0)
-         {
+    private static MagicTurret parseMagicTurret(XMLNode node, World world)
+    {
+        float interval = 1;
+        float initdelay = 0;
+        int distance = 4;
 
-             foreach (XMLNode property in ((XMLNode)node.children[0]).children)
-             {
-                 switch (property.attributes["name"].ToLower())
-                 {
-                     case "interval":
-                         float.TryParse(property.attributes["value"], out interval);
-                         break;
-                    
-                     case "initdelay":
-                         float.TryParse(property.attributes["value"], out initdelay);
-                         break;
-                     case "distance":
-                         int.TryParse(property.attributes["value"], out distance);
-                         break;
-                 }
-             }
-         }
-         MagicTurret result = new MagicTurret(interval, initdelay, distance, world);
-         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+        if (node.children.Count > 0)
+        {
 
-         return result;
-     }
+            foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+            {
+                switch (property.attributes["name"].ToLower())
+                {
+                    case "interval":
+                        float.TryParse(property.attributes["value"], out interval);
+                        break;
 
-     private static SoulPickup parseSoul(XMLNode node, World world)
-     {
-         SoulPickup.SoulType type = SoulPickup.SoulType.JUMP;
-         if (node.children[0] != null)
-         {
+                    case "initdelay":
+                        float.TryParse(property.attributes["value"], out initdelay);
+                        break;
+                    case "distance":
+                        int.TryParse(property.attributes["value"], out distance);
+                        break;
+                }
+            }
+        }
+        MagicTurret result = new MagicTurret(interval, initdelay, distance, world);
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
-             foreach (XMLNode property in ((XMLNode)node.children[0]).children)
-             {
-                 switch (property.attributes["name"].ToLower())
-                 {
-                     case "type":
-                         switch (property.attributes["value"].ToLower())
-                         {
-                             case "jump": type = SoulPickup.SoulType.JUMP; break;
-                             case "sword": type = SoulPickup.SoulType.SWORD; break;
-                             case "bow": type = SoulPickup.SoulType.BOW; break;
-                         }
-                         break;
-                 }
-             }
-         }
-         return new SoulPickup(type, world, (float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
-     }
+        return result;
+    }
+
+    private static SoulPickup parseSoul(XMLNode node, World world)
+    {
+        SoulPickup.SoulType type = SoulPickup.SoulType.JUMP;
+        if (node.children[0] != null)
+        {
+
+            foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+            {
+                switch (property.attributes["name"].ToLower())
+                {
+                    case "type":
+                        switch (property.attributes["value"].ToLower())
+                        {
+                            case "jump": type = SoulPickup.SoulType.JUMP; break;
+                            case "sword": type = SoulPickup.SoulType.SWORD; break;
+                            case "bow": type = SoulPickup.SoulType.BOW; break;
+                        }
+                        break;
+                }
+            }
+        }
+        return new SoulPickup(type, world, (float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+    }
+
+    private static Door parseDoor(XMLNode node, World world)
+    {
+        FutileFourDirectionBaseObject.Direction direction = FutileFourDirectionBaseObject.Direction.DOWN;
+        if (node.children.Count > 0)
+        {
+
+            foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+            {
+                switch (property.attributes["name"].ToLower())
+                {
+                    case "direction":
+                        switch (property.attributes["value"].ToLower())
+                        {
+                            case "UP": direction = FutileFourDirectionBaseObject.Direction.UP; break;
+                            case "RIGHT": direction = FutileFourDirectionBaseObject.Direction.RIGHT; break;
+                            case "DOWN": direction = FutileFourDirectionBaseObject.Direction.DOWN; break;
+                            case "LEFT": direction = FutileFourDirectionBaseObject.Direction.LEFT; break;
+                        }
+                        break;
+                }
+            }
+        }
+        string doorName = "";
+        if (node.attributes.ContainsKey("name"))
+            doorName = node.attributes["name"];
+        return new Door(doorName, direction, world, (float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+    }
+
+    private static Switch parseSwitch(XMLNode node, World world)
+    {
+        string doorName = "";
+        if (node.children.Count > 0)
+        {
+            foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+            {
+                switch (property.attributes["name"].ToLower())
+                {
+                    case "door":
+                        doorName = property.attributes["value"];
+                        break;
+                }
+            }
+        }
+        Switch result = new Switch(doorName, world);
+        result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+        return result;
+    }
 
 }

@@ -34,7 +34,7 @@
 },
 "Arrow Turret/turret_arrow_05":
 {
-	"frame": {"x":91,"y":355,"w":16,"h":16},
+	"frame": {"x":74,"y":441,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -42,7 +42,7 @@
 },
 "Arrow Turret/turret_arrow_06":
 {
-	"frame": {"x":74,"y":461,"w":14,"h":16},
+	"frame": {"x":93,"y":461,"w":14,"h":16},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":14,"h":16},
@@ -88,6 +88,22 @@
 	"spriteSourceSize": {"x":1,"y":4,"w":14,"h":10},
 	"sourceSize": {"w":16,"h":16}
 },
+"Door/door_01":
+{
+	"frame": {"x":91,"y":375,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+"Door/door_02":
+{
+	"frame": {"x":91,"y":355,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
 "Magic Orb/magic_orb_01":
 {
 	"frame": {"x":501,"y":225,"w":8,"h":8},
@@ -106,7 +122,7 @@
 },
 "Magic Turret/turret_magic_01":
 {
-	"frame": {"x":90,"y":481,"w":12,"h":16},
+	"frame": {"x":109,"y":481,"w":12,"h":16},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":2,"y":0,"w":12,"h":16},
@@ -114,7 +130,7 @@
 },
 "Magic Turret/turret_magic_02":
 {
-	"frame": {"x":74,"y":481,"w":12,"h":16},
+	"frame": {"x":93,"y":481,"w":12,"h":16},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":2,"y":0,"w":12,"h":16},
@@ -146,7 +162,7 @@
 },
 "bow_soul":
 {
-	"frame": {"x":93,"y":441,"w":13,"h":12},
+	"frame": {"x":109,"y":395,"w":13,"h":12},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":3,"w":13,"h":12},
@@ -330,7 +346,7 @@
 },
 "jump_soul":
 {
-	"frame": {"x":92,"y":461,"w":13,"h":12},
+	"frame": {"x":94,"y":415,"w":13,"h":12},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":3,"w":13,"h":12},
@@ -922,7 +938,7 @@
 },
 "slot_a":
 {
-	"frame": {"x":74,"y":441,"w":15,"h":16},
+	"frame": {"x":74,"y":481,"w":15,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":16},
@@ -930,7 +946,7 @@
 },
 "slot_b":
 {
-	"frame": {"x":91,"y":375,"w":15,"h":16},
+	"frame": {"x":74,"y":461,"w":15,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":16},
@@ -1815,6 +1831,6 @@
 	"format": "RGBA8888",
 	"size": {"w":512,"h":512},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1ea867aea0760d6a5b74d4e4b3bf71c0:cdc2ce4e9c332fc55c290492d195cbbc:472867876a4db3e566643cd3fb500437$"
+	"smartupdate": "$TexturePacker:SmartUpdate:6ce7177f17e65764ae66114f24ef5390:f832991cc0a4a0ead41a632f26472356:472867876a4db3e566643cd3fb500437$"
 }
 }
