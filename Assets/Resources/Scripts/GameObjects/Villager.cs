@@ -159,7 +159,6 @@ public class Villager : FutileFourDirectionBaseObject
                 yVel = 0;
                 scaleX = _direction == Direction.RIGHT ? -1 : 1;
                 isInteracting = true;
-                p.hasInteractObject = true;
                 this.indicator.Show();
             }
         }
@@ -174,10 +173,6 @@ public class Villager : FutileFourDirectionBaseObject
                 stateCount = 0;
                 this.indicator.Hide();
                 isInteracting = false;
-            }
-            else
-            {
-                p.hasInteractObject = true;
             }
         }
     }

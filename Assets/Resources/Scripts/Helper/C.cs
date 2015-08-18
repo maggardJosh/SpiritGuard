@@ -27,7 +27,7 @@ public class C
 
     public static readonly KeyCode[] LEFT_KEY = new KeyCode[] { KeyCode.LeftArrow, KeyCode.A, KeyCode.Q };
     public static readonly KeyCode[] RIGHT_KEY = new KeyCode[] { KeyCode.RightArrow, KeyCode.D };
-    public static readonly KeyCode[] UP_KEY = new KeyCode[] { KeyCode.UpArrow, KeyCode.W, KeyCode.Z};
+    public static readonly KeyCode[] UP_KEY = new KeyCode[] { KeyCode.UpArrow, KeyCode.W, KeyCode.Z };
     public static readonly KeyCode[] DOWN_KEY = new KeyCode[] { KeyCode.DownArrow, KeyCode.S };
     public static readonly KeyCode[] JUMP_KEY = new KeyCode[] { KeyCode.L, KeyCode.Space };
     public static readonly KeyCode[] ACTION_KEY = new KeyCode[] { KeyCode.K };
@@ -61,5 +61,15 @@ public class C
     internal static bool getStartPressed()
     {
         return Input.GetButtonDown("Start");
+    }
+    private static Player.SaveState _lastSave;
+    public static Player.SaveState lastSave
+    {
+        get { if (_lastSave == null) _lastSave = new Player.SaveState(); return _lastSave; }
+    }
+    private static Player.SaveState _currentSave;
+    public static Player.SaveState Save
+    {
+        get { if (_currentSave == null) _currentSave = new Player.SaveState(); return _currentSave; }
     }
 }

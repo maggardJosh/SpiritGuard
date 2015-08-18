@@ -26,9 +26,6 @@ public class World : FContainer
     List<Villager> villagers = new List<Villager>();
     List<HitSwitch> hitSwitches = new List<HitSwitch>();
 
-    string lastMap = "";
-    string lastWarpPoint = "";
-
     public float TileSize
     {
         get
@@ -55,7 +52,7 @@ public class World : FContainer
         loadingBG = new FSprite("loadingBG");
         loadingBG.isVisible = false;
         loadingBG.x = -Futile.screen.halfWidth - loadingBG.width / 2;
-       
+
         C.getCameraInstance().AddChild(loadingBG);
         ui = new UI();
 
@@ -70,14 +67,14 @@ public class World : FContainer
             loadingBG.x = Futile.screen.halfWidth + loadingBG.width / 2f;
             loadingBG.rotation = 180f;
             midPos = Futile.screen.halfWidth - loadingBG.width / 2f;
-         
+
         }
         else
         {
             loadingBG.x = -Futile.screen.halfWidth - loadingBG.width / 2;
             loadingBG.rotation = 0;
             midPos = -Futile.screen.halfWidth + loadingBG.width / 2;
-           
+
         }
         FSoundManager.PlaySound("slideOn");
         loadingBG.isVisible = true;
@@ -87,7 +84,7 @@ public class World : FContainer
             loadAction.Invoke();
             if (!forceWaitLoad)
                 HideLoading(null, fromRight);
-            
+
         }));
     }
     public void HideLoading(Action doneAction, bool fromRight = true)
@@ -118,7 +115,7 @@ public class World : FContainer
     }
     public void LoadMap(string mapName)
     {
-        lastMap = mapName;
+        C.Save.lastMap = mapName;
         spawnPoints.Clear();
         signs.Clear();
         villagers.Clear();
@@ -159,7 +156,7 @@ public class World : FContainer
         collisionObjects.Add(player);
         playerLayer.AddChild(player);
         this.y = -16;
-        C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height-16, collisionTilemap.width, collisionTilemap.height+16));
+        C.getCameraInstance().setWorldBounds(new Rect(0, -collisionTilemap.height - 16, collisionTilemap.width, collisionTilemap.height + 16));
         foregroundTilemap.clipNode = C.getCameraInstance();
         collisionTilemap.clipNode = C.getCameraInstance();
         wallCollisionTilemap.clipNode = C.getCameraInstance();
@@ -186,7 +183,8 @@ public class World : FContainer
             if (s.name.ToLower() == spawnName.ToLower())
             {
                 player.State = Player.PlayerState.IDLE;
-                lastWarpPoint = spawnName;
+                C.Save.lastDoor = spawnName;
+                C.lastSave.copy(C.Save);
                 s.SpawnPlayer(player);
                 return;
             }
@@ -224,12 +222,15 @@ public class World : FContainer
 
     public void Respawn()
     {
-        ShowLoading(() => {
-            LoadMap(lastMap);
-            SpawnPlayer(lastWarpPoint);
+        ShowLoading(() =>
+        {
+            player.LoadLastSave();
+            LoadMap(C.Save.lastMap);
+            SpawnPlayer(C.Save.lastDoor);
             player.invulnCount = 2;
             player.Health = 3;
             this.isVisible = true;
+
         });
     }
 
@@ -316,7 +317,7 @@ public class World : FContainer
                 {
                     C.getCameraInstance().shake(.6f, .5f);
                     d.Open();
-                    Go.to(tempFollowNode, 1.5f, new TweenConfig().floatProp("x", player.x).floatProp("y", player.y).setEaseType(EaseType.QuadInOut).setDelay(1.3f).onComplete(() => 
+                    Go.to(tempFollowNode, 1.5f, new TweenConfig().floatProp("x", player.x).floatProp("y", player.y).setEaseType(EaseType.QuadInOut).setDelay(1.3f).onComplete(() =>
                     {
                         C.getCameraInstance().follow(player);
                         C.isTransitioning = false;
@@ -324,6 +325,18 @@ public class World : FContainer
                 }));
             }
         }
+    }
+
+    public bool checkForInteractObject(Player p)
+    {
+        foreach (Villager v in villagers)
+            if (v.isColliding(p.swordCollision))
+                return true;
+        if (p.CurrentDirection == FutileFourDirectionBaseObject.Direction.UP)
+            foreach (Sign s in signs)
+                if (s.isColliding(p.swordCollision))
+                    return true;
+        return false;
     }
 
     public RXRect CheckForJumpObjectCollision(Player self, float x, float y)
@@ -359,7 +372,7 @@ public class World : FContainer
                 return o;
             }
         }
-        
+
         return null;
 
     }

@@ -8,13 +8,22 @@ public class Player : FutileFourDirectionBaseObject
 {
     public class SaveState
     {
-        bool canJump = false;
-        bool canSword = false;
-        bool canBow = false;
-        List<string> switchesActivated = new List<string>();
-        string lastMap = "";
-        string lastDoor = "";
+        public bool canJump = false;
+        public bool canSword = false;
+        public bool canBow = false;
+        public List<string> switchesActivated = new List<string>();
+        public string lastMap = "";
+        public string lastDoor = "";
         
+        public void copy(SaveState save)
+        {
+            canJump = save.canJump;
+            canSword = save.canSword;
+            canBow = save.canBow;
+            switchesActivated = new List<string>(save.switchesActivated);
+            lastMap = save.lastMap;
+            lastDoor = save.lastDoor;
+        }
     }
 
     private float moveSpeed = .1f;
@@ -24,12 +33,9 @@ public class Player : FutileFourDirectionBaseObject
     bool lastJumpPress = false;
     public bool shouldDamage = false;
     private int _health = 3;
-    public bool hasInteractObject = false;
+    
     public bool hasDamageObject = false;
-    private bool canJump = false;
-    private bool canSword = false;
-    private bool canBow = false;
-    public bool CanJump { get { return canJump; } set { world.ui.UpdateHasJump(value); canJump = value; } }
+    public bool CanJump { get { return C.Save.canJump; } set { world.ui.UpdateHasJump(value); C.Save.canJump = value; } }
     public int Health
     {
         get { return _health; }
@@ -89,12 +95,6 @@ public class Player : FutileFourDirectionBaseObject
     {
         swordCollision = new FutilePlatformerBaseObject(new RXRect(6, -8, 15, 10), world);
         
-        CanJump = true;
-        canBow = true;
-        canSword = true;
-        selectedItem = SecondaryItem.BOW;
-        world.ui.UpdateSelectedItem(selectedItem);
-
         maxXVel = 1;
         maxYVel = 1;
         minYVel = -1;
@@ -163,9 +163,9 @@ public class Player : FutileFourDirectionBaseObject
     {
         switch (soul.Type)
         {
-            case SoulPickup.SoulType.JUMP: CanJump = true; break;
-            case SoulPickup.SoulType.SWORD: canSword = true; selectedItem = SecondaryItem.SWORD; world.ui.UpdateSelectedItem(selectedItem); break;
-            case SoulPickup.SoulType.BOW: canBow = true; selectedItem = SecondaryItem.BOW; world.ui.UpdateSelectedItem(selectedItem); break;
+            case SoulPickup.SoulType.JUMP: C.Save.canJump = true; world.ui.UpdateHasJump(true); break;
+            case SoulPickup.SoulType.SWORD:  C.Save.canSword = true; selectedItem = SecondaryItem.SWORD; world.ui.UpdateSelectedItem(selectedItem); break;
+            case SoulPickup.SoulType.BOW:  C.Save.canBow = true; selectedItem = SecondaryItem.BOW; world.ui.UpdateSelectedItem(selectedItem); break;
         }
     }
 
@@ -203,6 +203,19 @@ public class Player : FutileFourDirectionBaseObject
 
     }
 
+    public void LoadLastSave()
+    {
+        C.Save.copy(C.lastSave);
+        if (C.Save.canBow)
+            selectedItem = SecondaryItem.BOW;
+        else if (C.Save.canSword)
+            selectedItem = SecondaryItem.SWORD;
+        else if (C.Save.canJump)
+            selectedItem = SecondaryItem.NONE;
+        else
+            world.ui.UpdateHasJump(false);
+        world.ui.UpdateSelectedItem(selectedItem);
+    }
 
     bool hasSpawnedSpiritParticles = false;
     float maxJumpDist = 16 * 2.3f;
@@ -254,8 +267,9 @@ public class Player : FutileFourDirectionBaseObject
                     if (RXRandom.Float() < .04f)
                         SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length), 1);
                 shouldDamage = false;
-                if (C.getKey(C.JUMP_KEY) && CanJump && !hasInteractObject)
+                if (C.getKey(C.JUMP_KEY) && CanJump && !world.checkForInteractObject(this))
                 {
+                        
                     FSoundManager.PlaySound("jump");
                     State = PlayerState.JUMP;
                     if (C.getKey(C.RIGHT_KEY))
@@ -324,13 +338,13 @@ public class Player : FutileFourDirectionBaseObject
                 float attackDisp = 3f;
                 if (C.getKey(C.SELECT_KEY) && !lastSelectPress)
                 {
-                    if (selectedItem == SecondaryItem.SWORD && canBow)
+                    if (selectedItem == SecondaryItem.SWORD && C.Save.canBow)
                     {
                         FSoundManager.PlaySound("swap");
                         selectedItem = SecondaryItem.BOW;
                         world.ui.UpdateSelectedItem(selectedItem);
                     }
-                    else if (selectedItem == SecondaryItem.BOW && canSword)
+                    else if (selectedItem == SecondaryItem.BOW && C.Save.canSword)
                     {
                         FSoundManager.PlaySound("swap");
                         selectedItem = SecondaryItem.SWORD;

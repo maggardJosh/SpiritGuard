@@ -25,9 +25,7 @@ public class Sign : FutilePlatformerBaseObject
     bool inFrontOf = false;
     public void CheckCollision(Player p)
     {
-        if (p.x + p.hitBox.x > this.x - this.sign.width / 2 &&
-            p.x + p.hitBox.x < this.x + this.sign.width / 2 &&
-            p.y + p.hitBox.y > this.y - 16 && p.y + p.hitBox.y < this.y && p.CurrentDirection == FutileFourDirectionBaseObject.Direction.UP)
+        if (p.swordCollision.isColliding(this) && p.CurrentDirection == FutileFourDirectionBaseObject.Direction.UP)
         {
 
             if (!inFrontOf)
@@ -37,7 +35,6 @@ public class Sign : FutilePlatformerBaseObject
             }
             else
             {
-                p.hasInteractObject = true;
                 if (C.getKeyDown(C.JUMP_KEY))
                     world.ui.dialogue.ShowMessage(dialogue);
             }

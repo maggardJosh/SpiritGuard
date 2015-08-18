@@ -187,7 +187,6 @@ public class FutilePlatformerBaseObject : FContainer
 
         if (this is Player)
         {
-            ((Player)this).hasInteractObject = false;
             world.CheckDamageObjectCollision();
         }
         else if (this is Knight)
