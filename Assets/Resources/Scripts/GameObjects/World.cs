@@ -294,7 +294,7 @@ public class World : FContainer
                 {
                     C.getCameraInstance().shake(.6f, .5f);
                     d.Open();
-                    Go.to(tempFollowNode, 1.5f, new TweenConfig().floatProp("x", player.x).floatProp("y", player.y).setEaseType(EaseType.QuadInOut).setDelay(2.0f).onComplete(() => 
+                    Go.to(tempFollowNode, 1.5f, new TweenConfig().floatProp("x", player.x).floatProp("y", player.y).setEaseType(EaseType.QuadInOut).setDelay(1.3f).onComplete(() => 
                     {
                         C.getCameraInstance().follow(player);
                         C.isTransitioning = false;

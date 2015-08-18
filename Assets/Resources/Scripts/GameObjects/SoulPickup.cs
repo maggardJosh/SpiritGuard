@@ -107,7 +107,7 @@ public class SoulPickup : FutilePlatformerBaseObject
     {
         for (int i = 0; i < numParticles; i++)
         {
-            Particle.ParticleOne p = Particle.ParticleOne.getParticle();
+            Particle.ParticleOne p = Particle.ParticleOne.getParticle(isBeingPickedUp ? 1000 : 100);
             Vector2 vel = new Vector2(RXRandom.Float() * 30 - 15f, RXRandom.Float() * 20);
             Vector2 acc = new Vector2(RXRandom.Float() * 5, RXRandom.Float() * 10);
 

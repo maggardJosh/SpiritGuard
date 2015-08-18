@@ -10,7 +10,6 @@ public class Particle : FAnimatedSprite
     float rot;
     Vector2 accel;
     public bool isActive = false;
-    public bool ignoreTransitioning = false;
     int animRandom = 180;
     int animBaseSpeed = 100;
     private Particle(string elementName)
@@ -29,7 +28,6 @@ public class Particle : FAnimatedSprite
         this.rot = rot;
         this.accel = accel;
         this.play("active", true);
-        this.currentAnim.delay = animBaseSpeed + (int)(RXRandom.Float() * animRandom);
     }
 
     public override void Update()
@@ -56,25 +54,29 @@ public class Particle : FAnimatedSprite
 
         private static ParticleOne[] particleList;
         const int MAX_PARTICLES = 100;
-        public static ParticleOne getParticle()
+        public static ParticleOne getParticle(int animBaseSpeed = 100)
         {
-
+            RXDebug.Log(animBaseSpeed);
             if (particleList == null)
                 particleList = new ParticleOne[MAX_PARTICLES];
+            ParticleOne result = particleList[RXRandom.Int(MAX_PARTICLES)];
             for (int x = 0; x < particleList.Length; x++)
             {
                 if (particleList[x] == null)
                 {
                     ParticleOne p = new ParticleOne();
                     particleList[x] = p;
-                    return p;
+                    result = p;
+                    break;
                 }
                 else if (!particleList[x].isActive)
                 {
-                    return particleList[x];
+                    result = particleList[x];
                 }
             }
-            return particleList[RXRandom.Int(MAX_PARTICLES)];
+            result.play("active");
+            result.currentAnim.delay = animBaseSpeed + (int)(RXRandom.Float() * 180);
+            return result;
 
         }
 
@@ -84,7 +86,6 @@ public class Particle : FAnimatedSprite
 
             this.animRandom = 180;
             this.animBaseSpeed = 100;
-            
             this.addAnimation(new FAnimation("active", new int[] { 1, 2, 3, 4 }, animBaseSpeed + (int)(RXRandom.Float() * animRandom), false));
         }
     }

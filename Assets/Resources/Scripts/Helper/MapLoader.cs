@@ -249,30 +249,11 @@ public class MapLoader
 
     private static Door parseDoor(XMLNode node, World world)
     {
-        FutileFourDirectionBaseObject.Direction direction = FutileFourDirectionBaseObject.Direction.DOWN;
-        if (node.children.Count > 0)
-        {
 
-            foreach (XMLNode property in ((XMLNode)node.children[0]).children)
-            {
-                switch (property.attributes["name"].ToLower())
-                {
-                    case "direction":
-                        switch (property.attributes["value"].ToLower())
-                        {
-                            case "UP": direction = FutileFourDirectionBaseObject.Direction.UP; break;
-                            case "RIGHT": direction = FutileFourDirectionBaseObject.Direction.RIGHT; break;
-                            case "DOWN": direction = FutileFourDirectionBaseObject.Direction.DOWN; break;
-                            case "LEFT": direction = FutileFourDirectionBaseObject.Direction.LEFT; break;
-                        }
-                        break;
-                }
-            }
-        }
         string doorName = "";
         if (node.attributes.ContainsKey("name"))
             doorName = node.attributes["name"];
-        return new Door(doorName, direction, world, (float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
+        return new Door(doorName, world, (float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
     }
 
     private static Switch parseSwitch(XMLNode node, World world)

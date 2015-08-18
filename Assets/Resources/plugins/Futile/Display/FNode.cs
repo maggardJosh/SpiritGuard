@@ -9,7 +9,8 @@ public class FNode
 	protected float _y = 0f;
 	protected float _scaleX = 1f;
 	protected float _scaleY = 1f;
-	protected float _rotation = 0f;
+    protected float _rotation = 0f;
+    public bool ignoreTransitioning = false;
 
 	protected float _meshZ = 0f;
 	protected float _sortZ = 0f; //sortZ is used for depth sorting but ONLY if the node container's shouldSortByZ = true;

@@ -24,7 +24,8 @@ using System.Text;
 
             if (p.isColliding(this))
             {
-                C.getCameraInstance().shake(.4f, .3f);
+                FSoundManager.PlaySound("switch");
+                C.getCameraInstance().shake(.7f, .3f);
                 pressed = true;
                 sprite.SetElementByName("Button/button_02");
                 world.OpenDoor(doorName);
