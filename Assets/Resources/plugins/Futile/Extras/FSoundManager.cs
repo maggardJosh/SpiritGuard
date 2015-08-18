@@ -106,11 +106,12 @@ public class FSoundManager
 
     static public void PlayMusic(string resourceName, float volume)
     {
-        PlayMusic(resourceName, volume, true);
+        PlayMusic(resourceName, volume, false);
     }
 
     static Tween currentFade;
     const float MUSIC_FADE_TIME = 2.0f;
+    const float MUSIC_FADE_IN_TIME = 3.0f;
     static public void PlayMusic(string resourceName, float volume, bool shouldRestartIfSameSongIsAlreadyPlaying)
     {
         if (_isMuted) return;
@@ -134,7 +135,7 @@ public class FSoundManager
                         _musicSource.Stop();
                         _musicSource.loop = true;
                         _musicSource.Play();
-                        currentFade = Go.to(FSoundManager.musicSource, MUSIC_FADE_TIME, new TweenConfig().floatProp("volume", volume));
+                        currentFade = Go.to(FSoundManager.musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
                     }));
                 }
                 return;
@@ -160,7 +161,7 @@ public class FSoundManager
                         _musicSource.clip = _currentMusicClip;
                         _musicSource.loop = true;
                         _musicSource.Play();
-                        currentFade = Go.to(musicSource, MUSIC_FADE_TIME, new TweenConfig().floatProp("volume", volume));
+                        currentFade = Go.to(musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
                     }
                     return;
 
@@ -183,7 +184,7 @@ public class FSoundManager
                 _musicSource.clip = _currentMusicClip;
                 _musicSource.loop = true;
                 _musicSource.Play();
-                currentFade = Go.to(musicSource, MUSIC_FADE_TIME, new TweenConfig().floatProp("volume", volume));
+                currentFade = Go.to(musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
             }
 
 

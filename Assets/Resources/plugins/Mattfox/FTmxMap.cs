@@ -24,6 +24,7 @@ public class FTmxMap : FContainer
     public string actualMapName;
     public string mapName;
     public string mapDescription;
+    public string mapMusic;
 
     public FTmxMap()
     {
@@ -71,6 +72,9 @@ public class FTmxMap : FContainer
                     {
                         case "name":
                             this.mapName = property.attributes["value"];
+                            break;
+                        case "music":
+                            this.mapMusic = property.attributes["value"];
                             break;
                         case "mapdescription":
                             this.mapDescription = property.attributes["value"];

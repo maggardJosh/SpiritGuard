@@ -65,7 +65,6 @@ public class TitleScreen : FContainer
         {
             World world = new World();
 
-            FSoundManager.PlayMusic("SpiritGuardField");
             world.ShowLoading(() =>
             {
                 C.getCameraInstance().AddChild(world.ui);

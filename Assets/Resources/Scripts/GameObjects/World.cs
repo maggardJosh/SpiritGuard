@@ -127,6 +127,7 @@ public class World : FContainer
         this.map = new FTmxMap();
         this.map.LoadTMX("Maps/" + mapName);
 
+        FSoundManager.PlayMusic(this.map.mapMusic);
 
         FLabel mapNameLabel = new FLabel(C.largeFontName, map.mapName);
         C.getCameraInstance().AddChild(mapNameLabel);
