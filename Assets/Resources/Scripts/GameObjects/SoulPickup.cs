@@ -40,6 +40,8 @@ public class SoulPickup : FutilePlatformerBaseObject
             isBeingPickedUp = true;
             FSoundManager.TweenVolume(.3f);
             p.isVisible = false;
+            Go.killAllTweensWithTarget(p);
+            p.State = Player.PlayerState.IDLE;
             p.xVel = 0;
             p.yVel = 0;
             Go.killAllTweensWithTarget(this);

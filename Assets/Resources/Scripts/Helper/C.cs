@@ -25,12 +25,12 @@ public class C
     public const string smallFontName = "smallFont";
     public const string largeFontName = "largeFont";
 
-    public static readonly KeyCode[] LEFT_KEY = new KeyCode[] { KeyCode.LeftArrow, KeyCode.A };
+    public static readonly KeyCode[] LEFT_KEY = new KeyCode[] { KeyCode.LeftArrow, KeyCode.A, KeyCode.Q };
     public static readonly KeyCode[] RIGHT_KEY = new KeyCode[] { KeyCode.RightArrow, KeyCode.D };
-    public static readonly KeyCode[] UP_KEY = new KeyCode[] { KeyCode.UpArrow, KeyCode.W };
+    public static readonly KeyCode[] UP_KEY = new KeyCode[] { KeyCode.UpArrow, KeyCode.W, KeyCode.Z};
     public static readonly KeyCode[] DOWN_KEY = new KeyCode[] { KeyCode.DownArrow, KeyCode.S };
-    public static readonly KeyCode[] JUMP_KEY = new KeyCode[] { KeyCode.X, KeyCode.L, KeyCode.Space };
-    public static readonly KeyCode[] ACTION_KEY = new KeyCode[] { KeyCode.Z, KeyCode.K };
+    public static readonly KeyCode[] JUMP_KEY = new KeyCode[] { KeyCode.L, KeyCode.Space };
+    public static readonly KeyCode[] ACTION_KEY = new KeyCode[] { KeyCode.K };
     public static readonly KeyCode[] SELECT_KEY = new KeyCode[] { KeyCode.Tab };
 
     private static float lastVerticalValue = 0;
