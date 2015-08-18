@@ -124,7 +124,7 @@
   </object>
   <object type="sign" gid="202" x="80" y="256">
    <properties>
-    <property name="message" value="WATCH  OUT\nFOR HOLE!"/>
+    <property name="dialogue" value="Home Sweet Home"/>
    </properties>
   </object>
   <object type="enemy" gid="203" x="224" y="208"/>

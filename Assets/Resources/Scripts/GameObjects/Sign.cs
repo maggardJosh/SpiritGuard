@@ -9,10 +9,12 @@ public class Sign : FutilePlatformerBaseObject
     FSprite sign;
     InteractInd interactIndicator;
     private float _mScale = 1;
+    List<string> dialogue;
 
-    public Sign(World world, string message)
+    public Sign(World world, List<string> dialogue)
         : base(new RXRect(0, -6, 8, 6), world)
     {
+        this.dialogue = dialogue;
         this.shouldSortByZ = false;
         sign = new FSprite("object_sign_01");
         this.AddChild(sign);
@@ -37,7 +39,7 @@ public class Sign : FutilePlatformerBaseObject
             {
                 p.hasInteractObject = true;
                 if (C.getKeyDown(C.JUMP_KEY))
-                    world.ui.dialogue.ShowMessage(new List<string>() { "Hello!", "Welcome to Spirit Guard!", "WASD - Moves" });
+                    world.ui.dialogue.ShowMessage(dialogue);
             }
         }
         else

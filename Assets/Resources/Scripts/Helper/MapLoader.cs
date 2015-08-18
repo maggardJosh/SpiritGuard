@@ -98,7 +98,7 @@ public class MapLoader
 
     private static Sign parseSign(XMLNode node, World world)
     {
-        string message = "Default";
+        List<string> dialogue = new List<string>();
         if (node.children[0] != null)
         {
 
@@ -106,13 +106,13 @@ public class MapLoader
             {
                 switch (property.attributes["name"].ToLower())
                 {
-                    case "message":
-                        message = property.attributes["value"];
+                    case "dialogue":
+                        dialogue = property.attributes["value"].Split('|').ToList();
                         break;
                 }
             }
         }
-        Sign result = new Sign(world, message);
+        Sign result = new Sign(world, dialogue);
         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
         return result;
