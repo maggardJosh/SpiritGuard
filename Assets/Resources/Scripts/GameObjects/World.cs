@@ -23,6 +23,7 @@ public class World : FContainer
     List<FutilePlatformerBaseObject> collisionObjects = new List<FutilePlatformerBaseObject>();
     List<FutilePlatformerBaseObject> damageObjects = new List<FutilePlatformerBaseObject>();
     List<Sign> signs = new List<Sign>();
+    List<Villager> villagers = new List<Villager>();
 
     string lastMap = "";
     string lastWarpPoint = "";
@@ -119,6 +120,7 @@ public class World : FContainer
         lastMap = mapName;
         spawnPoints.Clear();
         signs.Clear();
+        villagers.Clear();
         collisionObjects.Clear();
         damageObjects.Clear();
 
@@ -208,6 +210,8 @@ public class World : FContainer
 
         if (objectToAdd is Sign)
             signs.Add((Sign)objectToAdd);
+        if (objectToAdd is Villager)
+            villagers.Add((Villager)objectToAdd);
         if (objectToAdd is PushBlock || objectToAdd is Switch)
             background.AddChild(objectToAdd);
         else
@@ -238,6 +242,8 @@ public class World : FContainer
 
         if (objectToRemove is Sign)
             signs.Remove((Sign)objectToRemove);
+        if (objectToRemove is Villager)
+            villagers.Remove((Villager)objectToRemove);
         objectToRemove.RemoveFromContainer();
     }
 
@@ -260,6 +266,8 @@ public class World : FContainer
                 continue;
             if (self is MagicOrb && o is Player)
                 continue;
+
+
             if (o == self)
                 continue;
             worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
@@ -423,5 +431,7 @@ public class World : FContainer
         }
         foreach (Sign s in signs)
             s.CheckCollision(player);
+        foreach (Villager v in villagers)
+            v.HandlePlayerCollision(player);
     }
 }

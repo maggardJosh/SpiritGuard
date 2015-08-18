@@ -27,7 +27,7 @@ public class InteractInd : FAnimatedSprite
         isHiding = false;
         isShowing = true;
         isVisible = true;
-        Go.to(this, .5f, new TweenConfig().floatProp("y", startY + 5).setEaseType(EaseType.QuadOut).onComplete(() => { isShowing = false; }));
+        Go.to(this, .3f, new TweenConfig().floatProp("y", startY + 5).setEaseType(EaseType.QuadOut).onComplete(() => { isShowing = false; }));
     }
 
     public void Hide()
@@ -38,7 +38,7 @@ public class InteractInd : FAnimatedSprite
         isHiding = true;
         isShowing = false;
         isVisible = true;
-        Go.to(this, .5f, new TweenConfig().floatProp("y", startY).setEaseType(EaseType.QuadIn).onComplete(() => { isHiding = false; isVisible = false; }));
+        Go.to(this, .1f, new TweenConfig().floatProp("y", startY).setEaseType(EaseType.QuadIn).onComplete(() => { isHiding = false; isVisible = false; }));
     }
 }
 

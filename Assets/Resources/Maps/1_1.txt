@@ -128,7 +128,11 @@
    </properties>
   </object>
   <object type="enemy" gid="203" x="224" y="208"/>
-  <object type="villager" gid="204" x="448" y="128"/>
+  <object type="villager" gid="204" x="48" y="256">
+   <properties>
+    <property name="dialogue" value="Welcome to the village|This is a test message|You suck|Lolololol"/>
+   </properties>
+  </object>
   <object gid="205" x="352" y="144"/>
   <object type="pushblock" gid="205" x="64" y="144"/>
   <object type="pushblock" gid="205" x="336" y="176"/>

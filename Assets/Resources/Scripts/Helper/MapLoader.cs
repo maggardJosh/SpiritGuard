@@ -138,8 +138,26 @@ public class MapLoader
 
     private static Villager parseVillager(XMLNode node, World world)
     {
+        List<string> dialogue = new List<string>();
+        string villagerType = "A";
+        if (node.children.Count > 0)
+        {
 
-        Villager result = new Villager(world);
+            foreach (XMLNode property in ((XMLNode)node.children[0]).children)
+            {
+                switch (property.attributes["name"].ToLower())
+                {
+                    case "dialogue":
+                        dialogue = property.attributes["value"].Split('|').ToList();
+                        break;
+                    case "type":
+                        villagerType = property.attributes["value"];
+                        break;
+                }
+            }
+        }
+
+        Villager result = new Villager(dialogue, world, villagerType);
         result.SetPosition((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f));
 
         return result;

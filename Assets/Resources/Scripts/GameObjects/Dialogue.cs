@@ -39,6 +39,8 @@ public class Dialogue : FContainer
     const float TWEEN_OUT_TIME = .6f;
     public void ShowMessage(List<string> messages)
     {
+        if (this.dialogueBG.isVisible)
+            return;
         this.dialogueBG.isVisible = true;
         this.messages = messages;
         C.isTransitioning = true;
@@ -56,6 +58,7 @@ public class Dialogue : FContainer
 
     float stateCount = 0;
     float typewriterTime = 1.4f;
+    bool lastJump = false;
     public void Update()
     {
         stateCount += Time.deltaTime;
@@ -65,7 +68,7 @@ public class Dialogue : FContainer
                 break;
             case State.TYPEWRITER:
                 int textLength = Mathf.FloorToInt((stateCount / typewriterTime) * (messages[0].Length));
-                if (C.getKeyDown(C.JUMP_KEY))
+                if (C.getKeyDown(C.JUMP_KEY) && !lastJump)
                     textLength = messages[0].Length + 1;
                 if (textLength > messages[0].Length)
                 {
@@ -75,7 +78,7 @@ public class Dialogue : FContainer
                 message.text = messages[0].Substring(0, textLength);
                 break;
             case State.WAITING_ON_KEY_PRESS:
-                if (C.getKeyDown(C.JUMP_KEY))
+                if (C.getKeyDown(C.JUMP_KEY) && !lastJump)
                 {
                     if (messages.Count > 1)
                     {
@@ -90,12 +93,13 @@ public class Dialogue : FContainer
                         currentState = State.TRANS_OUT;
                         Futile.instance.SignalUpdate -= Update;
                         indicator.Hide();
-                        Go.to(this, TWEEN_OUT_TIME, new TweenConfig().floatProp("y", -Futile.screen.halfHeight - dialogueBG.height / 2f).setEaseType(EaseType.BackIn).onComplete(() => { currentState = State.TRANS_IN; C.isTransitioning = false; }));
+                        Go.to(this, TWEEN_OUT_TIME, new TweenConfig().floatProp("y", -Futile.screen.halfHeight - dialogueBG.height / 2f).setEaseType(EaseType.BackIn).onComplete(() => { dialogueBG.isVisible = false; currentState = State.TRANS_IN; C.isTransitioning = false; }));
                     }
                 }
                 break;
             case State.TRANS_OUT:
                 break;
         }
+        lastJump = C.getKeyDown(C.JUMP_KEY);
     }
 }
