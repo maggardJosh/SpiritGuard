@@ -6,6 +6,17 @@ using UnityEngine;
 
 public class Player : FutileFourDirectionBaseObject
 {
+    public class SaveState
+    {
+        bool canJump = false;
+        bool canSword = false;
+        bool canBow = false;
+        List<string> switchesActivated = new List<string>();
+        string lastMap = "";
+        string lastDoor = "";
+        
+    }
+
     private float moveSpeed = .1f;
     private FAnimatedSprite player;
     bool lastActionPress = false;

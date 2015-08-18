@@ -187,5 +187,11 @@
    </properties>
   </object>
   <object name="DoorTwo" type="door" gid="210" x="80" y="208"/>
+  <object type="villager" gid="204" x="128" y="240">
+   <properties>
+    <property name="dialogue" value="This is my house|BACK OFF!"/>
+    <property name="type" value="B"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

@@ -167,7 +167,7 @@ public class Villager : FutileFourDirectionBaseObject
         {
             if (C.getKey(C.JUMP_KEY))
             {
-                world.ui.dialogue.ShowMessage(dialogue);
+                world.ui.dialogue.ShowMessage(new List<string>(dialogue));
             }
             if (!this.isColliding(p.swordCollision))
             {

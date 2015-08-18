@@ -41,6 +41,7 @@ public class Dialogue : FContainer
     {
         if (this.dialogueBG.isVisible)
             return;
+        stateCount = 0;
         this.dialogueBG.isVisible = true;
         this.messages = messages;
         C.isTransitioning = true;
@@ -58,7 +59,6 @@ public class Dialogue : FContainer
 
     float stateCount = 0;
     float typewriterTime = 1.4f;
-    bool lastJump = false;
     public void Update()
     {
         stateCount += Time.deltaTime;
@@ -68,8 +68,11 @@ public class Dialogue : FContainer
                 break;
             case State.TYPEWRITER:
                 int textLength = Mathf.FloorToInt((stateCount / typewriterTime) * (messages[0].Length));
-                if (C.getKeyDown(C.JUMP_KEY) && !lastJump)
+                if (stateCount > .3f && C.getKeyDown(C.JUMP_KEY))
+                {
                     textLength = messages[0].Length + 1;
+                    stateCount = 0;
+                }
                 if (textLength > messages[0].Length)
                 {
                     textLength = messages[0].Length;
@@ -78,7 +81,7 @@ public class Dialogue : FContainer
                 message.text = messages[0].Substring(0, textLength);
                 break;
             case State.WAITING_ON_KEY_PRESS:
-                if (C.getKeyDown(C.JUMP_KEY) && !lastJump)
+                if (stateCount > .3f && C.getKeyDown(C.JUMP_KEY))
                 {
                     if (messages.Count > 1)
                     {
@@ -100,6 +103,5 @@ public class Dialogue : FContainer
             case State.TRANS_OUT:
                 break;
         }
-        lastJump = C.getKeyDown(C.JUMP_KEY);
     }
 }
