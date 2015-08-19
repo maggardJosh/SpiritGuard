@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="11" height="15" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="Music" value="SpiritGuardIndoors"/>
+  <property name="Name" value="PATH OF THE BEGINNER"/>
+ </properties>
+ <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16">
+  <tileoffset x="0" y="2"/>
+  <image source="gfx/tilemap.png" width="160" height="320"/>
+ </tileset>
+ <tileset firstgid="201" name="objects" tilewidth="16" tileheight="16">
+  <image source="gfx/objects.png" width="192" height="16"/>
+ </tileset>
+ <layer name="background" width="11" height="15" opacity="0.51">
+  <data encoding="csv">
+79,77,78,79,78,79,79,78,77,77,79,
+78,79,79,78,77,77,78,77,79,77,78,
+79,77,78,79,79,79,79,78,78,78,79,
+78,78,79,77,77,77,79,78,78,77,77,
+78,78,78,77,77,78,77,77,79,77,78,
+79,78,79,77,79,79,77,79,77,79,77,
+78,78,77,78,79,77,79,79,78,77,77,
+78,77,77,77,77,77,78,78,77,77,79,
+77,79,78,78,77,77,77,77,77,78,78,
+77,79,77,79,77,78,78,78,78,78,77,
+78,79,79,77,77,77,79,77,79,79,79,
+79,77,79,77,78,78,77,79,77,78,77,
+79,78,78,79,79,79,77,78,78,77,77,
+77,78,78,79,78,77,77,77,77,79,77,
+77,79,79,79,78,78,78,78,77,77,78
+</data>
+ </layer>
+ <layer name="collision" width="11" height="15">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,41,0,0,0,
+0,0,0,0,0,0,0,51,52,52,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer name="walls" width="11" height="15" opacity="0.98">
+  <data encoding="csv">
+48,48,59,0,57,48,48,48,48,48,48,
+48,59,0,0,0,57,58,9,48,48,48,
+49,0,0,0,0,0,0,47,48,48,48,
+49,0,0,0,0,0,0,47,7,0,9,
+48,38,68,68,69,0,0,57,59,0,47,
+48,49,0,0,0,0,0,0,0,0,47,
+48,48,39,0,0,0,0,0,0,0,47,
+48,48,49,0,0,0,0,0,0,37,29,
+48,48,49,0,0,0,0,0,0,47,48,
+48,48,48,39,0,0,0,37,38,48,48,
+48,48,48,48,69,0,37,48,48,48,48,
+48,48,48,49,0,0,47,48,48,48,48,
+48,48,48,49,0,0,47,48,48,48,48,
+48,48,48,48,39,0,47,48,48,48,48,
+48,48,48,48,49,0,47,48,48,48,48
+</data>
+ </layer>
+ <objectgroup name="objects" width="11" height="15">
+  <object type="ghost" gid="208" x="96" y="128"/>
+  <object gid="205" x="64" y="208"/>
+  <object type="spawnpoint" gid="201" x="80" y="240">
+   <properties>
+    <property name="exitDirection" value="up"/>
+    <property name="name" value="fieldtopob"/>
+    <property name="showmapname" value=""/>
+    <property name="targetmap" value="Field"/>
+    <property name="targetspawn" value="fieldtopob"/>
+   </properties>
+  </object>
+  <object type="pushblock" gid="205" x="64" y="192"/>
+  <object type="pushblock" gid="205" x="80" y="160"/>
+  <object type="pushblock" gid="205" x="64" y="128"/>
+  <object type="pushblock" gid="205" x="64" y="112"/>
+  <object type="pushblock" gid="205" x="80" y="64"/>
+  <object type="pushblock" gid="205" x="64" y="48"/>
+  <object type="pushblock" gid="205" x="64" y="32"/>
+  <object type="pushblock" gid="205" x="32" y="48"/>
+  <object type="pushblock" gid="205" x="96" y="96"/>
+  <object type="pushblock" gid="205" x="96" y="112"/>
+  <object type="spawnpoint" gid="201" x="48" y="16">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="pob1topob2"/>
+    <property name="targetmap" value="POB2"/>
+    <property name="targetspawn" value="pob1topob2"/>
+   </properties>
+  </object>
+  <object type="spawnpoint" gid="201" x="144" y="64">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="pob4topob1"/>
+    <property name="targetmap" value="POB4"/>
+    <property name="targetspawn" value="pob4topob1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="foreground" width="11" height="15" opacity="0.5">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

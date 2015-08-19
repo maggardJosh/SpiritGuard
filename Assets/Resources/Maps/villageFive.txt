@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="16" tileheight="16">
  <properties>
-  <property name="Music" value="SpiritGuardIndoors"/>
+  <property name="Music" value="SpiritGuardField"/>
   <property name="Name" value=""/>
  </properties>
  <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16">
@@ -59,7 +59,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="collision" width="30" height="20">
+ <layer name="collision" width="30" height="20" opacity="0.9">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -116,10 +116,20 @@
     <property name="targetSpawn" value="enterDoorFive"/>
    </properties>
   </object>
-  <object type="spawnPoint" gid="201" x="160" y="176">
+  <object type="spawnPoint" gid="201" x="176" y="214">
    <properties>
-    <property name="exitdirection" value="down"/>
+    <property name="exitdirection" value="up"/>
     <property name="name" value="initspawn"/>
+   </properties>
+  </object>
+  <object type="sign" gid="202" x="192" y="176">
+   <properties>
+    <property name="dialogue" value="Extra Controls:|'M' - Mute|'N' - Disable Gameboy Effect"/>
+   </properties>
+  </object>
+  <object type="sign" gid="202" x="176" y="176">
+   <properties>
+    <property name="dialogue" value="WASD- Move|L - interact"/>
    </properties>
   </object>
  </objectgroup>

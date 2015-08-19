@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="18" height="11" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="Music" value="SpiritGuardIndoors"/>
+  <property name="Name" value="FIELD"/>
+ </properties>
+ <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16">
+  <tileoffset x="0" y="2"/>
+  <image source="gfx/tilemap.png" width="160" height="320"/>
+ </tileset>
+ <tileset firstgid="201" name="objects" tilewidth="16" tileheight="16">
+  <image source="gfx/objects.png" width="192" height="16"/>
+ </tileset>
+ <layer name="background" width="18" height="11" opacity="0.51">
+  <data encoding="csv">
+88,88,88,89,88,87,88,88,87,89,87,88,89,88,87,87,89,89,
+88,88,87,87,89,89,87,87,89,88,89,88,87,89,89,89,87,88,
+88,88,89,87,89,89,87,88,88,87,89,87,89,89,87,87,88,88,
+89,87,89,89,88,89,87,88,89,89,89,87,89,89,88,88,88,87,
+88,87,89,89,89,87,87,88,87,87,88,87,87,87,88,89,89,89,
+87,89,88,89,88,88,89,87,87,87,88,87,88,87,88,87,88,89,
+88,87,89,87,88,89,88,88,88,87,88,87,89,87,87,88,88,87,
+87,87,89,88,88,87,87,87,87,88,87,89,89,88,89,87,88,88,
+87,89,87,88,89,88,89,89,87,89,89,89,87,89,89,87,88,88,
+88,89,88,89,87,87,89,89,89,88,87,89,89,89,88,89,88,89,
+87,87,89,88,88,88,88,89,88,89,87,87,87,87,89,88,88,87
+</data>
+ </layer>
+ <layer name="collision" width="18" height="11">
+  <data encoding="csv">
+148,148,148,148,148,148,148,0,148,148,148,148,148,148,148,148,148,148,
+148,148,148,148,148,148,0,0,0,148,148,148,148,148,148,148,148,148,
+148,148,148,148,148,148,0,0,148,148,148,148,148,148,148,148,148,148,
+148,0,0,148,0,148,148,148,148,148,148,148,148,148,148,148,148,148,
+148,0,0,148,0,148,148,0,148,0,0,148,148,148,148,148,148,148,
+0,0,148,148,148,148,148,148,148,0,0,148,148,148,148,148,148,148,
+148,148,148,0,0,148,0,148,0,0,0,148,148,148,148,148,148,148,
+148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,
+148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,
+148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,
+148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148,148
+</data>
+ </layer>
+ <layer name="walls" width="18" height="11" opacity="0.5">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="objects" width="18" height="11">
+  <object type="spawnpoint" gid="201" x="0" y="96">
+   <properties>
+    <property name="exitDirection" value="right"/>
+    <property name="name" value="bow2tobow3"/>
+    <property name="targetmap" value="Bow2"/>
+    <property name="targetspawn" value="bow2tobow3"/>
+   </properties>
+  </object>
+  <object type="pushblock" gid="205" x="144" y="112"/>
+  <object type="magicturret" gid="207" x="48" y="112">
+   <properties>
+    <property name="distance" value="5"/>
+   </properties>
+  </object>
+  <object type="enemy" gid="203" x="160" y="80"/>
+  <object type="spawnpoint" gid="201" x="112" y="16">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="bow3tobow4"/>
+    <property name="targetmap" value="Bow4"/>
+    <property name="targetspawn" value="bow3tobow4"/>
+   </properties>
+  </object>
+  <object type="arrowturret" gid="206" x="160" y="96">
+   <properties>
+    <property name="direction" value="left"/>
+    <property name="interval" value=".5"/>
+   </properties>
+  </object>
+  <object type="ghost" gid="208" x="96" y="48"/>
+  <object type="enemy" gid="203" x="32" y="64"/>
+ </objectgroup>
+ <layer name="foreground" width="18" height="11" opacity="0.5">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

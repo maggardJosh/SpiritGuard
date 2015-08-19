@@ -34,6 +34,7 @@ public class Ghost : FutileFourDirectionBaseObject
         this.name = name;
         handleStateCount = true;
         collidesWithWater = false;
+        collidesWithWalls = false;
         clearAcc = false;
         useActualMaxVel = true;
         maxVel = .5f;
@@ -81,9 +82,12 @@ public class Ghost : FutileFourDirectionBaseObject
                         switch (State)
                         {
                             case GhostState.IDLE:
+
                                 float randAngle = RXRandom.Float() * Mathf.PI * 2.0f;
-                                xAcc = Mathf.Cos(randAngle) * moveSpeed;
-                                yAcc = Mathf.Sin(randAngle) * moveSpeed;
+                                if (RXRandom.Float() < .5f)
+                                    randAngle = Mathf.Atan2(this.y - world.player.y, this.x - world.player.x);
+                                xAcc = Mathf.Cos(randAngle) * -moveSpeed;
+                                yAcc = Mathf.Sin(randAngle) * -moveSpeed;
                                 State = GhostState.MOVING;
                                 break;
                             case GhostState.MOVING:
@@ -181,7 +185,7 @@ public class Ghost : FutileFourDirectionBaseObject
 
     public void HandlePlayerCollision(Player p)
     {
-        if (p.shouldDamage)
+        if (this.State != GhostState.INVULNERABLE && p.shouldDamage)
             if (this.isColliding(p.swordCollision))
             {
                 this.TakeDamage(p.GetPosition());
@@ -189,7 +193,9 @@ public class Ghost : FutileFourDirectionBaseObject
             }
         if (p.invulnCount > 0)
             return;
-        
+
+        if (p.invulnCount > 0 || this.State == GhostState.DYING)
+            return;
         if(p.isColliding(this))
         {
             p.TakeDamage(this.GetPosition());

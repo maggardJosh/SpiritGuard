@@ -102,7 +102,7 @@
  <objectgroup name="objects" width="19" height="18">
   <object type="sign" gid="202" x="160" y="160">
    <properties>
-    <property name="dialogue" value="Hero's Journey Ahead!"/>
+    <property name="dialogue" value="Hero Village|Home of Heroes"/>
    </properties>
   </object>
   <object type="spawnpoint" gid="201" x="192" y="80">
@@ -141,6 +141,7 @@
    <properties>
     <property name="exitDirection" value="down"/>
     <property name="name" value="enterDoorFive"/>
+    <property name="showmapname" value=""/>
     <property name="targetmap" value="villageFive"/>
     <property name="targetspawn" value="enterDoorFive"/>
    </properties>

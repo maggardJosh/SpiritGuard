@@ -36,7 +36,7 @@ using UnityEngine;
         public const float SPAWN_COLLISION_DIST = 6;
         public bool CheckCollision(Player p)
         {
-            if (p.State == Player.PlayerState.JUMP)
+            if (p.State == Player.PlayerState.JUMP || p.State == Player.PlayerState.DYING)
                 return false;
             return Mathf.Abs(p.x + p.hitBox.x - pos.x) < SPAWN_COLLISION_DIST &&
                 Mathf.Abs(p.y + p.hitBox.y - pos.y) < SPAWN_COLLISION_DIST;
@@ -45,12 +45,12 @@ using UnityEngine;
 
         public void SpawnPlayer(Player p)
         {
-            p.SetPosition(pos);
+            p.SetPosition(pos-new Vector2(p.hitBox.x, p.hitBox.y));
             p.SetDirection(exitDirection);
             p.PlayAnim(true);
             p.xVel = 0;
             p.yVel = 0;
-            Vector2 newPos = pos;
+            Vector2 newPos = p.GetPosition();
             
             switch(exitDirection)
             {

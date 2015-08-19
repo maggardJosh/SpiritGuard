@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="Music" value="SpiritGuardIndoors"/>
+  <property name="Name" value="VILLAGE"/>
+ </properties>
+ <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16">
+  <tileoffset x="0" y="2"/>
+  <image source="gfx/tilemap.png" width="160" height="320"/>
+ </tileset>
+ <tileset firstgid="201" name="objects" tilewidth="16" tileheight="16">
+  <image source="gfx/objects.png" width="192" height="16"/>
+ </tileset>
+ <layer name="background" width="10" height="10" opacity="0.51">
+  <data encoding="csv">
+0,78,77,78,79,77,79,79,0,0,
+0,77,77,77,77,77,78,78,0,0,
+0,79,78,78,77,77,77,77,0,0,
+0,79,77,79,77,78,78,78,0,0,
+0,79,79,77,77,77,79,77,0,0,
+0,77,79,77,78,78,77,79,0,0,
+0,78,78,79,79,79,77,78,0,0,
+0,78,78,79,78,77,77,77,0,0,
+0,79,79,79,78,78,78,78,0,0,
+0,0,0,0,0,78,0,0,0,0
+</data>
+ </layer>
+ <layer name="collision" width="10" height="10">
+  <data encoding="csv">
+48,48,48,48,0,48,48,48,48,48,
+48,48,48,0,0,0,48,48,48,48,
+48,48,48,0,48,0,0,48,48,48,
+48,48,0,0,48,0,48,48,48,48,
+48,48,0,0,48,48,48,48,48,48,
+48,48,0,0,0,0,0,48,48,48,
+48,48,48,0,0,0,0,48,48,48,
+48,48,48,48,0,0,0,48,48,48,
+48,48,48,48,48,0,48,48,48,48,
+48,48,48,48,48,0,48,48,48,48
+</data>
+ </layer>
+ <layer name="walls" width="10" height="10" opacity="0.98">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="objects" width="10" height="10">
+  <object type="ghost" gid="208" x="32" y="80"/>
+  <object type="spawnpoint" gid="201" x="80" y="160">
+   <properties>
+    <property name="exitDirection" value="up"/>
+    <property name="name" value="pob1topob2"/>
+    <property name="targetmap" value="POB1"/>
+    <property name="targetspawn" value="pob1topob2"/>
+   </properties>
+  </object>
+  <object type="arrowturret" gid="206" x="80" y="64">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="interval" value=".5"/>
+   </properties>
+  </object>
+  <object type="pushblock" gid="205" x="80" y="128"/>
+  <object type="pushblock" gid="205" x="96" y="96"/>
+  <object type="pushblock" gid="205" x="48" y="96"/>
+  <object name="pob2switch" type="switch" gid="211" x="96" y="48">
+   <properties>
+    <property name="door" value="POB2Door"/>
+   </properties>
+  </object>
+  <object name="POB2Door" type="door" gid="210" x="64" y="16"/>
+  <object type="pushblock" gid="205" x="64" y="128"/>
+  <object type="spawnpoint" gid="201" x="64" y="16">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="pob2topob3"/>
+    <property name="targetmap" value="POB3"/>
+    <property name="targetspawn" value="pob2topob3"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="foreground" width="10" height="10" opacity="0.5">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

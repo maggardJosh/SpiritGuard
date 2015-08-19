@@ -14,10 +14,11 @@ public class PushBlock : FutilePlatformerBaseObject
     public PushBlock(World world)
         : base(new RXRect(0, 0, 16, 16), world)
     {
+        this.blocksJump = true;
         sprite = new FSprite("object_block_01");
         this.AddChild(sprite);
     }
-    const float PUSH_TIME = .8f;
+    const float PUSH_TIME = .4f;
     public override void OnFixedUpdate()
     {
         if (!isBeingPushed)
@@ -45,7 +46,7 @@ public class PushBlock : FutilePlatformerBaseObject
             case FutileFourDirectionBaseObject.Direction.DOWN: newY -= 16; break;
             case FutileFourDirectionBaseObject.Direction.LEFT: newX -= 16; break;
         }
-        if (world.isPassable(newX, newY) && world.CheckObjectCollision(this, newX, newY)== null && !world.CheckDamageObjectCollision(this, newX, newY))
+        if (world.isAllPassable(newX, newY) && world.CheckObjectCollision(this, newX, newY)== null && !world.CheckDamageObjectCollision(this, newX, newY))
         {
             FSoundManager.PlaySound("pushBlockMove");
             C.getCameraInstance().shake(.7f, .5f);

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="20" height="14" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="Music" value="SpiritGuardIndoors"/>
+  <property name="Name" value="PATH OF THE SWORD"/>
+ </properties>
+ <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16">
+  <tileoffset x="0" y="2"/>
+  <image source="gfx/tilemap.png" width="160" height="320"/>
+ </tileset>
+ <tileset firstgid="201" name="objects" tilewidth="16" tileheight="16">
+  <image source="gfx/objects.png" width="192" height="16"/>
+ </tileset>
+ <layer name="background" width="20" height="14" visible="0" opacity="0.51">
+  <data encoding="csv">
+78,77,78,77,78,77,78,79,77,77,79,77,78,79,78,78,78,77,79,77,
+77,79,77,77,77,79,79,77,78,78,77,79,77,78,77,77,77,78,78,79,
+79,77,78,78,79,78,78,79,77,79,79,79,77,78,79,78,77,77,77,78,
+77,78,79,77,79,77,77,77,78,78,78,78,77,78,79,77,78,78,78,79,
+77,78,79,77,79,77,78,78,78,79,79,79,79,79,78,79,77,77,78,78,
+77,77,77,79,77,79,79,79,79,79,78,78,78,79,77,77,78,79,79,79,
+79,77,79,78,79,77,78,78,77,77,77,77,79,79,79,78,78,77,78,78,
+79,78,78,78,79,77,77,77,78,78,78,77,78,77,77,77,78,79,77,78,
+79,78,77,77,78,78,78,77,79,77,79,78,79,78,79,78,78,77,79,77,
+77,79,78,78,79,77,79,77,78,78,77,79,79,78,79,78,77,79,77,79,
+77,77,78,77,79,78,79,79,77,79,78,78,77,77,77,78,79,77,77,78,
+77,77,78,78,79,79,78,79,78,79,77,78,77,78,77,78,78,77,79,77,
+78,79,77,79,79,77,78,77,77,77,79,77,78,79,77,77,77,78,79,78,
+79,79,78,77,77,77,77,79,77,77,77,77,79,79,77,78,79,78,79,79
+</data>
+ </layer>
+ <layer name="collision" width="20" height="14">
+  <data encoding="csv">
+48,48,48,48,48,48,48,0,48,48,0,48,48,48,48,48,48,48,48,48,
+48,48,48,48,48,48,48,0,0,0,0,0,0,48,0,71,48,48,48,48,
+48,48,48,48,48,48,0,0,0,0,0,0,0,48,0,71,0,0,0,0,
+48,48,48,48,48,48,48,48,0,0,48,48,0,48,0,21,62,32,33,48,
+48,48,48,48,48,48,48,48,48,48,0,0,48,48,48,41,0,0,43,48,
+48,48,48,48,48,48,48,48,48,48,80,0,48,48,48,51,52,52,53,48,
+48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,0,0,0,48,48,
+48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,0,0,0,48,48,
+48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,0,48,48,48,
+48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,0,0,48,48,48,
+48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,0,48,48,48,
+48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,
+48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,
+48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48
+</data>
+ </layer>
+ <layer name="walls" width="20" height="14" opacity="0.98">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="objects" width="20" height="14">
+  <object name="pos1switch1" type="switch" gid="211" x="272" y="80">
+   <properties>
+    <property name="door" value="POS1Door1"/>
+   </properties>
+  </object>
+  <object name="POS1Door1" type="door" gid="210" x="256" y="48"/>
+  <object type="spawnpoint" gid="201" x="96" y="48">
+   <properties>
+    <property name="exitDirection" value="right"/>
+    <property name="name" value="pos1topos2"/>
+    <property name="targetmap" value="POS2"/>
+    <property name="targetspawn" value="pos1topos2"/>
+   </properties>
+  </object>
+  <object type="spawnpoint" gid="201" x="304" y="48">
+   <properties>
+    <property name="exitDirection" value="left"/>
+    <property name="name" value="fieldtopos1"/>
+    <property name="showmapname" value=""/>
+    <property name="targetmap" value="Field"/>
+    <property name="targetspawn" value="fieldtopos1"/>
+   </properties>
+  </object>
+  <object name="pos1switch2" type="switch" gid="211" x="112" y="16">
+   <properties>
+    <property name="door" value="pos1door3"/>
+   </properties>
+  </object>
+  <object name="POS1Door3" type="door" gid="210" x="176" y="80"/>
+  <object type="ghost" gid="208" x="144" y="32"/>
+  <object name="POS1Door2" type="door" gid="210" x="256" y="144"/>
+  <object name="pos1hitswitch1" type="hitswitch" gid="212" x="240" y="160">
+   <properties>
+    <property name="door" value="pos1door2"/>
+   </properties>
+  </object>
+  <object name="pos1switch3" type="switch" gid="211" x="160" y="80">
+   <properties>
+    <property name="door" value="pos1door4"/>
+   </properties>
+  </object>
+  <object name="POS1Door4" type="door" gid="210" x="112" y="32"/>
+  <object name="pos1switch4" type="switch" gid="211" x="176" y="96">
+   <properties>
+    <property name="door" value="pos1door5"/>
+   </properties>
+  </object>
+  <object name="POS1Door5" type="door" gid="210" x="96" y="48"/>
+  <object type="spawnpoint" gid="201" x="256" y="176">
+   <properties>
+    <property name="exitDirection" value="up"/>
+    <property name="name" value="pos5topos1"/>
+    <property name="targetmap" value="POS5"/>
+    <property name="targetspawn" value="pos5topos1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="foreground" width="20" height="14" visible="0" opacity="0.5">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

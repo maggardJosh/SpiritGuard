@@ -85,14 +85,15 @@ public class TitleScreen : FContainer
                 C.getCameraInstance().MoveToFront();
                 world.LoadMap(C.Save.lastMap);
                 world.SpawnPlayer(C.Save.lastDoor);
-                
 
-                
                 this.RemoveFromContainer();
+            }, ()=> {
+                world.ui.dialogue.ShowMessage(new List<string> { "WASD - Move", "L - Interact", "... Seems simple enough" });
             });
             Futile.instance.SignalUpdate -= Update;
         }
         this.play.isVisible = (count * 1500 % 2000 < 1500 );
     }
+
 }
 

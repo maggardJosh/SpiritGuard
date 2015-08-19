@@ -8,8 +8,8 @@ public class Player : FutileFourDirectionBaseObject
 {
     public class SaveState
     {
-        public bool canJump = true;
-        public bool canSword = true;
+        public bool canJump = false;
+        public bool canSword = false;
         public bool canBow = false;
         public List<string> switchesActivated = new List<string>();
         public List<string> requiredEnemyKills = new List<string>();
@@ -175,11 +175,13 @@ public class Player : FutileFourDirectionBaseObject
     {
         FSoundManager.PlaySound("hurt");
         C.getCameraInstance().shake(.7f, .5f);
+        if (State != PlayerState.JUMP) 
         Go.killAllTweensWithTarget(this);
         this.Health--;
 
         if (this.Health == 0)
         {
+            Go.killAllTweensWithTarget(this);
             State = PlayerState.DYING;
             hasSpawnedSpiritParticles = false;
         }

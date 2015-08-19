@@ -233,7 +233,7 @@ public class MapLoader
 
     private static MagicTurret parseMagicTurret(XMLNode node, World world)
     {
-        float interval = 1;
+        float interval = 2.5f;
         float initdelay = 0;
         int distance = 4;
 

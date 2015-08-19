@@ -59,7 +59,7 @@ public class World : FContainer
     }
 
     public bool forceWaitLoad = false;
-    public void ShowLoading(Action loadAction, bool fromRight = true)
+    public void ShowLoading(Action loadAction, Action finishAction = null, bool fromRight = true)
     {
         float midPos;
         if (fromRight)
@@ -83,7 +83,7 @@ public class World : FContainer
         {
             loadAction.Invoke();
             if (!forceWaitLoad)
-                HideLoading(null, fromRight);
+                HideLoading(finishAction, fromRight);
 
         }));
     }
@@ -107,9 +107,9 @@ public class World : FContainer
         FSoundManager.PlaySound("slideOff");
         Go.to(loadingBG, 1.2f, new TweenConfig().floatProp("x", finalPos).setEaseType(EaseType.QuadIn).onComplete(() =>
         {
+            C.isTransitioning = false;
             if (doneAction != null)
                 doneAction.Invoke();
-            C.isTransitioning = false;
             loadingBG.isVisible = false;
         }));
     }
