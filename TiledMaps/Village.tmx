@@ -160,5 +160,13 @@
     <property name="dialogue" value="Today's the day!|Better get heading north..|You've got a long journey|ahead of you!"/>
    </properties>
   </object>
+  <object type="spawnpoint" gid="201" x="128" y="16">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="villageEntrance"/>
+    <property name="targetmap" value="VillageToField"/>
+    <property name="targetspawn" value="villageEntrance"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
