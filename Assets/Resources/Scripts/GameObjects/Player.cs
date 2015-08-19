@@ -13,8 +13,8 @@ public class Player : FutileFourDirectionBaseObject
         public bool canBow = false;
         public List<string> switchesActivated = new List<string>();
         public List<string> requiredEnemyKills = new List<string>();
-        public string lastMap = "";
-        public string lastDoor = "";
+        public string lastMap = "villageFive";
+        public string lastDoor = "initspawn";
 
         public void copy(SaveState save)
         {
@@ -663,6 +663,7 @@ public class Player : FutileFourDirectionBaseObject
 
     protected override void OnUpdate()
     {
+   
         if (C.isTransitioning)
             return;
         switch (State)

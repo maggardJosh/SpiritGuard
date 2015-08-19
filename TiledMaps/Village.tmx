@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="19" height="18" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="Music" value="SpiritGuardField"/>
+  <property name="Name" value="VILLAGE"/>
+ </properties>
+ <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16">
+  <tileoffset x="0" y="2"/>
+  <image source="gfx/tilemap.png" width="160" height="320"/>
+ </tileset>
+ <tileset firstgid="201" name="objects" tilewidth="16" tileheight="16">
+  <image source="gfx/objects.png" width="192" height="16"/>
+ </tileset>
+ <layer name="background" width="19" height="18" opacity="0.51">
+  <data encoding="csv">
+77,77,78,78,78,78,79,77,79,77,78,78,77,79,78,79,78,78,78,
+78,78,77,78,77,78,79,77,77,77,79,78,79,78,78,79,78,77,79,
+78,79,78,79,79,78,77,78,78,79,77,79,79,78,79,79,78,78,78,
+77,77,77,78,78,78,77,78,78,77,77,79,78,78,79,78,77,79,79,
+79,78,78,77,79,77,79,79,77,78,79,78,195,78,78,78,77,78,79,
+78,78,77,79,78,77,79,78,77,78,77,78,77,78,78,78,79,79,79,
+79,77,79,78,77,79,79,78,78,79,77,79,79,78,77,77,79,79,79,
+78,78,79,79,78,77,195,77,79,79,77,78,77,79,78,77,79,79,79,
+79,77,77,77,78,77,78,77,79,77,78,79,79,79,78,79,79,79,77,
+78,78,78,77,78,77,79,78,77,78,79,79,195,78,79,79,79,77,78,
+79,77,78,79,79,79,79,78,79,77,78,77,78,78,79,78,79,77,78,
+79,77,195,79,78,79,78,78,78,78,78,78,78,78,78,78,78,79,79,
+78,79,78,78,77,77,79,78,78,79,79,79,79,79,78,78,79,79,77,
+78,78,77,77,78,78,78,195,78,78,78,77,78,78,79,79,77,77,77,
+79,78,78,79,77,78,78,77,79,79,77,77,79,77,78,78,78,78,79,
+78,77,79,78,78,79,78,77,78,78,79,77,78,79,77,77,78,78,78,
+77,77,78,78,77,79,79,78,77,78,78,78,79,77,77,79,79,77,79,
+79,79,78,79,77,77,78,78,78,77,78,78,77,78,78,78,78,78,79
+</data>
+ </layer>
+ <layer name="foreground" width="19" height="18">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,185,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,185,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,185,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,185,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,185,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer name="collision" width="19" height="18">
+  <data encoding="csv">
+48,48,48,48,48,7,8,59,0,58,58,48,48,48,48,48,48,48,48,
+48,48,48,48,48,17,43,0,0,0,58,58,58,48,48,48,48,48,48,
+48,48,7,8,8,59,43,0,0,0,31,32,58,58,58,48,48,48,48,
+7,58,59,62,62,23,53,0,0,0,41,0,0,0,58,48,48,48,48,
+17,0,0,0,0,0,0,0,0,0,41,0,0,0,58,58,48,48,48,
+17,0,0,0,0,0,0,0,0,0,51,52,0,32,32,58,48,48,48,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,58,58,58,48,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,51,58,58,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,58,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,58,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,25,25,58,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,34,26,45,45,58,
+17,36,0,0,0,0,0,0,0,0,0,0,0,0,44,55,55,55,58,
+17,56,0,0,0,0,0,0,0,0,0,0,0,0,43,0,0,0,58,
+17,0,0,0,0,0,0,0,0,0,0,31,32,33,43,0,0,0,58,
+58,58,0,0,0,0,0,0,0,0,0,41,0,51,3,32,32,32,58,
+48,58,58,58,58,58,58,0,0,0,0,41,0,0,41,0,0,0,58,
+48,48,48,48,48,48,58,58,58,58,58,58,58,58,58,58,58,58,58
+</data>
+ </layer>
+ <layer name="walls" width="19" height="18">
+  <data encoding="csv">
+0,0,0,0,0,7,58,59,0,57,9,0,0,0,0,0,0,0,0,
+0,0,0,0,0,17,0,0,0,0,57,58,9,0,0,0,0,0,0,
+0,0,7,58,58,59,0,0,0,0,40,40,57,58,9,0,0,0,0,
+7,58,59,0,0,0,0,0,0,0,40,184,185,186,19,0,0,0,0,
+17,0,0,0,0,0,0,0,0,0,40,194,0,196,57,9,0,0,0,
+17,0,0,0,0,0,0,0,0,0,40,40,0,40,40,19,0,0,0,
+17,0,0,0,0,184,185,186,0,0,50,50,0,50,50,57,58,9,0,
+17,0,0,0,0,194,0,196,0,0,0,0,0,0,0,0,0,57,9,
+17,0,0,0,0,0,0,0,0,0,0,184,185,186,0,0,0,0,19,
+17,0,0,0,0,0,0,0,0,0,0,194,0,196,0,0,0,0,19,
+17,184,185,186,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,
+17,194,0,196,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,
+17,0,0,0,0,0,184,185,186,0,0,0,0,0,0,0,0,0,19,
+17,0,0,0,0,0,194,0,196,0,0,0,0,0,0,0,0,0,19,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,
+27,39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,
+0,27,28,28,28,28,39,0,0,0,0,0,0,0,0,0,0,0,19,
+0,0,0,48,48,48,27,28,28,28,28,28,28,28,28,28,28,28,7
+</data>
+ </layer>
+ <objectgroup name="objects" width="19" height="18">
+  <object type="sign" gid="202" x="160" y="160">
+   <properties>
+    <property name="dialogue" value="Hero's Journey Ahead!"/>
+   </properties>
+  </object>
+  <object type="spawnpoint" gid="201" x="192" y="80">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="enterDoorOne"/>
+    <property name="targetmap" value="villageOne"/>
+    <property name="targetspawn" value="enterDoorOne"/>
+   </properties>
+  </object>
+  <object type="spawnpoint" gid="201" x="96" y="128">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="enterDoorTwo"/>
+    <property name="targetmap" value="villageTwo"/>
+    <property name="targetspawn" value="enterDoorTwo"/>
+   </properties>
+  </object>
+  <object type="spawnpoint" gid="201" x="192" y="160">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="enterDoorThree"/>
+    <property name="targetmap" value="villageThree"/>
+    <property name="targetspawn" value="enterDoorThree"/>
+   </properties>
+  </object>
+  <object type="spawnpoint" gid="201" x="32" y="192">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="enterDoorFour"/>
+    <property name="targetmap" value="villageFour"/>
+    <property name="targetspawn" value="enterDoorFour"/>
+   </properties>
+  </object>
+  <object type="spawnpoint" gid="201" x="112" y="224">
+   <properties>
+    <property name="exitDirection" value="down"/>
+    <property name="name" value="enterDoorFive"/>
+    <property name="targetmap" value="villageFive"/>
+    <property name="targetspawn" value="enterDoorFive"/>
+   </properties>
+  </object>
+  <object type="villager" gid="204" x="32" y="112">
+   <properties>
+    <property name="dialogue" value="Man, isn't it nice out!?"/>
+   </properties>
+  </object>
+  <object type="villager" gid="204" x="192" y="208">
+   <properties>
+    <property name="dialogue" value="So you are finally of age, huh?|Congrats!|.... And good luck..."/>
+   </properties>
+  </object>
+  <object type="villager" gid="204" x="128" y="160">
+   <properties>
+    <property name="dialogue" value="Today's the day!|Better get heading north..|You've got a long journey|ahead of you!"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

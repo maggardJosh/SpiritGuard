@@ -129,15 +129,8 @@ public class World : FContainer
         this.map = new FTmxMap();
         this.map.LoadTMX("Maps/" + mapName);
 
-        FSoundManager.PlayMusic(this.map.mapMusic);
+        FSoundManager.PlayMusic(map.mapMusic);
 
-        FLabel mapNameLabel = new FLabel(C.largeFontName, map.mapName);
-        C.getCameraInstance().AddChild(mapNameLabel);
-        mapNameLabel.SetPosition(new Vector2(Futile.screen.width, Futile.screen.halfHeight * .8f));
-        Go.to(mapNameLabel, 1.5f, new TweenConfig().floatProp("x", 0).setEaseType(EaseType.BackOut).onComplete(() =>
-        {
-            Go.to(mapNameLabel, .7f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth).setDelay(.6f).setEaseType(EaseType.BackIn).onComplete(() => { mapNameLabel.RemoveFromContainer(); }));
-        }));
 
         collisionTilemap = (FTilemap)this.map.getLayerNamed("collision");
         wallCollisionTilemap = (FTilemap)this.map.getLayerNamed("walls");
@@ -186,6 +179,16 @@ public class World : FContainer
                 player.State = Player.PlayerState.IDLE;
                 C.Save.lastDoor = spawnName;
                 C.lastSave.copy(C.Save);
+                if (s.showMapName)
+                {
+                    FLabel mapNameLabel = new FLabel(C.largeFontName, map.mapName);
+                    C.getCameraInstance().AddChild(mapNameLabel);
+                    mapNameLabel.SetPosition(new Vector2(Futile.screen.width, Futile.screen.halfHeight * .8f));
+                    Go.to(mapNameLabel, 1.5f, new TweenConfig().floatProp("x", 0).setEaseType(EaseType.BackOut).onComplete(() =>
+                    {
+                        Go.to(mapNameLabel, .7f, new TweenConfig().floatProp("x", -Futile.screen.halfWidth).setDelay(.6f).setEaseType(EaseType.BackIn).onComplete(() => { mapNameLabel.RemoveFromContainer(); }));
+                    }));
+                }
                 s.SpawnPlayer(player);
                 return;
             }

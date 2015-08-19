@@ -33,6 +33,15 @@ public class GameScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.M))
+            FSoundManager.isMuted = !FSoundManager.isMuted;
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            if (((FPixelSnapShader)FShader.Basic_PixelSnap).dotMatrixAmount == 0)
+                ((FPixelSnapShader)FShader.Basic_PixelSnap).dotMatrixAmount = 1;
+            else
+                ((FPixelSnapShader)FShader.Basic_PixelSnap).dotMatrixAmount = 0;
+        }
+        
     }
 }

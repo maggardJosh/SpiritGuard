@@ -83,7 +83,10 @@ public class TitleScreen : FContainer
                 Futile.stage.AddChild(world);
 
                 C.getCameraInstance().MoveToFront();
-                world.LoadMap("1_1"); world.SpawnPlayer("spawnpoint");
+                world.LoadMap(C.Save.lastMap);
+                world.SpawnPlayer(C.Save.lastDoor);
+                
+
                 
                 this.RemoveFromContainer();
             });

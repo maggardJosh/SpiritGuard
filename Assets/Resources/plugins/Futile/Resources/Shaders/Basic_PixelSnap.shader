@@ -6,8 +6,9 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 	Properties 
 	{
 		_MainTex ("Base (RGB) Trans (A)", 2D) = "white" {}
+		_DotMatrixAmount ("Dot Matrix Amount", float) = 1.0
 	}
-	
+	 
 	SubShader 
 	{ 
 		Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
@@ -29,6 +30,7 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
+			float _DotMatrixAmount;
 
 			struct appdata_t
 			{
@@ -59,12 +61,13 @@ Shader "Futile/Basic_PixelSnap" //Unlit Transparent Vertex Colored
 			fixed4 frag(v2f IN) : COLOR
 			{
 
-				if (IN.worldPos.x%1 > .2 && IN.worldPos.y%1 < -.2) 
+				if (_DotMatrixAmount != 1.0 || (IN.worldPos.x%1 > .2 && IN.worldPos.y%1 < -.2))
 				{
 					return tex2D( _MainTex, IN.texcoord) * IN.color;
 				}else{
 					return fixed4(245.0/255.0,252.0/255.0,178.0/255.0,1)  ;
 				}
+
 			}
 			ENDCG
 		}

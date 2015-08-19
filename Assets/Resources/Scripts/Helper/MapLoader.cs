@@ -68,6 +68,7 @@ public class MapLoader
         string name = "";
         string targetMap = "";
         string targetSpawn = "";
+        bool showMapName = false;
         FutileFourDirectionBaseObject.Direction exitDirection = FutileFourDirectionBaseObject.Direction.DOWN;
         foreach (XMLNode property in ((XMLNode)node.children[0]).children)
         {
@@ -99,10 +100,13 @@ public class MapLoader
                             break;
                     }
                     break;
+                case "showmapname":
+                    showMapName = true;
+                    break;
             }
         }
-
-        result = new SpawnPoint((float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f), name, targetMap, targetSpawn, exitDirection);
+        
+        result = new SpawnPoint(showMapName, (float.Parse(node.attributes["x"]) + 8f), -(float.Parse(node.attributes["y"]) - 8f), name, targetMap, targetSpawn, exitDirection);
         return result;
     }
 

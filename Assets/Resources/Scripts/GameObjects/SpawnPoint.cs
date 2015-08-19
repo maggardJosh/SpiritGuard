@@ -11,19 +11,21 @@ using UnityEngine;
         public string name;
         public string targetMap;
         public string targetSpawn;
+        public bool showMapName = false;
 
-        public SpawnPoint(Vector2 pos, string name, string targetMap, string targetSpawn, FutileFourDirectionBaseObject.Direction exitDirection)
+        public SpawnPoint(bool showMapName, Vector2 pos, string name, string targetMap, string targetSpawn, FutileFourDirectionBaseObject.Direction exitDirection)
         {
-            Init(pos, name, targetMap, targetSpawn, exitDirection);
+            Init(showMapName, pos, name, targetMap, targetSpawn, exitDirection);
         }
 
-        public SpawnPoint(float x, float y, string name, string targetMap, string targetSpawn, FutileFourDirectionBaseObject.Direction exitDirection)
+        public SpawnPoint(bool showMapName, float x, float y, string name, string targetMap, string targetSpawn, FutileFourDirectionBaseObject.Direction exitDirection)
         {
-            Init(new Vector2(x, y), name, targetMap, targetSpawn, exitDirection);
+            Init(showMapName, new Vector2(x, y), name, targetMap, targetSpawn, exitDirection);
         }
 
-        private void Init(Vector2 pos, string name, string targetMap, string targetSpawn, FutileFourDirectionBaseObject.Direction exitDirection)
+        private void Init(bool showMapName, Vector2 pos, string name, string targetMap, string targetSpawn, FutileFourDirectionBaseObject.Direction exitDirection)
         {
+            this.showMapName = showMapName;
             this.pos = pos;
             this.name = name;
             this.targetMap = targetMap;

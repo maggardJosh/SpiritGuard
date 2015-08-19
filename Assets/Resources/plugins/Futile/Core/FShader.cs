@@ -43,15 +43,36 @@ public class FShader
 		Additive = new FShader("Additive", Shader.Find("Futile/Additive"));	
 		AdditiveColor = new FShader("AdditiveColor", Shader.Find("Futile/AdditiveColor"));	
 		Solid = new FShader("Solid", Shader.Find("Futile/Solid"));	
-		SolidColored = new FShader("SolidColored", Shader.Find("Futile/SolidColored"));	
+		SolidColored = new FShader("SolidColored", Shader.Find("Futile/SolidColored"));
 
-		Basic_PixelSnap = new FShader("Basic_PixelSnap", Shader.Find("Futile/Basic_PixelSnap"));
+        Basic_PixelSnap = new FPixelSnapShader(1.0f);
         OverlayBlend = new FOverlayBlendShader();
 
 		defaultShader = Basic_PixelSnap;
 	}
 }
 
+public class FPixelSnapShader :FShader
+{
+    private float _dotMatrixAmount;
+
+	public FPixelSnapShader(float dotMatrixAmount) : base("Basic_PixelSnap", Shader.Find("Futile/Basic_PixelSnap"))
+	{
+        _dotMatrixAmount = dotMatrixAmount;
+		needsApply = true;
+	}
+	
+	override public void Apply(Material mat)
+	{
+		mat.SetFloat("_DotMatrixAmount",_dotMatrixAmount);
+	}
+	
+	public float dotMatrixAmount
+	{
+		get {return _dotMatrixAmount;}
+		set {if(_dotMatrixAmount != value) {_dotMatrixAmount = value; needsApply = true;}}
+	}
+}
 
 public class FBlurShader : FShader
 {
