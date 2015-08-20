@@ -108,14 +108,13 @@
    </properties>
   </object>
   <object type="ghost" gid="208" x="80" y="144"/>
-  <object type="enemy" gid="203" x="96" y="208"/>
   <object type="arrowturret" gid="206" x="144" y="272">
    <properties>
     <property name="direction" value="left"/>
     <property name="interval" value=".5"/>
    </properties>
   </object>
-  <object type="enemy" gid="203" x="144" y="240"/>
+  <object type="enemy" gid="203" x="96" y="208"/>
   <object name="bow4switch1" type="switch" gid="211" x="160" y="192">
    <properties>
     <property name="door" value="bow4door1"/>

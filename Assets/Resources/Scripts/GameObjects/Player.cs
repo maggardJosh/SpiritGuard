@@ -8,7 +8,7 @@ public class Player : FutileFourDirectionBaseObject
 {
     public class SaveState
     {
-        public bool canJump = false;
+        public bool canJump = true;
         public bool canSword = false;
         public bool canBow = false;
         public List<string> switchesActivated = new List<string>();
@@ -175,8 +175,8 @@ public class Player : FutileFourDirectionBaseObject
     {
         FSoundManager.PlaySound("hurt");
         C.getCameraInstance().shake(.7f, .5f);
-        if (State != PlayerState.JUMP) 
-        Go.killAllTweensWithTarget(this);
+        if (State != PlayerState.JUMP)
+            Go.killAllTweensWithTarget(this);
         this.Health--;
 
         if (this.Health == 0)
@@ -296,24 +296,29 @@ public class Player : FutileFourDirectionBaseObject
                     {
                         case Direction.UP:
                             targetY = this.y + maxJumpDist;
-                            while (newY < targetY && !(world.CheckForJumpObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null || world.CheckForJumpObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null))
+                            while (newY < targetY && !(world.CheckForJumpObjectCollisionHitbox(this, this.x, newY) != null))
                                 newY += 1;
-                            while (newY > this.y && (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null)) { newY -= 1f; } break;
+                            while (newY > this.y &&
+                                (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) ||
+                                !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) ||
+                                world.CheckObjectCollisionHitbox(this, this.x, newY) != null))
+                            { newY -= 1f; }
+                            break;
                         case Direction.RIGHT:
                             targetX = this.x + maxJumpDist;
-                            while (newX < targetX && !(world.CheckForJumpObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckForJumpObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null))
+                            while (newX < targetX && !(world.CheckForJumpObjectCollisionHitbox(this, newX, this.y) != null))
                                 newX += 1;
-                            while (newX > this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null)) { newX -= 1f; } break;
+                            while (newX > this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollisionHitbox(this, newX, this.y) != null)) { newX -= 1f; } break;
                         case Direction.DOWN:
                             targetY = this.y - maxJumpDist;
-                            while (newY > targetY && !(world.CheckForJumpObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null || world.CheckForJumpObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null))
+                            while (newY > targetY && !(world.CheckForJumpObjectCollisionHitbox(this, this.x, newY) != null))
                                 newY -= 1;
-                            while (newY < this.y && (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) != null || world.CheckObjectCollision(this, this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) != null)) { newY += 1f; } break;
+                            while (newY < this.y && (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollisionHitbox(this, this.x, newY) != null)) { newY += 1f; } break;
                         case Direction.LEFT:
                             targetX = this.x - maxJumpDist;
-                            while (newX > targetX && !(world.CheckForJumpObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckForJumpObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null))
+                            while (newX > targetX && !(world.CheckForJumpObjectCollisionHitbox(this, newX, this.y) != null))
                                 newX -= 1;
-                            while (newX < this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollision(this, newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) != null || world.CheckObjectCollision(this, newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) != null)) { newX += 1f; } break;
+                            while (newX < this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollisionHitbox(this, newX, this.y) != null)) { newX += 1f; } break;
                     }
                     xVel = 0;
                     yVel = 0;
@@ -665,7 +670,7 @@ public class Player : FutileFourDirectionBaseObject
 
     protected override void OnUpdate()
     {
-   
+
         if (C.isTransitioning)
             return;
         switch (State)

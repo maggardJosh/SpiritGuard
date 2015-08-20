@@ -259,6 +259,55 @@ public class World : FContainer
     }
 
     RXRect worldPos = new RXRect();
+    RXRect selfRect = new RXRect();
+    public RXRect CheckObjectCollisionHitbox(FutilePlatformerBaseObject self, float x, float y)
+    {
+        selfRect.x = x + self.hitBox.x - self.hitBox.width/2f;
+        selfRect.y = y + self.hitBox.y - self.hitBox.height/2f;
+        selfRect.width = self.hitBox.width;
+        selfRect.height = self.hitBox.height;
+        foreach (FutilePlatformerBaseObject o in collisionObjects)
+        {
+            if (!o.blocksOtherObjects && !(o is Switch))
+                continue;
+            if ((self is Knight && o is Player))
+                continue;
+            if ((self is Ghost && o is Player))
+                continue;
+            if (self is Arrow && ((Arrow)self).owner == o)
+                continue;
+            if (self is MagicOrb && ((MagicOrb)self).owner == o)
+                continue;
+            if (self is Arrow && o is Player)
+                continue;
+            if (self is MagicOrb && o is Player)
+                continue;
+
+            if (o == self)
+                continue;
+            worldPos.x = o.x + o.hitBox.x - o.hitBox.width / 2;
+            worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
+            worldPos.width = o.hitBox.width;
+            worldPos.height = o.hitBox.height;
+            if(worldPos.CheckIntersect(selfRect))
+            {
+                if (self is Player && o is PushBlock)
+                    ((PushBlock)o).HandlePlayerCollision((Player)self);
+                if (self is Player && o is Switch)
+                {
+                    ((Switch)o).HandlePlayerCollision((Player)self);
+                    continue;
+                }
+                else if (o is Switch)
+                    continue;
+                if (self is Arrow && o is HitSwitch)
+                    ((HitSwitch)o).Activate();
+                return worldPos;
+            }
+        }
+        return null;
+    }
+
     public RXRect CheckObjectCollision(FutilePlatformerBaseObject self, float x, float y)
     {
         foreach (FutilePlatformerBaseObject o in collisionObjects)
@@ -301,8 +350,8 @@ public class World : FContainer
             }
         }
         return null;
-    }
 
+    }
     public void OpenDoor(string doorName)
     {
         foreach (FutilePlatformerBaseObject o in collisionObjects)
@@ -342,8 +391,12 @@ public class World : FContainer
         return false;
     }
 
-    public RXRect CheckForJumpObjectCollision(Player self, float x, float y)
+    public RXRect CheckForJumpObjectCollisionHitbox(Player self, float x, float y)
     {
+        selfRect.x = x + self.hitBox.x - self.hitBox.width/2f;
+        selfRect.y = y + self.hitBox.y - self.hitBox.height/2f;
+        selfRect.width = self.hitBox.width;
+        selfRect.height = self.hitBox.height;
         foreach (FutilePlatformerBaseObject o in collisionObjects)
         {
             if (!o.blocksJump || !o.blocksOtherObjects)
@@ -352,10 +405,8 @@ public class World : FContainer
             worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
             worldPos.width = o.hitBox.width;
             worldPos.height = o.hitBox.height;
-            if (worldPos.Contains(x, y))
-            {
+            if (worldPos.CheckIntersect(selfRect))
                 return worldPos;
-            }
         }
         return null;
     }

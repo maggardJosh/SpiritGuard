@@ -108,6 +108,11 @@
     <property name="distance" value="3"/>
    </properties>
   </object>
+  <object type="sign" gid="202" x="160" y="160">
+   <properties>
+    <property name="dialogue" value="Switch Abilities with TAB"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="foreground" width="18" height="20" opacity="0.5">
   <data encoding="csv">
