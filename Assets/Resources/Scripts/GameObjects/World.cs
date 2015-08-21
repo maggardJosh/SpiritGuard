@@ -158,6 +158,23 @@ public class World : FContainer
 
         MapLoader.loadObjects(this, map.objects);
     }
+    public bool isAllPassable(FutilePlatformerBaseObject self, float x, float y, bool isMovingHorizontal = true)
+    {
+
+        float xPos = x + self.hitBox.x + (isMovingHorizontal ? 0 : -1);
+        float yPos = y + self.hitBox.y + (isMovingHorizontal ? -1 : 0);
+        float width = self.hitBox.width + (isMovingHorizontal ? 0 : -4);
+        float height = self.hitBox.height + (isMovingHorizontal ? -4 : 0);
+        return
+            isWallPassable(xPos - width / 2f, yPos - height / 2f) &&
+            isWallPassable(xPos + width / 2f, yPos - height / 2f) &&
+            isWallPassable(xPos - width / 2f, yPos + height / 2f) &&
+            isWallPassable(xPos + width / 2f, yPos + height / 2f) &&
+            isPassable(xPos - width / 2f, yPos - height / 2f) &&
+            isPassable(xPos + width / 2f, yPos - height / 2f) &&
+            isPassable(xPos - width / 2f, yPos + height / 2f) &&
+            isPassable(xPos + width / 2f, yPos + height / 2f);
+    }
     public bool isAllPassable(float x, float y)
     {
         return isWallPassable(x, y) && isPassable(x, y);
@@ -260,12 +277,12 @@ public class World : FContainer
 
     RXRect worldPos = new RXRect();
     RXRect selfRect = new RXRect();
-    public RXRect CheckObjectCollisionHitbox(FutilePlatformerBaseObject self, float x, float y)
+    public RXRect CheckObjectCollisionHitbox(FutilePlatformerBaseObject self, float x, float y, float sideMargin = 4)
     {
-        selfRect.x = x + self.hitBox.x - self.hitBox.width/2f;
-        selfRect.y = y + self.hitBox.y - self.hitBox.height/2f;
-        selfRect.width = self.hitBox.width;
-        selfRect.height = self.hitBox.height;
+        selfRect.x = x + self.hitBox.x - (self.hitBox.width - sideMargin) / 2f;
+        selfRect.y = y + self.hitBox.y - (self.hitBox.height - sideMargin) / 2f;
+        selfRect.width = self.hitBox.width - sideMargin;
+        selfRect.height = self.hitBox.height - sideMargin;
         foreach (FutilePlatformerBaseObject o in collisionObjects)
         {
             if (!o.blocksOtherObjects && !(o is Switch))
@@ -289,7 +306,7 @@ public class World : FContainer
             worldPos.y = o.y + o.hitBox.y - o.hitBox.height / 2;
             worldPos.width = o.hitBox.width;
             worldPos.height = o.hitBox.height;
-            if(worldPos.CheckIntersect(selfRect))
+            if (worldPos.CheckIntersect(selfRect))
             {
                 if (self is Player && o is PushBlock)
                     ((PushBlock)o).HandlePlayerCollision((Player)self);
@@ -393,8 +410,8 @@ public class World : FContainer
 
     public RXRect CheckForJumpObjectCollisionHitbox(Player self, float x, float y)
     {
-        selfRect.x = x + self.hitBox.x - self.hitBox.width/2f;
-        selfRect.y = y + self.hitBox.y - self.hitBox.height/2f;
+        selfRect.x = x + self.hitBox.x - self.hitBox.width / 2f;
+        selfRect.y = y + self.hitBox.y - self.hitBox.height / 2f;
         selfRect.width = self.hitBox.width;
         selfRect.height = self.hitBox.height;
         foreach (FutilePlatformerBaseObject o in collisionObjects)

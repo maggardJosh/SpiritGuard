@@ -108,7 +108,7 @@ public class FutilePlatformerBaseObject : FContainer
 
     private void UpdateCollisionChecks()
     {
-        float sideMargin = 2;
+        float sideMargin = 1;
         horizontalYChecks = new float[2 + Mathf.FloorToInt((hitBox.height - (sideMargin * 2)) / (tileSize / 2f))];
         int ind = 0;
         for (float i = -hitBox.height / 2 + sideMargin; i < hitBox.height / 2 - sideMargin; i += tileSize / 2f)

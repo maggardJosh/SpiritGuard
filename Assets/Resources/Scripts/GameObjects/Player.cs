@@ -8,7 +8,7 @@ public class Player : FutileFourDirectionBaseObject
 {
     public class SaveState
     {
-        public bool canJump = true;
+        public bool canJump = false;
         public bool canSword = false;
         public bool canBow = false;
         public List<string> switchesActivated = new List<string>();
@@ -285,6 +285,7 @@ public class Player : FutileFourDirectionBaseObject
                     else if (C.getKey(C.UP_KEY))
                         _direction = Direction.UP;
                     Go.killAllTweensWithTarget(this);
+                    PlayAnim(true);
 
                     SpawnParticles((Direction)((int)(_direction + 2) % Enum.GetValues(typeof(Direction)).Length));
 
@@ -299,8 +300,7 @@ public class Player : FutileFourDirectionBaseObject
                             while (newY < targetY && !(world.CheckForJumpObjectCollisionHitbox(this, this.x, newY) != null))
                                 newY += 1;
                             while (newY > this.y &&
-                                (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) ||
-                                !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) ||
+                                (!world.isAllPassable(this, this.x , newY, false) ||
                                 world.CheckObjectCollisionHitbox(this, this.x, newY) != null))
                             { newY -= 1f; }
                             break;
@@ -308,17 +308,17 @@ public class Player : FutileFourDirectionBaseObject
                             targetX = this.x + maxJumpDist;
                             while (newX < targetX && !(world.CheckForJumpObjectCollisionHitbox(this, newX, this.y) != null))
                                 newX += 1;
-                            while (newX > this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollisionHitbox(this, newX, this.y) != null)) { newX -= 1f; } break;
+                            while (newX > this.x && (!world.isAllPassable(this,newX , this.y, true) || world.CheckObjectCollisionHitbox(this, newX, this.y) != null)) { newX -= 1f; } break;
                         case Direction.DOWN:
                             targetY = this.y - maxJumpDist;
                             while (newY > targetY && !(world.CheckForJumpObjectCollisionHitbox(this, this.x, newY) != null))
                                 newY -= 1;
-                            while (newY < this.y && (!world.isAllPassable(this.x + hitBox.x, newY + hitBox.y + hitBox.height / 2f) || !world.isAllPassable(this.x + hitBox.x, newY + hitBox.y - hitBox.height / 2f) || world.CheckObjectCollisionHitbox(this, this.x, newY) != null)) { newY += 1f; } break;
+                            while (newY < this.y && (!world.isAllPassable(this, this.x , newY, false) || world.CheckObjectCollisionHitbox(this, this.x, newY) != null)) { newY += 1f; } break;
                         case Direction.LEFT:
                             targetX = this.x - maxJumpDist;
                             while (newX > targetX && !(world.CheckForJumpObjectCollisionHitbox(this, newX, this.y) != null))
                                 newX -= 1;
-                            while (newX < this.x && (!world.isAllPassable(newX + hitBox.x + hitBox.width / 2f, this.y + hitBox.y) || !world.isAllPassable(newX + hitBox.x - hitBox.width / 2f, this.y + hitBox.y) || world.CheckObjectCollisionHitbox(this, newX, this.y) != null)) { newX += 1f; } break;
+                            while (newX < this.x && (!world.isAllPassable(this, newX, this.y, true) || world.CheckObjectCollisionHitbox(this, newX, this.y) != null)) { newX += 1f; } break;
                     }
                     xVel = 0;
                     yVel = 0;

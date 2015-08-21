@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class C
 {
-    public const string versionNumber = "v1.0";
+    public const string versionNumber = "v1.1.1";
 
     private static FCamObject camera;
     public static FCamObject getCameraInstance()

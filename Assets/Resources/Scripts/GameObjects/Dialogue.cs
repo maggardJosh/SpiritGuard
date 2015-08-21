@@ -43,7 +43,7 @@ public class Dialogue : FContainer
             return;
         stateCount = 0;
         this.dialogueBG.isVisible = true;
-        this.messages = messages;
+        this.messages = new List<string>(messages);
         C.isTransitioning = true;
         Go.to(this, TWEEN_IN_TIME, new TweenConfig().floatProp("y", -Futile.screen.halfHeight + dialogueBG.height / 2f).setEaseType(EaseType.BackOut).onComplete(() =>
         {
