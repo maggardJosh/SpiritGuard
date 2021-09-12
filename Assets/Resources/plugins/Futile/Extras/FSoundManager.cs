@@ -40,8 +40,11 @@ public class FSoundManager
 
     static public void TweenVolume(float newVolume)
     {
-        Go.killAllTweensWithTarget(musicSource);
-        Go.to(musicSource, 1.0f, new TweenConfig().floatProp("volume", newVolume));
+        _musicSource.volume = newVolume;
+        return;
+        if (_musicSource == null) Init();
+        Go.killAllTweensWithTarget(_musicSource);
+        Go.to(_musicSource, 1.0f, new TweenConfig().floatProp("volume", newVolume));
     }
 
     static public void PreloadSound(String resourceName)
@@ -114,35 +117,56 @@ public class FSoundManager
     const float MUSIC_FADE_IN_TIME = 3.0f;
     static public void PlayMusic(string resourceName, float volume, bool shouldRestartIfSameSongIsAlreadyPlaying)
     {
-        if (_isMuted) return;
 
         if (_musicSource == null) Init();
+        
+        string fullPath = resourcePrefix + resourceName;
+        if (_currentMusicPath == fullPath)
+            return;
+        _currentMusicClip = Resources.Load(fullPath) as AudioClip;
+
+        if (_currentMusicClip == null)
+        {
+            Debug.Log("Error! Couldn't find music clip " + fullPath);
+        }
+        else
+        {
+            _currentMusicPath = fullPath;
+            _musicSource.clip = _currentMusicClip;
+            _musicSource.loop = true;
+            _musicSource.Play();
+            _musicSource.volume = 1;
+            // currentFade = Go.to(_musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
+        }
+
+        return;
 
         if (currentFade != null)
-            if (currentFade.target == musicSource)
-                Go.killAllTweensWithTarget(musicSource);
-
-        string fullPath = resourcePrefix + resourceName;
+            if (currentFade.target == _musicSource)
+                Go.killAllTweensWithTarget(_musicSource);
+        //Debug.Log($"_musicSource {_musicSource}");
+        //Debug.Log($"_musicSource.volume {_musicSource.volume}");
         if (_currentMusicClip != null) //we only want to have one music clip in memory at a time
         {
             if (_currentMusicPath == fullPath) //we're already playing this music, just restart it!
             {
                 if (shouldRestartIfSameSongIsAlreadyPlaying)
                 {
-                    currentFade = Go.to(FSoundManager.musicSource, MUSIC_FADE_TIME, new TweenConfig().floatProp("volume", 0).onComplete(() =>
+                    
+                    currentFade = Go.to(_musicSource, MUSIC_FADE_TIME, new TweenConfig().floatProp("volume", 0).onComplete(() =>
                     {
 
                         _musicSource.Stop();
                         _musicSource.loop = true;
                         _musicSource.Play();
-                        currentFade = Go.to(FSoundManager.musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
+                        currentFade = Go.to(_musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
                     }));
                 }
                 return;
             }
             else //unload the old music
             {
-                currentFade = Go.to(musicSource, MUSIC_FADE_TIME, new TweenConfig().floatProp("volume", 0).onComplete(() =>
+                currentFade = Go.to(_musicSource, MUSIC_FADE_TIME, new TweenConfig().floatProp("volume", 0).onComplete(() =>
                 {
                     _musicSource.Stop();
                     Resources.UnloadAsset(_currentMusicClip);
@@ -161,7 +185,7 @@ public class FSoundManager
                         _musicSource.clip = _currentMusicClip;
                         _musicSource.loop = true;
                         _musicSource.Play();
-                        currentFade = Go.to(musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
+                        currentFade = Go.to(_musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
                     }
                     return;
 
@@ -169,7 +193,7 @@ public class FSoundManager
             }
         }
         
-        currentFade = Go.to(musicSource, musicSource.isPlaying ? MUSIC_FADE_TIME : .1f, new TweenConfig().floatProp("volume", 0).onComplete(() =>
+        currentFade = Go.to(_musicSource, _musicSource.isPlaying ? MUSIC_FADE_TIME : .1f, new TweenConfig().floatProp("volume", 0).onComplete(() =>
         {
            
             _currentMusicClip = Resources.Load(fullPath) as AudioClip;
@@ -184,7 +208,7 @@ public class FSoundManager
                 _musicSource.clip = _currentMusicClip;
                 _musicSource.loop = true;
                 _musicSource.Play();
-                currentFade = Go.to(musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
+                currentFade = Go.to(_musicSource, MUSIC_FADE_IN_TIME, new TweenConfig().floatProp("volume", volume));
             }
 
 
@@ -251,11 +275,6 @@ public class FSoundManager
     static public AudioSource soundSource
     {
         get { return _soundSource; }
-    }
-
-    static public AudioSource musicSource
-    {
-        get { return _musicSource; }
     }
 
     static public float volume
