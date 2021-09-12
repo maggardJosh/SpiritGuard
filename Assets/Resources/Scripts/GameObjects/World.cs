@@ -449,8 +449,8 @@ public class World : FContainer
     }
     public void CheckDamageObjectCollision()
     {
-        foreach (FutilePlatformerBaseObject o in damageObjects)
-            CheckDamageObjectCollision(o);
+        for(int i=damageObjects.Count-1; i>=0; i--)
+            CheckDamageObjectCollision(damageObjects[i]);
     }
     public void CheckDamageObjectCollision(FutilePlatformerBaseObject o)
     {
